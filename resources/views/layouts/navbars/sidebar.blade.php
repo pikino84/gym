@@ -5,8 +5,8 @@
       Tip 2: you can also add an image using data-image tag
   -->
   <div class="logo">
-    <a href="https://creative-tim.com/" class="simple-text logo-normal">
-      {{ __('Creative Tim') }}
+    <a href="{{ route('home') }}" class="simple-text logo-normal">
+      <img src="{{ asset('img/logo.png') }}" alt="">
     </a>
   </div>
   <div class="sidebar-wrapper">
@@ -17,6 +17,7 @@
             <p>{{ __('Dashboard') }}</p>
         </a>
       </li>
+      {{--
       <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
         <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="true">
           <i><img style="width:25px" src="{{ asset('img/laravel.svg') }}"></i>
@@ -41,14 +42,16 @@
           </ul>
         </div>
       </li>
+       --}}
       @can('user_index')
       <li class="nav-item{{ $activePage == 'users' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('users.index') }}">
-          <i class="material-icons">content_paste</i>
+          <i class="material-icons">person</i>
             <p>Usuarios</p>
         </a>
       </li>
       @endcan
+      {{-- 
       @can('post_index')
       <li class="nav-item{{ $activePage == 'posts' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('posts.index') }}">
@@ -57,10 +60,11 @@
         </a>
       </li>
       @endcan
+       --}}
       @can('permission_index')
       <li class="nav-item{{ $activePage == 'permissions' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('permissions.index') }}">
-          <i class="material-icons">bubble_chart</i>
+          <i class="material-icons">assignment_ind</i>
           <p>{{ __('Permissions') }}</p>
         </a>
       </li>
@@ -68,23 +72,11 @@
       @can('role_index')
       <li class="nav-item{{ $activePage == 'roles' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('roles.index') }}">
-          <i class="material-icons">location_ons</i>
+          <i class="material-icons">contacts</i>
             <p>{{ __('Roles') }}</p>
         </a>
       </li>
       @endcan
-      <li class="nav-item{{ $activePage == 'notifications' ? ' active' : '' }}">
-        <a class="nav-link" href="#">
-          <i class="material-icons">notifications</i>
-          <p>{{ __('Notifications') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'language' ? ' active' : '' }}">
-        <a class="nav-link" href="#">
-          <i class="material-icons">language</i>
-          <p>{{ __('RTL Support') }}</p>
-        </a>
-      </li>
     </ul>
   </div>
 </div>
