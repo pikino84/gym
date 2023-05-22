@@ -34,6 +34,16 @@
   <script src="{{ asset('js/core/popper.min.js') }}"></script>
   <script src="{{ asset('js/core/bootstrap-material-design.min.js') }}"></script>
   {{-- <script src="{{ asset('js/plugins/perfect-scrollbar.jquery.min.js') }}"></script> --}}
+  <script>
+    $(document).ready(function(){
+      $(document).on("click", ".navbar-toggler", function(){
+        $('.sidebar').css({ 'right': '0px', 'left': '' }).animate({'right' : '260px'}); 
+      });
+      $(document).on("click", ".close__sidebar_movil", function(){
+        $('.sidebar').css({ 'right': '0px', 'left': '' }).animate({'right' : '0px'}); 
+      });
+    });
+  </script>
   @stack('js')
 </body>
 </html>

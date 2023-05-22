@@ -26,22 +26,27 @@
                         <div class="block block-four"></div>
                         <a href="#">
                           <img class="avatar" src="{{ asset('/img/default-avatar.png') }}" alt="">
-                          <h5 class="title mt-3">{{ $post->title }}</h5>
+                          <h5 class="title mt-3">Numero de orden {{ $post->title }}</h5>
                         </a>
+                        {{-- 
                         <p class="description">
                           {{ _('Ceo/Co-Founder') }} <br>
                           {{ $post->title }} <br>
                           {{ $post->created_at }}
                         </p>
+                         --}}
                       </div>
                     </p>
+                    {{-- 
                     <div class="card-description">
                       {{ _('Do not be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...') }}
                     </div>
+                     --}}
                   </div>
                   <div class="card-footer">
                     <div class="button-container">
-                      <button type="submit" class="btn btn-sm btn-primary">Editar</button>
+                      <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-primary">Editar</a>
+                      <a href="{{ route('posts.index') }}" class="btn btn-sm btn-warning">Volver</a>
                     </div>
                   </div>
                 </div>

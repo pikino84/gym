@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'posts', 'titlePage' => 'Editar Post'])
+@extends('layouts.main', ['activePage' => 'posts', 'titlePage' => 'Editar Factura'])
 @section('content')
 <div class="content">
   <div class="container-fluid">
@@ -10,16 +10,16 @@
           <div class="card">
             <!--Header-->
             <div class="card-header card-header-primary">
-              <h4 class="card-title">Editar post</h4>
-              <p class="card-category">Editar datos del post</p>
+              <h4 class="card-title">Editar Factura</h4>
+              <p class="card-category">Editar datos de la factura</p>
             </div>
             <!--End header-->
             <!--Body-->
             <div class="card-body">
               <div class="row">
-                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                <label for="title" class="col-sm-2 col-form-label">Número de orden</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" name="title" placeholder="Ingrese el title"
+                  <input type="text" class="form-control" name="title" placeholder="Ingrese el número de orden"
                     value="{{ old('title', $post->title) }}" autocomplete="off" autofocus>
                 </div>
               </div>
@@ -28,6 +28,7 @@
             <!--Footer-->
             <div class="card-footer ml-auto mr-auto">
               <button type="submit" class="btn btn-primary">Guardar</button>
+              <a href="{{ route('posts.index') }}" class="btn btn-primary btn-warning">Volver</a>
             </div>
           </div>
           <!--End footer-->

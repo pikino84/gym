@@ -18214,7 +18214,6 @@ Copyright (c) 2015 Daniel Eden
   }
   .sidebar {
     display: none;
-    box-shadow: none;
   }
   .sidebar .sidebar-wrapper {
     padding-bottom: 60px;
@@ -18329,7 +18328,6 @@ Copyright (c) 2015 Daniel Eden
     left: auto;
     z-index: 1032;
     visibility: visible;
-    background-color: #9A9A9A;
     overflow-y: visible;
     border-top: none;
     text-align: left;
@@ -18359,7 +18357,6 @@ Copyright (c) 2015 Daniel Eden
     height: 100%;
     width: 100%;
     position: absolute;
-    background-color: #282828;
     display: block;
     content: "";
     z-index: 1;

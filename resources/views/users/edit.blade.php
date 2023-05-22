@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                <label for="name" class="col-sm-2 col-form-label">Usuario</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}" autofocus>
                   @if ($errors->has('name'))
@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="row">
-                <label for="username" class="col-sm-2 col-form-label">Nombre de usuario</label>
+                <label for="username" class="col-sm-2 col-form-label">Nombre completo</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="username" value="{{ old('username', $user->username) }}">
                   @if ($errors->has('username'))
@@ -88,6 +88,7 @@
             <!--Footer-->
             <div class="card-footer ml-auto mr-auto">
               <button type="submit" class="btn btn-primary">Actualizar</button>
+              <a href="{{ route('users.index') }}" class="btn btn-primary btn-warning">Volver</a>
             </div>
             <!--End footer-->
           </div>

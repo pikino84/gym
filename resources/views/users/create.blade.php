@@ -22,7 +22,7 @@
                   </div>
               @endif --}}
               <div class="row">
-                <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                <label for="name" class="col-sm-2 col-form-label">Usuario</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="name" placeholder="Ingrese su nombre" value="{{ old('name') }}" autofocus>
                   @if ($errors->has('name'))
@@ -31,7 +31,7 @@
                 </div>
               </div>
               <div class="row">
-                <label for="username" class="col-sm-2 col-form-label">Nombre de usuario</label>
+                <label for="username" class="col-sm-2 col-form-label">Nombre completo</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="username" placeholder="Ingrese su nombre de usuario" value="{{ old('username') }}">
                   @if ($errors->has('username'))
@@ -95,6 +95,7 @@
             <!--Footer-->
             <div class="card-footer ml-auto mr-auto">
               <button type="submit" class="btn btn-primary">Guardar</button>
+              <a href="{{ route('users.index') }}" class="btn btn-primary btn-warning">Volver</a>
             </div>
             <!--End footer-->
           </div>

@@ -5,6 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <!--Enter code here -->
+            Peanel Pendienete de desarrollo
         </div>
     </div>
 </div>

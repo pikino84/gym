@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'posts', 'titlePage' => 'Posts'])
+@extends('layouts.main', ['activePage' => 'posts', 'titlePage' => 'Mis Facturas'])
 
 @section('content')
 <div class="content">
@@ -7,14 +7,14 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title">Posts</h4>
-            <p class="card-category">Lista de posts registrados en la base de datos</p>
+            <h4 class="card-title">Mis Facturas</h4>
+            <p class="card-category">Lista de facturas registradas por: NOMBRE DEL PROVEEDOR </p>
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col-12 text-right">
                 @can('post_create')
-                <a href="{{ route('posts.create') }}" class="btn btn-sm btn-facebook">Añadir post</a>
+                <a href="{{ route('posts.create') }}" class="btn btn-sm btn-facebook">Añadir factura</a>
                 @endcan
               </div>
             </div>
@@ -22,8 +22,8 @@
               <table class="table ">
                 <thead class="text-primary">
                   <th> ID </th>
-                  <th> Nombre </th>
-                  <th> Fecha de creación </th>
+                  <th> Número de orde </th>
+                  <th> Factura </th>
                   <th class="text-right"> Acciones </th>
                 </thead>
                 <tbody>
