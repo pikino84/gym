@@ -71,12 +71,20 @@
         </a>
       </li>
       @endcan
+      @can('deuda_index')
+      <li class="nav-item{{ $activePage == 'deudas' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('deudas.index') }}">
+          <i class="material-icons">account_balance</i>
+            <p>{{ __('Mis deudas') }}</p>
+        </a>
+      </li>
+      @endcan
+      {{-- https://materializecss.com/icons.html --}}
       <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
           <i class="material-icons">exit_to_app</i>
           <p>{{ __('Salir') }}</p></a>
       </li>
-      
     </ul>
   </div>
 </div>
