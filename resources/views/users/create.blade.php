@@ -22,16 +22,16 @@
                   </div>
               @endif --}}
               <div class="row">
-                <label for="name" class="col-sm-2 col-form-label">Usuario</label>
+                <label for="name" class="col-sm-2 col-form-label">Nombre completo</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" name="name" placeholder="Ingrese su nombre" value="{{ old('name') }}" autofocus>
+                  <input type="text" class="form-control" name="name" placeholder="Ingrese su nombre completo" value="{{ old('name') }}" autofocus>
                   @if ($errors->has('name'))
                     <span class="error text-danger" for="input-name">{{ $errors->first('name') }}</span>
                   @endif
                 </div>
               </div>
               <div class="row">
-                <label for="username" class="col-sm-2 col-form-label">Nombre completo</label>
+                <label for="username" class="col-sm-2 col-form-label">Usuario</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="username" placeholder="Ingrese su nombre de usuario" value="{{ old('username') }}">
                   @if ($errors->has('username'))
@@ -39,6 +39,7 @@
                   @endif
                 </div>
               </div>
+              
               <div class="row">
                 <label for="email" class="col-sm-2 col-form-label">Correo</label>
                 <div class="col-sm-7">

@@ -4841,13 +4841,13 @@ tbody.collapse.show {
   padding: 0.5rem 0.75rem;
   margin-left: 0;
   line-height: 1.25;
-  color: #2196f3;
+  color: #ff9800;
   background-color: transparent;
   border: 0 solid #dee2e6;
 }
 
 .page-link:hover {
-  color: #0a6ebd;
+  color: #ff8800;
   text-decoration: none;
   background-color: #e9ecef;
   border-color: #dee2e6;
@@ -4856,7 +4856,7 @@ tbody.collapse.show {
 .page-link:focus {
   z-index: 2;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(243, 92, 33, 0.25);
 }
 
 .page-link:not(:disabled):not(.disabled) {
@@ -4877,8 +4877,8 @@ tbody.collapse.show {
 .page-item.active .page-link {
   z-index: 1;
   color: #ffffff;
-  background-color: #2196f3;
-  border-color: #2196f3;
+  background-color: #ff9800;
+  border-color: #ff9800;
 }
 
 .page-item.disabled .page-link {

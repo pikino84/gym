@@ -26,7 +26,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Guard</th>
-                        <th>Created_at</th>
+                        <th>Creado el</th>
                         <th class="text-right">Acciones</th>
                       </thead>
                       <tbody>
