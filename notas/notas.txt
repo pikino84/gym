@@ -1,0 +1,35 @@
+//Este comando actuliza la base de datos de acuertdo a las migrations PERO BORRA TODOS LOS DATOS
+php artisan migrate -fresh 
+
+//Este comando recuoera los datos de los seeders 
+php artisan migrate --seed
+
+php artisan make:controller -mcr
+-m: Especifica que el controlador debe estar vinculado a un modelo. 
+    Laravel generará automáticamente los métodos CRUD básicos en el controlador para interactuar con el modelo correspondiente.
+
+-c: Genera el controlador con los métodos de recurso RESTful. Estos métodos incluyen index, create, store, show, edit, update y destroy.
+
+-r: Genera también un archivo de rutas (routes/web.php) para el controlador, con las rutas de recurso predefinidas 
+    correspondientes a los métodos del controlador.
+
+
+
+//Permisos
+_index
+_crear
+_mostrar
+_editar
+_eliminar
+
+
+//To Do hacer una migracion que se llama estados_de_cuenta que reemplazaraa Deudas con todo su crud
+//En el menu meter los datos de acuerdo con la imagen llamada menu y crear las vistas de index
+//Crear una migracion de facturas que reemplazara los post con todo su crud
+//Hace Seeders de permisos, roles,  pre-facturas
+//Averiguarcomo subir documentos XML y PDF 
+//comparar el XML con el valor que viene de las prefacturas
+//Hacer los semaforos
+
+
+php artisan make:controller EstadosDeCuentaController -mcr --model=EstadosDeCuenta

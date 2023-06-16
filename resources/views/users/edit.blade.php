@@ -50,6 +50,15 @@
                 </div>
               </div>
               <div class="row">
+                <label for="password" class="col-sm-2 col-form-label">ID (Solo si es proveedor)</label>
+                <div class="col-sm-7">
+                  <input type="idproveedor" id="idproveedor" class="form-control" name="idproveedor" placeholder="Ingresa el ID del proveedor" autocomplete="off">
+                  @if ($errors->has('idproveedor'))
+                    <span class="error text-danger" for="input-idproveedor">{{ $errors->first('proveedor') }}</span>
+                  @endif
+                </div>
+              </div>
+              <div class="row">
                 <label for="name" class="col-sm-2 col-form-label">Roles</label>
                 <div class="col-sm-7">
                     <div class="form-group">
@@ -97,4 +106,67 @@
     </div>
   </div>
 </div>
+@endsection
+@section('script')
+<script>
+  
+  $(document).ready(function() {
+  var data = [
+    "Manzana",
+    "Plátano",
+    "Naranja",
+    "Uva",
+    "Fresa",
+    "Kiwi",
+    "Sandía",
+    "Piña",
+    "Melón",
+    "Limón",
+    "Mango",
+    "Papaya",
+    "Pera",
+    "Durazno",
+    "Cereza",
+    "Mandarina",
+    "Pomelo",
+    "Granada",
+    "Fruta de la pasión",
+    "Frambuesa",
+    "Arándano",
+    "Ciruela",
+    "Melocotón",
+    "Albaricoque",
+    "Guayaba",
+    "Higo",
+    "Lichi",
+    "Carambola",
+    "Acerola",
+    "Grosella",
+    "Guanábana",
+    "Mora",
+    "Maracuyá",
+    "Pitaya",
+    "Coco",
+    "Cerezas de Barbados",
+    "Acerola",
+    "Grosella",
+    "Kiwano",
+    "Nashi",
+    "Kaki",
+    "Membrillo",
+    "Rambután",
+    "Kumquat",
+    "Cítricos",
+    "Feijoa",
+    "Morus",
+    "Pepino dulce",
+    "Tamarindo",
+    "Chirimoya",
+  ];
+  
+  $("#idproveedor").autocomplete({
+    source: data
+  });
+});
+</script>
 @endsection

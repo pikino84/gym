@@ -59,39 +59,48 @@
                 </div>
               </div>
               <div class="row">
+                <label for="password" class="col-sm-2 col-form-label">ID (Solo si es proveedor)</label>
+                <div class="col-sm-7">
+                  <input type="idproveedor" id="idproveedor" class="form-control" name="idproveedor" placeholder="Ingresa el ID del proveedor" autocomplete="off">
+                  @if ($errors->has('idproveedor'))
+                    <span class="error text-danger" for="input-idproveedor">{{ $errors->first('proveedor') }}</span>
+                  @endif
+                </div>
+              </div>
+              <div class="row">
                 <label for="roles" class="col-sm-2 col-form-label">Roles</label>
                 <div class="col-sm-7">
-                    <div class="form-group">
-                        <div class="tab-content">
-                            <div class="tab-pane active">
-                                <table class="table">
-                                    <tbody>
-                                        @foreach ($roles as $id => $role)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" name="roles[]"
-                                                            value="{{ $id }}"
-                                                        >
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ $role }}
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                  <div class="form-group">
+                    <div class="tab-content">
+                      <div class="tab-pane active">
+                        <table class="table">
+                          <tbody>
+                            @foreach ($roles as $id => $role)
+                            <tr>
+                              <td>
+                                <div class="form-check">
+                                  <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="roles[]"
+                                      value="{{ $id }}"
+                                    >
+                                    <span class="form-check-sign">
+                                      <span class="check"></span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </td>
+                              <td>
+                                {{ $role }}
+                              </td>
+                            </tr>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
+              </div>
             </div>
             <!--Footer-->
             <div class="card-footer ml-auto mr-auto">
@@ -105,4 +114,77 @@
     </div>
   </div>
 </div>
+
+@endsection
+@section('script')
+<script>  
+  $(document).ready(function() {
+    var data = [
+    "Manzana",
+    "Plátano",
+    "Naranja",
+    "Uva",
+    "Fresa",
+    "Kiwi",
+    "Sandía",
+    "Piña",
+    "Melón",
+    "Limón",
+    "Mango",
+    "Papaya",
+    "Pera",
+    "Durazno",
+    "Cereza",
+    "Mandarina",
+    "Pomelo",
+    "Granada",
+    "Fruta de la pasión",
+    "Frambuesa",
+    "Arándano",
+    "Ciruela",
+    "Melocotón",
+    "Albaricoque",
+    "Guayaba",
+    "Higo",
+    "Lichi",
+    "Carambola",
+    "Acerola",
+    "Grosella",
+    "Guanábana",
+    "Mora",
+    "Maracuyá",
+    "Pitaya",
+    "Coco",
+    "Cerezas de Barbados",
+    "Acerola",
+    "Grosella",
+    "Kiwano",
+    "Nashi",
+    "Kaki",
+    "Membrillo",
+    "Rambután",
+    "Kumquat",
+    "Cítricos",
+    "Feijoa",
+    "Morus",
+    "Pepino dulce",
+    "Tamarindo",
+    "Chirimoya",
+  ];
+    /*$.ajax({
+      url: "{{ route('proveedores-compac') }}",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          // Manipula los datos JSON según tus necesidades
+          var proveedores = response;
+          console.log(proveedores);
+          
+        }
+    }); */ 
+    $("#idproveedor").autocomplete({
+      source: data
+    });
+  });
+</script>
 @endsection

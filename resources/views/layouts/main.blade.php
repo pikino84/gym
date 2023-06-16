@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,17 +14,17 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="{{ asset('css/material-dashboard.css?v=2.1.1') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
   <link rel="stylesheet" href="{{ asset('css/styele.css') }}" rel="stylesheet" />
 </head>
-
 <body class="{{ $class ?? '' }}">
   @auth()
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
-  </form>
-  @include('layouts.page_templates.auth')
+    </form>
+    @include('layouts.page_templates.auth')
   @endauth
-
   @guest()
     @include('layouts.page_templates.guest')
   @endguest
@@ -33,6 +32,8 @@
   <script src="{{ asset('js/core/jquery.min.js') }}"></script>
   <script src="{{ asset('js/core/popper.min.js') }}"></script>
   <script src="{{ asset('js/core/bootstrap-material-design.min.js') }}"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+
   {{-- <script src="{{ asset('js/plugins/perfect-scrollbar.jquery.min.js') }}"></script> --}}
   <script>
     $(document).ready(function(){
@@ -45,5 +46,6 @@
     });
   </script>
   @stack('js')
+  @yield('script')
 </body>
 </html>

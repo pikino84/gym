@@ -71,14 +71,30 @@
         </a>
       </li>
       @endcan
-      @can('deuda_index')
-      <li class="nav-item{{ $activePage == 'deudas' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('deudas.index') }}">
+      <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#account_balance" aria-expanded="false">
           <i class="material-icons">account_balance</i>
-            <p>{{ __('Mis deudas') }}</p>
+          <p>{{ __('Estados de cuenta') }}
+            <b class="caret"></b>
+          </p>
         </a>
+        <div class="collapse " id="account_balance">
+          <ul class="nav">
+            <li class="nav-item{{ $activePage == 'profile' ? ' active' : '' }}">
+              <a class="nav-link" href="#">
+                <span class="sidebar-mini"> UP </span>
+                <span class="sidebar-normal">{{ __('Frutas') }} </span>
+              </a>
+            </li>
+            <li class="nav-item{{ $activePage == 'user-management' ? ' active' : '' }}">
+              <a class="nav-link" href="#">
+                <span class="sidebar-mini"> UM </span>
+                <span class="sidebar-normal"> {{ __('User Management') }} </span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
-      @endcan
       {{-- https://materializecss.com/icons.html --}}
       <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
