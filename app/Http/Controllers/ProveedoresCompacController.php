@@ -11,7 +11,7 @@ class ProveedoresCompacController extends Controller
     public function getProveedoresCompac(Request $request)
     {
         try {
-            $results = DB::table('admClientes')->select('CCODIGOCLIENTE', 'CRAZONSOCIAL')->get();
+            $results = ProveedoresCompac::Select('CCODIGOCLIENTE', 'CRAZONSOCIAL')->get();
             return response()->json($results);
         } catch   ( Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);

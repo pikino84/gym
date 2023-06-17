@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProveedoresCompac extends Model
 {
+
     use HasFactory;
+    protected $connection = 'sqlsrv';
+    protected $table = 'admClientes';
 }
