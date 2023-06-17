@@ -120,7 +120,7 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "http://localhost/laravel/sys/api/getProviders.php",
+      url: "http://localhost/laravel/sys/public/api/getProviders.php",
         type: "GET",
         dataType: "json",
         success: function(response) {
