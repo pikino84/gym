@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class RoleController extends Controller
 {
@@ -17,10 +18,10 @@ class RoleController extends Controller
     public function index()
     {
         abort_if(Gate::denies('role_index'), 403);
-
+        $user = User::findOrFail(auth()->user()->id);
         $roles = Role::paginate(10);
 
-        return view('roles.index', compact('roles'));
+        return view('roles.index', compact('roles', 'user'));
     }
 
     /**

@@ -6,6 +6,7 @@
     </a>
   </div>
   <div class="sidebar-wrapper">
+    <p class=" ml-4 mt-3 text-black "><b>{{ Auth::user()->name }}</b></p>
     <ul class="nav">
       <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('home') }}">
@@ -51,7 +52,7 @@
       <li class="nav-item{{ $activePage == 'permissions' ? ' active' : '' }}">
         <a class="nav-link" href="{{ route('permissions.index') }}">
           <i class="material-icons">assignment_ind</i>
-          <p>{{ __('Permissions') }}</p>
+          <p>{{ __('Permisos') }}</p>
         </a>
       </li>
       @endcan
@@ -63,14 +64,15 @@
         </a>
       </li>
       @endcan
-      @can('post_index')
-      <li class="nav-item{{ $activePage == 'posts' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('posts.index') }}">
+      @can('invoice_index')
+      <li class="nav-item{{ $activePage == 'invoices' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('invoices.index') }}">
           <i class="material-icons">library_books</i>
             <p>{{ __('Mis facturas') }}</p>
         </a>
       </li>
       @endcan
+      
       <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
         <a class="nav-link collapsed" data-toggle="collapse" href="#account_balance" aria-expanded="false">
           <i class="material-icons">account_balance</i>
@@ -95,6 +97,7 @@
           </ul>
         </div>
       </li>
+      
       {{-- https://materializecss.com/icons.html --}}
       <li class="nav-item">
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">

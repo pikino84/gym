@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <!--Enter code here -->
-            Peanel Pendienete de desarrollo
+            <p>Bienvenido: <b>{{ Auth::user()->name }}</b></p>
         </div>
     </div>
 </div>

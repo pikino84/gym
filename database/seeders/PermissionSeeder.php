@@ -18,6 +18,12 @@ class PermissionSeeder extends Seeder
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
         $permissions = [
+            'user_index',
+            'user_create',
+            'user_show',
+            'user_edit',
+            'user_destroy',
+
             'permission_index',
             'permission_create',
             'permission_show',
@@ -29,18 +35,12 @@ class PermissionSeeder extends Seeder
             'role_show',
             'role_edit',
             'role_destroy',
-
-            'user_index',
-            'user_create',
-            'user_show',
-            'user_edit',
-            'user_destroy',
-
-            'post_index',
-            'post_create',
-            'post_show',
-            'post_edit',
-            'post_destroy',
+            
+            'invoice_index',
+            'invoice_create',
+            'invoice_show',
+            'invoice_edit',
+            'invoice_destroy',
         ];
 
         foreach ($permissions as $permission) {

@@ -43,24 +43,26 @@
                       @endforelse
                     </td>
                     <td class="td-actions text-right">
-                    @can('role_show')
-                      <a href="{{ route('roles.show', $role->id) }}" class="btn btn-info"> <i
-                          class="material-icons">person</i> </a>
-                    @endcan
-                    @can('role_edit')
-                      <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-success"> <i
-                          class="material-icons">edit</i> </a>
-                    @endcan
-                    @can('role_destroy')
-                      <form action="{{ route('roles.destroy', $role->id) }}" method="post"
-                        onsubmit="return confirm('areYouSure')" style="display: inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" rel="tooltip" class="btn btn-danger">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </form>
-                    @endcan
+                      @if ($role->id != 1 OR auth()->user()->id == 1  )
+                      @can('role_show')
+                        <a href="{{ route('roles.show', $role->id) }}" class="btn btn-info"> <i
+                            class="material-icons">person</i> </a>
+                      @endcan
+                      @can('role_edit')
+                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-success"> <i
+                            class="material-icons">edit</i> </a>
+                      @endcan
+                      @can('role_destroy')
+                        <form action="{{ route('roles.destroy', $role->id) }}" method="post"
+                          onsubmit="return confirm('areYouSure')" style="display: inline-block;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" rel="tooltip" class="btn btn-danger">
+                            <i class="material-icons">close</i>
+                          </button>
+                        </form>
+                      @endcan
+                    @endif
                     </td>
                   </tr>
                   @empty

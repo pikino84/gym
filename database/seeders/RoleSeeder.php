@@ -17,6 +17,7 @@ class RoleSeeder extends Seeder
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
         $roles = [
+            'Super Admin',
             'Admin',
             'Proveedor'
         ];

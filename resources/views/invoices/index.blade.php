@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'users', 'titlePage' => 'Usuarios'])
+@extends('layouts.main', ['activePage' => 'invoices', 'titlePage' => 'Facturas'])
 @section('content')
     <div class="content">
       <div class="container-fluid">
@@ -8,8 +8,8 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-primary">
-                    <h4 class="card-title">Usuarios</h4>
-                    <p class="card-category">Usuarios registrados</p>
+                    <h4 class="card-title">Facturas</h4>
+                    <p class="card-category">Facturas registradas</p>
                   </div>
                   <div class="card-body">
                     @if (session('success'))
@@ -19,8 +19,8 @@
                     @endif
                     <div class="row">
                       <div class="col-12 text-right">
-                        @can('user_create')
-                        <a href="{{ route('users.create') }}" class="btn btn-sm btn-facebook">Añadir usuario</a>
+                        @can('invoice_create')
+                        <a href="{{ route('invoices.create') }}" class="btn btn-sm btn-facebook">Añadir Factura</a>
                         @endcan
                       </div>
                     </div>
@@ -28,23 +28,20 @@
                       <table class="table">
                         <thead class="text-primary">
                           <th>#</th>
-                          <th>Nombre completo</th>
-                          <th>Usuario</th>
-                          <th>Correo</th>
-                          <th>ID</th>
-                          <th>Razón Social</th>
-                          <th>Roles</th>
+                          <th>ID factura</th>
+                          <th>Proveedor</th>
+                          <th>Descripción</th>
+                          <th>Monto</th>
+                          <th>Estatus</th>
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
-                          @foreach ($users as $user)
+                          @foreach ($invoices as $invoice)
                             <tr>
-                              <td>{{ $user->id }}</td>
-                              <td>{{ $user->name }}</td>
-                              <td>{{ $user->username }}</td>
-                              <td>{{ $user->email }}</td>
-                              <td>{{ $user->idproveedor }} </td>
-                              <td>{{ $user->razonsocial }}</td>
+                              <td>{{ $invoices->id_invoce }}</td>
+                              <td>{{ $invoices->razonsocila }}</td>
+                              <td>{{ $invoices->description }}</td>
+                              <td>{{ $invoices->id_status }}</td>
                               <td>
                                   @forelse ($user->roles as $role)
                                     <span class="badge badge-info">{{ $role->name }}</span>
@@ -55,13 +52,13 @@
                               <td class="td-actions text-right">
                                 @if ($user->id != 1 OR auth()->user()->id == 1  )
                                   @can('user_show')
-                                  <a href="{{ route('users.show', $user->id) }}" class="btn btn-info"><i class="material-icons">person</i></a>
+                                  <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-info"><i class="material-icons">person</i></a>
                                   @endcan
                                   @can('user_edit')  
-                                  <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning"><i class="material-icons">edit</i></a>
+                                  <a href="{{ route('invoices.edit', $invoice->id) }}" class="btn btn-warning"><i class="material-icons">edit</i></a>
                                   @endcan
                                   @can('user_destroy')
-                                  <form action="{{ route('users.delete', $user->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro?')">
+                                  <form action="{{ route('invoices.delete', $invoice->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro?')">
                                   @csrf
                                   @method('DELETE')
                                       <button class="btn btn-danger" type="submit" rel="tooltip">
@@ -78,7 +75,7 @@
                     </div>
                   </div>
                   <div class="card-footer mr-auto">
-                    {{ $users->links() }}
+                    {{ $invoices->links() }}
                   </div>
                 </div>
               </div>

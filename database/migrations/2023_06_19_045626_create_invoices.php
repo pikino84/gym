@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEstadosDeCuenta extends Migration
+class CreateInvoices extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateEstadosDeCuenta extends Migration
      */
     public function up()
     {
-        Schema::create('estados_de_cuenta', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('id_fac_compac')->unique();
-            $table->string('idproveedor')->unique();
-            $table->text('descripcion');
+            $table->string('id_invoice')->unique();
+            $table->integer('id_user');
+            $table->text('description');
             $table->decimal('monto', 8, 2);
-            $table->integer('status')->default(0);
+            $table->integer('id_status')->default(0);
             $table->string('pdf')->nullable();
             $table->string('xml')->nullable();
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreateEstadosDeCuenta extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estados_de_cuenta');
+        Schema::dropIfExists('invoices');
     }
 }

@@ -27,17 +27,15 @@ class UserController extends Controller
 
     public function store(UserCreateRequest $request)
     {
-        // $request->validate([
-        //     'name' => 'required|min:3|max:5',
-        //     'username' => 'required',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required'
-        // ]);
+        $fullprovider = explode('|', $request->input('idproveedor'));
+        $idprovider = $fullprovider[0];
+        $razonsocial = trim( $fullprovider[1] );
         $user = User::create($request->only('name', 'username', 'email')
             + [
                 'password' => bcrypt($request->input('password')),
             ]);
-
+        $data['idproveedor'] = $idprovider;
+        $data['razonsocial'] = $razonsocial;
         $roles = $request->input('roles', []);
         $user->syncRoles($roles);
         return redirect()->route('users.show', $user->id)->with('success', 'Usuario creado correctamente');
@@ -62,20 +60,15 @@ class UserController extends Controller
 
     public function update(UserEditRequest $request, User $user)
     {
-        // $user=User::findOrFail($id);
+        $fullprovider = explode('|', $request->input('idproveedor'));
+        $idprovider = $fullprovider[0];
+        $razonsocial = $fullprovider[1];
         $data = $request->only('name', 'username', 'email');
+        $data['idproveedor'] = $idprovider;
+        $data['razonsocial'] = trim($razonsocial);
         $password=$request->input('password');
         if($password)
             $data['password'] = bcrypt($password);
-        // if(trim($request->password)=='')
-        // {
-        //     $data=$request->except('password');
-        // }
-        // else{
-        //     $data=$request->all();
-        //     $data['password']=bcrypt($request->password);
-        // }
-
         $user->update($data);
 
         $roles = $request->input('roles', []);

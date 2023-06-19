@@ -108,65 +108,30 @@
 </div>
 @endsection
 @section('script')
-<script>
-  
+<script>  
   $(document).ready(function() {
-  var data = [
-    "Manzana",
-    "Plátano",
-    "Naranja",
-    "Uva",
-    "Fresa",
-    "Kiwi",
-    "Sandía",
-    "Piña",
-    "Melón",
-    "Limón",
-    "Mango",
-    "Papaya",
-    "Pera",
-    "Durazno",
-    "Cereza",
-    "Mandarina",
-    "Pomelo",
-    "Granada",
-    "Fruta de la pasión",
-    "Frambuesa",
-    "Arándano",
-    "Ciruela",
-    "Melocotón",
-    "Albaricoque",
-    "Guayaba",
-    "Higo",
-    "Lichi",
-    "Carambola",
-    "Acerola",
-    "Grosella",
-    "Guanábana",
-    "Mora",
-    "Maracuyá",
-    "Pitaya",
-    "Coco",
-    "Cerezas de Barbados",
-    "Acerola",
-    "Grosella",
-    "Kiwano",
-    "Nashi",
-    "Kaki",
-    "Membrillo",
-    "Rambután",
-    "Kumquat",
-    "Cítricos",
-    "Feijoa",
-    "Morus",
-    "Pepino dulce",
-    "Tamarindo",
-    "Chirimoya",
-  ];
-  
-  $("#idproveedor").autocomplete({
-    source: data
+    $.ajax({
+      url: "http://splendor.test/api/getProviders.php",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+          var proveedores = response;
+          //console.log(proveedores);
+          var razonesSociales = [];
+          $.each(proveedores, function(index, element) {
+            var razonsocial = element.CCODIGOCLIENTE + ' | '+ element.CRAZONSOCIAL;
+            console.log(razonsocial);
+            razonesSociales.push(razonsocial);
+          });
+          $("#idproveedor").autocomplete({
+            source: razonesSociales
+          });
+        },
+        error: function(xhr, status, error) {
+          // Maneja los errores de la solicitud
+          console.log('Error en la solicitud: ' + error);
+        }
+    });
   });
-});
 </script>
 @endsection
