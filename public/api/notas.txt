@@ -23,13 +23,14 @@ _editar
 _eliminar
 
 
-//To Do hacer una migracion que se llama estados_de_cuenta que reemplazaraa Deudas con todo su crud
+
 //En el menu meter los datos de acuerdo con la imagen llamada menu y crear las vistas de index
-//Crear una migracion de facturas que reemplazara los post con todo su crud
-//Hace Seeders de permisos, roles,  pre-facturas
 //Averiguarcomo subir documentos XML y PDF 
 //comparar el XML con el valor que viene de las prefacturas
 //Hacer los semaforos
+
+//Dentro de añadir factura al seleccionar el proveeodo se debe desplegar un listado con las ultimas 5 facturas de ese proveedor. 
+Al seleccionar la factura se deben de llenar los campos al guardar.
 
 
 php artisan make:controller EstadosDeCuentaController -mcr --model=EstadosDeCuenta

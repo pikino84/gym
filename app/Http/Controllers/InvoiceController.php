@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,12 +16,11 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('invoice_index'), 403);
-
-        //$invoices = Invoice::paginate(20);        
-
+        abort_if(Gate::denies('invoice_index'), 403);   
+        
         $invoices = Invoice::join('users', 'invoices.id_user', '=', 'users.id')
-                ->select('invoices.*', 'users.razonsocial')
+                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->paginate(20);
 
 
@@ -48,6 +47,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
         $fullprovider = explode('|', $request->input('id_user'));
         $iduser = $fullprovider[0];
         $data = [
@@ -98,7 +98,17 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        $invoice->update($request->all());
+
+        $fullprovider = explode('|', $request->input('id_user'));
+        $iduser = $fullprovider[0];
+        $data = [
+            'id_invoice' => $request->input('id_invoice'),
+            'description' => $request->input('description'),
+            'monto' => $request->input('monto'),
+            'id_user' => $iduser,
+            'id_status' => 1,
+        ];
+        $invoice->update($data);
 
         return redirect()->route('invoices.index');
     }
@@ -111,7 +121,7 @@ class InvoiceController extends Controller
      */
     public function destroy(Invoice $invoice)
     {
-        abort_if(Gate::denies('invoice_delete'), 403);
+        abort_if(Gate::denies('invoice_destroy'), 403);
 
         $invoice->delete();
 

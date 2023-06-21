@@ -36,21 +36,17 @@
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
+                          {{-- dd($invoices) --}}
                           @foreach ($invoices as $invoice)
                             <tr>
-                              <td>{{ $invoices->id_invoce }}</td>
-                              <td>{{ $invoices->razonsocila }}</td>
-                              <td>{{ $invoices->description }}</td>
-                              <td>{{ $invoices->id_status }}</td>
-                              <td>
-                                  @forelse ($user->roles as $role)
-                                    <span class="badge badge-info">{{ $role->name }}</span>
-                                  @empty
-                                    <span class="badge badge-danger">No roles</span>
-                                  @endforelse
-                                </td>
+                              <td>{{ $invoice->id }}</td>
+                              <td>{{ $invoice->id_invoice }}</td>
+                              <td>{{ $invoice->razonsocial }}</td>
+                              <td>{{ $invoice->description }}</td>
+                              <td>{{ $invoice->monto }}</td>
+                              <td>{{ $invoice->status }}</td>
                               <td class="td-actions text-right">
-                                @if ($user->id != 1 OR auth()->user()->id == 1  )
+                                
                                   @can('user_show')
                                   <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-info"><i class="material-icons">person</i></a>
                                   @endcan
@@ -58,7 +54,7 @@
                                   <a href="{{ route('invoices.edit', $invoice->id) }}" class="btn btn-warning"><i class="material-icons">edit</i></a>
                                   @endcan
                                   @can('user_destroy')
-                                  <form action="{{ route('invoices.delete', $invoice->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro?')">
+                                  <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro?')">
                                   @csrf
                                   @method('DELETE')
                                       <button class="btn btn-danger" type="submit" rel="tooltip">
@@ -66,7 +62,7 @@
                                       </button>
                                   </form>
                                   @endcan
-                                @endif
+                                
                               </td>
                             </tr>
                           @endforeach

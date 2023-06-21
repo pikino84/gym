@@ -1,17 +1,17 @@
-@extends('layouts.main', ['activePage' => 'invoices', 'titlePage' => 'Nueva factura'])
-
+@extends('layouts.main', ['activePage' => 'invoices', 'titlePage' => 'Editar Factura'])
 @section('content')
 <div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <form method="POST" action="{{ route('invoices.store') }}" class="form-horizontal">
+        <form method="POST" action="{{ route('invoices.update', $invoice->id) }}" class="form-horizontal">
           @csrf
-          <div class="card ">
+          @method('PUT')
+          <div class="card">
             <!--Header-->
             <div class="card-header card-header-primary">
-              <h4 class="card-title">Factura</h4>
-              <p class="card-category">Ingresar datos de la factura</p>
+              <h4 class="card-title">Editar Factura</h4>
+              <p class="card-category">Editar datos de la factura</p>
             </div>
             <!--End header-->
             <!--Body-->
@@ -19,38 +19,39 @@
               <div class="row">
                 <label for="title" class="col-sm-2 col-form-label">Proveedor</label>
                 <div class="col-sm-7">
-                  <input type="text" id="idproveedor" class="form-control" name="id_user" placeholder="Ingresa el ID o nombre del proveedor de la factura" autocomplete="off" autofocus value="{{ old('id_user') }}" required>
+                  <input type="text" id="idproveedor" class="form-control" name="id_user" placeholder="Ingresa el ID o nombre del proveedor de la factura" autocomplete="off" autofocus value="{{ old('id_user', $invoice->id_user) }}" required>
                 </div>
               </div>
               <div class="row">
                 <label for="title" class="col-sm-2 col-form-label">ID Factura</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" name="id_invoice" placeholder="Ingresar número de factura" autocomplete="off" autofocus value="{{ old('id_invoice') }}" required>
+                  <input type="text" class="form-control" name="id_invoice" placeholder="Ingresar número de factura"
+                    autocomplete="off" autofocus value="{{ old('id_user', $invoice->id_invoice) }}" required>
                 </div>
               </div>
               <div class="row">
                 <label for="title" class="col-sm-2 col-form-label">Descripción</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" name="description" placeholder="Inresar una descripción" autocomplete="off" autofocus value="{{ old('description') }}" required>
+                  <input type="text" class="form-control" name="description" placeholder="Inresar una descripción"
+                    autocomplete="off" autofocus value="{{ old('id_user', $invoice->description) }}" required>
                 </div>
               </div>
               <div class="row">
                 <label for="title" class="col-sm-2 col-form-label">Monto</label>
                 <div class="col-sm-7">
-                  <input type="text" class="form-control" name="monto" placeholder="Ingresa el monto de la factura 0000000.00" autocomplete="off" autofocus value="{{ old('monto') }}" required>
+                  <input type="text" class="form-control" name="monto" placeholder="Ingresa el monto de la factura 0000000.00"
+                    autocomplete="off" autofocus value="{{ old('id_user', $invoice->monto) }}" required>
                 </div>
               </div>
             </div>
-
             <!--End body-->
-
             <!--Footer-->
             <div class="card-footer ml-auto mr-auto">
               <button type="submit" class="btn btn-primary">Guardar</button>
               <a href="{{ route('invoices.index') }}" class="btn btn-primary btn-warning">Volver</a>
             </div>
-            <!--End footer-->
           </div>
+          <!--End footer-->
         </form>
       </div>
     </div>

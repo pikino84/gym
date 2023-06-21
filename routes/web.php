@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('roles', App\Http\Controllers\RoleController::class);
 
     Route::resource('invoices', App\Http\Controllers\InvoiceController::class);
+    //Route::delete('/invoices/{invoice}', [App\Http\Controllers\InvoiceController::class, 'destroy'])->name('invoices.delete');
 
     
 
