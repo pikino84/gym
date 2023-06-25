@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_invoice', 'id_user', 'description', 'monto', 'id_status', 'pdf', 'xml'];
+    protected $fillable = ['id_invoice', 'id_user', 'description', 'monto', 'razonsocial', 'id_status', 'pdf', 'xml'];
 
     public function validar()
     {
@@ -17,6 +17,7 @@ class Invoice extends Model
             'id_invoice' => 'required|unique:proveedores',
             'description' => 'required',
             'monto' => 'required|numeric',
+            'razonsocial' => 'required',
             'status' => 'integer',
             'pdf' => 'nullable|mimes:pdf',
             'xml' => 'nullable|mimes:xml',

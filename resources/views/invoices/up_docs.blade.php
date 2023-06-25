@@ -1,58 +1,47 @@
-@extends('layouts.main', ['activePage' => 'invoices', 'titlePage' => 'Editar Factura'])
+@extends('layouts.main', ['activePage' => 'invoices', 'titlePage' => 'Agregar documentos'])
 @section('content')
 <div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <form method="POST" action="{{ route('invoices.update', $invoice->id) }}" class="form-horizontal">
-          @csrf
-          @method('PUT')
-          <div class="card">
-            <!--Header-->
-            <div class="card-header card-header-primary">
-              <h4 class="card-title">Editar Factura</h4>
-              <p class="card-category">Editar datos de la factura</p>
+        <form method="POST" action="{{ route('invoices.update', $invoice->id) }}" class="form-horizontal" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="docs" value="true">
+            <div class="card">
+                <!--Header-->
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Agregar factura</h4>
+                    <p class="card-category">agregar datos de la factura</p>
+                </div>
+                <!--End header-->
+                <!--Body-->
+                <div class="card-body">
+                    <div class="row">
+                        <label for="xml_file" class="col-sm-2 col-form-label">Archivo XML</label>
+                        <div class="col-sm-7">
+                            <input type="file" id="xml_file" class="form-control" name="xml_file" accept=".xml" required>
+                            @if ($errors->has('xml_file'))
+                                <span class="error text-danger" for="input-xml_file">{{ $errors->first('xml_file') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="pdf_file" class="col-sm-2 col-form-label">Archivo PDF </label>
+                        <div class="col-sm-7">
+                            <input type="file" id="pdf_file" class="form-control" name="pdf_file" accept=".pdf" required>
+                        </div>
+                    </div>
+                </div>
+                <!--End body-->
+                <!--Footer-->
+                <div class="card-footer ml-auto mr-auto">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('invoices.index') }}" class="btn btn-primary btn-warning">Volver</a>
+                </div>
             </div>
-            <!--End header-->
-            <!--Body-->
-            <div class="card-body">
-              <div class="row">
-                <label for="title" class="col-sm-2 col-form-label">Proveedor</label>
-                <div class="col-sm-7">
-                  <input type="text" id="idproveedor" class="form-control" name="id_user" placeholder="Ingresa el ID o nombre del proveedor de la factura" autocomplete="off" autofocus value="{{ old('id_user', $invoice->razonsocial) }}" required>
-                </div>
-              </div>
-              <div class="row">
-                <label for="title" class="col-sm-2 col-form-label">ID Factura</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" id="id_invoice"  name="id_invoice" placeholder="Ingresar número de factura"
-                    autocomplete="off" autofocus value="{{ old('id_user', $invoice->id_invoice) }}" required>
-                </div>
-              </div>
-              <div class="row">
-                <label for="title" class="col-sm-2 col-form-label">Descripción</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" id="description" name="description" placeholder="Inresar una descripción"
-                    autocomplete="off" autofocus value="{{ old('id_user', $invoice->description) }}" required>
-                </div>
-              </div>
-              <div class="row">
-                <label for="title" class="col-sm-2 col-form-label">Monto</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" id="monto" name="monto" placeholder="Ingresa el monto de la factura 0000000.00"
-                    autocomplete="off" autofocus value="{{ old('id_user', $invoice->monto) }}" required>
-                </div>
-              </div>
-            </div>
-            <!--End body-->
-            <!--Footer-->
-            <div class="card-footer ml-auto mr-auto">
-              <button type="submit" class="btn btn-primary">Guardar</button>
-              <a href="{{ route('invoices.index') }}" class="btn btn-primary btn-warning">Volver</a>
-            </div>
-          </div>
-          <!--End footer-->
-        </form>
+            <!--End footer-->
+        </form>        
       </div>
     </div>
   </div>

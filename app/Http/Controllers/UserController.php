@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 
@@ -14,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         abort_if(Gate::denies('user_index'), 403);
-        $users = User::paginate(5);
+        $users = User::paginate(20);
         return view('users.index', compact('users'));
     }
 
@@ -27,25 +26,24 @@ class UserController extends Controller
 
     public function store(UserCreateRequest $request)
     {
-        $fullprovider = explode('|', $request->input('idproveedor'));
-        $idprovider = $fullprovider[0];
-        $razonsocial = trim( $fullprovider[1] );
-        $user = User::create($request->only('name', 'username', 'email')
-            + [
-                'password' => bcrypt($request->input('password')),
-            ]);
-        $data['idproveedor'] = $idprovider;
-        $data['razonsocial'] = $razonsocial;
-        $roles = $request->input('roles', []);
-        $user->syncRoles($roles);
-        return redirect()->route('users.show', $user->id)->with('success', 'Usuario creado correctamente');
+        
+        $razonsocial = trim( $request->input('idproveedor') );
+        try{
+            $user = User::create($request->only('name', 'username', 'email')
+                + [ 'password' => bcrypt($request->input('password')), ] 
+                + [ 'razonsocial' => $razonsocial ]);
+
+            $roles = $request->input('roles', []);
+            $user->syncRoles($roles);
+            return redirect()->route('users.show', $user->id)->with('success', 'Usuario creado correctamente');
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors(['idproveedor' => 'El Proveedor no existe']);
+        }
     }
 
     public function show(User $user)
     {
         abort_if(Gate::denies('user_show'), 403);
-        // $user = User::findOrFail($id);
-        // dd($user);
         $user->load('roles');
         return view('users.show', compact('user'));
     }
@@ -60,20 +58,21 @@ class UserController extends Controller
 
     public function update(UserEditRequest $request, User $user)
     {
-        $fullprovider = explode('|', $request->input('idproveedor'));
-        $idprovider = $fullprovider[0];
-        $razonsocial = $fullprovider[1];
+        abort_if(Gate::denies('user_edit'), 403);
+        $razonsocial = $request->input('idproveedor');
         $data = $request->only('name', 'username', 'email');
-        $data['idproveedor'] = $idprovider;
         $data['razonsocial'] = trim($razonsocial);
         $password=$request->input('password');
         if($password)
             $data['password'] = bcrypt($password);
-        $user->update($data);
-
-        $roles = $request->input('roles', []);
-        $user->syncRoles($roles);
-        return redirect()->route('users.show', $user->id)->with('success', 'Usuario actualizado correctamente');
+        try{
+            $user->update($data);
+            $roles = $request->input('roles', []);
+            $user->syncRoles($roles);
+            return redirect()->route('users.show', $user->id)->with('success', 'Usuario actualizado correctamente');
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors(['idproveedor' => 'El Proveedor no existe']);
+        }
     }
 
     public function destroy(User $user)

@@ -34,7 +34,7 @@ class InvoiceCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'id_user.required' => __('Proveedor es requerido'),
+            'id_user.required' => 'El Proveedor es requerido',
             'id_invoice.required' => 'El ID de la factura es requerido',
             'description.required' => 'La descripción es requerida',
             'monto.required' => 'El monto es requerido',

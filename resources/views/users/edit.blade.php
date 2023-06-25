@@ -50,9 +50,9 @@
                 </div>
               </div>
               <div class="row">
-                <label for="password" class="col-sm-2 col-form-label">ID (Solo si es proveedor)</label>
+                <label for="idproveedor" class="col-sm-2 col-form-label">Razón Social (<b>Solo para proveedores</b>)</label>
                 <div class="col-sm-7">
-                  <input type="idproveedor" id="idproveedor" class="form-control" name="idproveedor" placeholder="Ingresa el ID del proveedor" autocomplete="off">
+                  <input type="idproveedor" id="idproveedor" class="form-control" name="idproveedor" placeholder="Ingresa el ID del proveedor" autocomplete="off" value="{{ old('razonsocial', $user->razonsocial) }}">
                   @if ($errors->has('idproveedor'))
                     <span class="error text-danger" for="input-idproveedor">{{ $errors->first('proveedor') }}</span>
                   @endif
@@ -111,7 +111,7 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "http://splendor.test/api/getProviders.php",
+      url: "http://splendor.test/api/getUserFromDocuments.php",
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -119,7 +119,7 @@
           //console.log(proveedores);
           var razonesSociales = [];
           $.each(proveedores, function(index, element) {
-            var razonsocial = element.CCODIGOCLIENTE + ' | '+ element.CRAZONSOCIAL;
+            var razonsocial =  element.CRAZONSOCIAL;
             console.log(razonsocial);
             razonesSociales.push(razonsocial);
           });

@@ -1,5 +1,6 @@
 @extends('layouts.main', ['activePage' => 'invoices', 'titlePage' => 'Facturas'])
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="content">
       <div class="container-fluid">
         <div class="row">
@@ -33,6 +34,8 @@
                           <th>Descripción</th>
                           <th>Monto</th>
                           <th>Estatus</th>
+                          <th>Aprobar</th>
+                          <th>Decargar</th>
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
@@ -43,10 +46,24 @@
                               <td>{{ $invoice->id_invoice }}</td>
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
-                              <td>{{ $invoice->monto }}</td>
+                              <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN</td>
                               <td>{{ $invoice->status }}</td>
+                              <td  class="td-actions text-center">
+                                @if( $invoice->xml != null && $invoice->id_status == 2)
+                                <button class="btn btn-facebook" onclick="sendApproval('{{ route('invoices.approved', $invoice->id) }}', this)">
+                                  <i class="material-icons">thumb_up</i>
+                                </button>
+                                @elseif($invoice->id_status == 3)
+                                  <a href="javascript:void(0)" class="btn blue-grey lighten-3"><i class="material-icons">thumb_up</i></a>
+                                @endif
+                              </td>
+                              <td  class="td-actions text-center">
+                                @if( $invoice->xml != null )
+                                  <a href="{{ route('invoices.download',$invoice->id) }}" class="btn btn-info"><i class="material-icons">cloud_download</i></a>
+                                @endif
+                              </td>
                               <td class="td-actions text-right">
-                                
+                                  <a href="{{ route('invoices.up_docs', $invoice->id) }}" class="btn btn-warning"><i class="material-icons">backup</i></a>
                                   @can('user_show')
                                   <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-info"><i class="material-icons">person</i></a>
                                   @endcan
@@ -62,7 +79,6 @@
                                       </button>
                                   </form>
                                   @endcan
-                                
                               </td>
                             </tr>
                           @endforeach
@@ -80,4 +96,49 @@
         </div>
       </div>
     </div>
+@endsection
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function sendApproval(url, button) {
+    event.preventDefault();
+    Swal.fire({
+      title: '¿Estás seguro de aceptar esta factura?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Obtener el token CSRF
+        let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        // Realizar la petición AJAX
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': token
+          },
+        })
+        .then(response => {
+          if (response.ok) {
+            // Cambiar el estilo del botón
+            button.classList.remove('btn-facebook');
+            button.classList.add('blue-grey');
+            button.setAttribute('href', 'javascript:void(0)');
+            button.removeAttribute('onclick');
+            Swal.fire('¡Factura aceptada!', 'La factura ha sido aceptada.', 'success');
+          } else {
+            Swal.fire('Error', 'Ocurrió un error al aceptar la factura.', 'error');
+          }
+        })
+        .catch(error => {
+          Swal.fire('Error', 'Ocurrió un error al aceptar la factura.', 'error');
+        });
+      }
+    });
+  }
+</script>
 @endsection

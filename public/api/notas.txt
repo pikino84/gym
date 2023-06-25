@@ -13,7 +13,7 @@ php artisan make:controller -mcr
 -r: Genera también un archivo de rutas (routes/web.php) para el controlador, con las rutas de recurso predefinidas 
     correspondientes a los métodos del controlador.
 
-
+https://materializecss.com/icons.html
 
 //Permisos
 _index
@@ -24,13 +24,10 @@ _eliminar
 
 
 
-//En el menu meter los datos de acuerdo con la imagen llamada menu y crear las vistas de index
 //Averiguarcomo subir documentos XML y PDF 
 //comparar el XML con el valor que viene de las prefacturas
 //Hacer los semaforos
 
-//Dentro de añadir factura al seleccionar el proveeodo se debe desplegar un listado con las ultimas 5 facturas de ese proveedor. 
-Al seleccionar la factura se deben de llenar los campos al guardar.
-
 
 php artisan make:controller EstadosDeCuentaController -mcr --model=EstadosDeCuenta
+

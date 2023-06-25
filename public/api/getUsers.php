@@ -14,9 +14,11 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
+}else{
+    $conn->set_charset("utf8");
 }
 
-$sql = "SELECT id, idproveedor, razonsocial  FROM users WHERE idproveedor IS NOT NULL";
+$sql = "SELECT id, razonsocial  FROM users WHERE razonsocial IS NOT NULL";
 $result = $conn->query($sql);
 
 if ($result) {
