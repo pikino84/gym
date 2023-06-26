@@ -76,13 +76,12 @@
                         <table class="table">
                           <tbody>
                             @foreach ($roles as $id => $role)
+                            @if ($id != 1 OR $user->username == 'superadmin')
                             <tr>
                               <td>
                                 <div class="form-check">
                                   <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" name="roles[]"
-                                      value="{{ $id }}"
-                                    >
+                                    <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $id }}" >
                                     <span class="form-check-sign">
                                       <span class="check"></span>
                                     </span>
@@ -93,6 +92,7 @@
                                 {{ $role }}
                               </td>
                             </tr>
+                            @endif
                             @endforeach
                           </tbody>
                         </table>

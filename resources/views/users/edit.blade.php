@@ -67,6 +67,7 @@
                                 <table class="table">
                                     <tbody>
                                         @foreach ($roles as $id => $role)
+                                        @if ($id != 1 OR $user->username == 'superadmin')
                                         <tr>
                                             <td>
                                                 <div class="form-check">
@@ -85,6 +86,7 @@
                                                 {{ $role }}
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>

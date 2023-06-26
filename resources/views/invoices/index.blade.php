@@ -34,8 +34,10 @@
                           <th>Descripción</th>
                           <th>Monto</th>
                           <th>Estatus</th>
+                          @can('invoice_create')
                           <th>Aprobar</th>
                           <th>Decargar</th>
+                          @endcan
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
@@ -48,6 +50,7 @@
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN</td>
                               <td>{{ $invoice->status }}</td>
+                              @can('invoice_create')
                               <td  class="td-actions text-center">
                                 @if( $invoice->xml != null && $invoice->id_status == 2)
                                 <button class="btn btn-facebook" onclick="sendApproval('{{ route('invoices.approved', $invoice->id) }}', this)">
@@ -57,11 +60,14 @@
                                   <a href="javascript:void(0)" class="btn blue-grey lighten-3"><i class="material-icons">thumb_up</i></a>
                                 @endif
                               </td>
+                              @endcan
+                              @can('invoice_create')
                               <td  class="td-actions text-center">
                                 @if( $invoice->xml != null )
                                   <a href="{{ route('invoices.download',$invoice->id) }}" class="btn btn-info"><i class="material-icons">cloud_download</i></a>
                                 @endif
                               </td>
+                              @endcan
                               <td class="td-actions text-right">
                                   <a href="{{ route('invoices.up_docs', $invoice->id) }}" class="btn btn-warning"><i class="material-icons">backup</i></a>
                                   @can('user_show')

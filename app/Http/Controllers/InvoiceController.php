@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use SimpleXMLElement;
@@ -22,13 +23,21 @@ class InvoiceController extends Controller
     {
         abort_if(Gate::denies('invoice_index'), 403);   
         
-        $invoices = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
+        $user = Auth::user();
+        if( $user->razonsocial != null ){
+            $invoices = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
+                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
+                ->where('invoices.razonsocial', $user->razonsocial)
+                ->orderBy('invoices.created_at', 'desc')
+                ->paginate(20);
+        }else{
+            $invoices = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->orderBy('invoices.created_at', 'desc')
                 ->paginate(20);
-
-
+        }
         return view('invoices.index', compact('invoices'));
     }
 

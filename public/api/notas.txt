@@ -14,6 +14,7 @@ php artisan make:controller -mcr
     correspondientes a los métodos del controlador.
 
 https://materializecss.com/icons.html
+https://pictogrammers.com/library/mdi/icon/sprout/
 
 //Permisos
 _index
@@ -21,13 +22,6 @@ _crear
 _mostrar
 _editar
 _eliminar
-
-
-
-//Averiguarcomo subir documentos XML y PDF 
-//comparar el XML con el valor que viene de las prefacturas
-//Hacer los semaforos
-
 
 php artisan make:controller EstadosDeCuentaController -mcr --model=EstadosDeCuenta
 

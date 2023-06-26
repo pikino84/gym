@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 
@@ -21,7 +22,8 @@ class UserController extends Controller
     {
         abort_if(Gate::denies('user_create'), 403);
         $roles = Role::all()->pluck('name', 'id');
-        return view('users.create', compact('roles'));
+        $user = Auth::user();
+        return view('users.create', compact('roles', 'user'));
     }
 
     public function store(UserCreateRequest $request)
