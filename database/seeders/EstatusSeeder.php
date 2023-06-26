@@ -16,7 +16,7 @@ class EstatusSeeder extends Seeder
     {
         $estatus = [
             ['nombre' => 'Pendiente'],
-            ['nombre' => 'Aprovado Pendiente'],
+            ['nombre' => 'Aprobado Pendiente'],
             ['nombre' => 'Pagado'],
             ['nombre' => 'Cancelado'],
         ];
