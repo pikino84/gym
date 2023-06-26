@@ -28,6 +28,9 @@
 .close__sidebar_movil i{
   font-size: 30px;
 }
+.sidebar .sidebar-wrapper {
+  padding-bottom: 260px;
+}
 @media only screen and (max-width: 991px){
   .close__sidebar_movil{
     display: block;
