@@ -30,7 +30,7 @@
                         <thead class="text-primary">
                           <th>#</th>
                           <th>ID factura</th>
-                          <th>Proveedor</th>
+                          <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto</th>
                           <th>Estatus</th>
@@ -48,7 +48,7 @@
                               <td>{{ $invoice->id_invoice }}</td>
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
-                              <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN</td>
+                              <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>
                               <td>{{ $invoice->status }}</td>
                               @can('invoice_create')
                               <td  class="td-actions text-center">

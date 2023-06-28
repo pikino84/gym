@@ -33,10 +33,10 @@ class UserSeeder extends Seeder
         $user->assignRole('Admin');
 
         $user = User::create([
-            'name' => 'Proveedor Demo',
+            'name' => 'Productor Demo',
             'email' => 'pro@pro.com',
-            'username' => 'proveedor',
-            'password' => bcrypt('proveedor'),
+            'username' => 'productor',
+            'password' => bcrypt('productor'),
         ]);
 
         $user->assignRole('Proveedor');

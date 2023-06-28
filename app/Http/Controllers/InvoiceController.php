@@ -119,10 +119,9 @@ class InvoiceController extends Controller
             $xmlFile = $request->file('xml_file');
             $xmlData = file_get_contents($xmlFile->path());
             $xml = new SimpleXMLElement($xmlData);
-            $valorBuscado = $xml->xpath('/cfdi:Comprobante/cfdi:Conceptos/cfdi:Concepto/@Importe');
-            $importe = (string) $valorBuscado[0];
-            //Validadmmos que el importe del xml sea igual al monto de la factura
-            if($importe != $invoice->monto){
+            $importe = $xml['Total'];
+            $total = (string) $importe[0];
+            if($total != $invoice->monto){
                 return redirect()->back()->withErrors(['xml_file' => 'XML no valido']);
             }else{
                 $storageFullPath = storage_path('app/public/facturas'); // Ruta de destino de la carpeta
