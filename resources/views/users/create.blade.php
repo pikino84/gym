@@ -128,7 +128,7 @@
           //console.log(proveedores);
           let razonesSociales = [];
           $.each(prividersByDocument, function(index, element) {
-            let razonsocial = element.CRAZONSOCIAL;
+            let razonsocial =element.CIDCLIENTEPROVEEDOR + " - " + element.CRAZONSOCIAL;
             console.log(razonsocial);
             razonesSociales.push(razonsocial);
           });

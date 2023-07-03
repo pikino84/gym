@@ -19,6 +19,11 @@ class CreateInvoices extends Migration
             $table->string('razonsocial');
             $table->text('description');
             $table->decimal('monto', 8, 2);
+            $table->integer('moneda');
+            $table->string('tipocambio', 8, 4);
+            $table->dateTime('fecha');
+            $table->string('semana');
+            $table->integer('cancelado');
             $table->integer('id_status')->default(0);
             $table->string('pdf')->nullable();
             $table->string('xml')->nullable();

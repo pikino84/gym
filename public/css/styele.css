@@ -36,3 +36,13 @@
     display: block;
   }
 }
+@media (max-width: 991px){
+  .navbar-form .btn {
+    position: initial;
+    top: -5px;
+    right: -50px;
+  }
+}
+button.btn.btn-refresh.btn-facebook {
+  padding: 0.46875rem 1rem;
+}

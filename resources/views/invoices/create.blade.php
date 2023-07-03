@@ -54,7 +54,10 @@
                 </div>
               </div>
             </div>
-
+            <input type="hidden" name="fecha" class="fecha" >
+            <input type="hidden" name="moneda" class="moneda">
+            <input type="hidden" name="tipocambio" class="tipocambio">
+            <input type="hidden" name="cancelado" class="cancelado">
             <!--End body-->
 
             <!--Footer-->
@@ -82,7 +85,7 @@
           let users = [];
           $.each(proveedores, function(index, element) {
             let usersInfo =  element.razonsocial;
-            //console.log(usersInfo);
+            console.log(usersInfo);
             users.push(usersInfo);
           });
           $("#idproveedor").autocomplete({
@@ -117,6 +120,25 @@
                         $("#id_invoice").val(selectedValue.split(' | ')[0]);
                         $("#description").val(selectedValue.split(' | ')[1]);
                         $("#monto").val(selectedValue.split(' | ')[2]);  
+                        let iddocument = selectedValue.split(' | ')[0]
+                        $.ajax({
+                          url: "http://splendor.test/api/getDocumentByIdDocument.php",
+                          type: "POST",
+                          data: {
+                            iddocument: iddocument
+                          },
+                          dataType: "json",
+                          success: function(response) {
+                            console.log(response);
+                            $(".fecha").val(response[0].CFECHA.date);
+                            $(".moneda").val(response[0].CIDMONEDA);
+                            $(".tipocambio").val(response[0].CTIPOCAMBIO);
+                            $(".cancelado").val(response[0].CCANCELADO);
+                          },
+                          error: function(xhr, status, error) {
+                            console.log('Error en la solicitud: ' + error);
+                          }
+                        });
                       }, 200);
                     }
                   });

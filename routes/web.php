@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('invoices/{id}/up_docs', [App\Http\Controllers\InvoiceController::class, 'upDocs'])->name('invoices.up_docs');
     Route::get('invoices/{id}/download', [App\Http\Controllers\InvoiceController::class, 'download'])->name('invoices.download');
     Route::post('invoices/{id}/approved', [App\Http\Controllers\InvoiceController::class, 'approved'])->name('invoices.approved');
-
+    Route::post('invoices/refresh_invoices', [App\Http\Controllers\InvoiceController::class, 'refresh_invoices'])->name('invoices.refresh_invoices');
     
     
 

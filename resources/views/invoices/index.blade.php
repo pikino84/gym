@@ -19,8 +19,34 @@
                     </div>
                     @endif
                     <div class="row">
-                      <div class="col-12 text-right">
+                      <div class="col-md-8 col-sm-12 text-right"> 
+                        <form class="navbar-form" method="get" action="{{ route('invoices.index') }}">
+                          <div class="form-group row">
+                            <div class="col-md-9 col-sm-12 ">
+                              <input type="text" style="height: 41px;" name="search" value="{{ request()->get('search') }}" class="form-control" placeholder="Buscar por productor">
+                            </div>
+                            <div class="col-md-2 col-sm-8 ">
+                              <select class="form-control">
+                                <option value="0">Seleccionar semana</option>
+                                @for ($i = 1; $i <= 52; $i++)
+                                  <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                              </select>
+                            </div>
+                            <div class="col-md-1 col-sm-4 ">
+                              <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                <i class="material-icons">search</i>
+                                <div class="ripple-container"></div>
+                              </button>
+                            </div>
+                          </div>
+                        </form>                        
+                      </div>
+                      <div class="col-md-4 col-sm-12 text-right">
                         @can('invoice_create')
+                        <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
+                          <i class="material-icons">refresh</i>
+                        </button>
                         <a href="{{ route('invoices.create') }}" class="btn btn-sm btn-facebook">Añadir Factura</a>
                         @endcan
                       </div>
@@ -33,6 +59,11 @@
                           <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto</th>
+                          <th>Moneda</th>
+                          <th>Tipo de cambio</th>
+                          <th>Fecha</th>
+                          <th>Semana</th>
+                          <th>Cancelado</th>
                           <th>Estatus</th>
                           @can('invoice_create')
                           <th>Aprobar</th>
@@ -41,7 +72,6 @@
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
-                          {{-- dd($invoices) --}}
                           @foreach ($invoices as $invoice)
                             <tr>
                               <td>{{ $invoice->id }}</td>
@@ -49,6 +79,11 @@
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>
+                              <td>{{ ($invoice->moneda == 1)?'MXN':'USD' }}</td>
+                              <td>{{ $invoice->tipocambio }}</td>
+                              <td>{{ date('Y-m-d', strtotime($invoice->fecha)) }}</td>
+                              <td>{{ $invoice->semana }}</td>
+                              <td>{{ $invoice->cancelado }}</td>
                               <td>{{ $invoice->status }}</td>
                               @can('invoice_create')
                               <td  class="td-actions text-center">
@@ -106,6 +141,34 @@
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, options);
+  });
+  function sendRefresh(url, button){
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    // Realizar la petición AJAX
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': token
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        Swal.fire('¡Facturas actualizadas!', 'Las facturas han sido actualizadas.', 'success');
+        setTimeout(function() {
+            location.reload();
+        }, 3000);
+      } else {
+        
+      }
+    })
+    .catch(error => {
+      
+    });
+  }
   function sendApproval(url, button) {
     event.preventDefault();
     Swal.fire({

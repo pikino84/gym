@@ -21,13 +21,15 @@ if ($conn === false) {
     //echo "Conexión exitosa a SQL Server.";
 }
 
-if ( isset($_REQUEST['razonSocial']) ) {
-    $razon_social = htmlspecialchars($_REQUEST['razonSocial'], ENT_QUOTES, 'UTF-8');
+if ( isset($_REQUEST['iddocument']) ) {
+    $iddocument = htmlspecialchars($_REQUEST['iddocument'], ENT_QUOTES, 'UTF-8');
 }else{
     $razon_social = '';
 }
 
-$sql = "SELECT CIDDOCUMENTO, CREFERENCIA, CTOTAL, CRAZONSOCIAL, CIDCLIENTEPROVEEDOR FROM admDocumentos  WHERE CSERIEDOCUMENTO = 'FRT-REY' AND CRAZONSOCIAL = '$razon_social' ORDER BY CIDDOCUMENTO ASC";
+$sql = "SELECT CIDDOCUMENTO, CREFERENCIA, CTOTAL, CRAZONSOCIAL, CIDCLIENTEPROVEEDOR, CIDMONEDA, CTIPOCAMBIO, CFECHA, CCANCELADO 
+        FROM admDocumentos  
+        WHERE CSERIEDOCUMENTO = 'FRT-REY'";
 $result = sqlsrv_query($conn, $sql);
 
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {

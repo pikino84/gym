@@ -31,6 +31,7 @@
                           <th>Nombre completo</th>
                           <th>Usuario</th>
                           <th>Correo</th>
+                          <th>ID Proveedor</th>
                           <th>Razón Social</th>
                           <th>Roles</th>
                           <th class="text-right">Acciones</th>
@@ -42,6 +43,7 @@
                               <td>{{ $user->name }}</td>
                               <td>{{ $user->username }}</td>
                               <td>{{ $user->email }}</td>
+                              <td>{{ $user->idclienteproveedor }}</td>
                               <td>{{ $user->razonsocial }}</td>
                               <td>
                                   @forelse ($user->roles as $role)

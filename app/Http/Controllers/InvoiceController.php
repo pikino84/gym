@@ -30,13 +30,13 @@ class InvoiceController extends Controller
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->where('invoices.razonsocial', $user->razonsocial)
                 ->orderBy('invoices.created_at', 'desc')
-                ->paginate(20);
+                ->paginate(10);
         }else{
             $invoices = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->orderBy('invoices.created_at', 'desc')
-                ->paginate(20);
+                ->paginate(10);
         }
         return view('invoices.index', compact('invoices'));
     }
@@ -65,12 +65,18 @@ class InvoiceController extends Controller
         if (!$user) { 
             return redirect()->back()->withErrors(['id_user' => 'El Proveedor no existe']);
         }
-        
+        $date = $request->input('fecha');
+        $weekNumber = getWeekNumber($date);
         $data = [
             'id_invoice' => $request->input('id_invoice'),
             'description' => $request->input('description'),
             'monto' => $request->input('monto'),
             'razonsocial' => $request->input('id_user'),
+            'fecha' => $request->input('fecha'),
+            'moneda' => $request->input('moneda'),
+            'tipocambio' => $request->input('tipocambio'),
+            'semana' => $weekNumber,
+            'cancelado' => $request->input('cancelado'),
             'id_status' => 1,
         ];
         
@@ -205,4 +211,39 @@ class InvoiceController extends Controller
         $invoice->id_status = 3;
         $invoice->save();
     }
+
+    public function refresh_invoices()
+    {
+        //Obtengo todos los documentos de la API
+        $jsonDocs = file_get_contents('http://splendor.test/api/getAllDocuments.php');
+        $docs = json_decode($jsonDocs, true);
+        //Obtengo todos los ID's de los usuariarios de la base de datos con razon social
+        $jsonUsers = User::whereNotNull('razonsocial')
+                    ->where('razonsocial', '<>', '')
+                    ->pluck('idclienteproveedor');
+        $users = json_decode($jsonUsers, true);
+        //Obtengo los id de las facturas que ya existen en la base de datos
+        $existingIds = Invoice::pluck('id_invoice')->toArray();
+        // Filtrar los documentos que no están registrados en la base de datos destino y que coinciden con los usuarios seleccionados
+        $newData = array_filter($docs, function ($item) use ($existingIds, $users) {
+            return !in_array($item['CIDDOCUMENTO'], $existingIds) && in_array($item['CIDCLIENTEPROVEEDOR'], $users);
+        });
+        $invoicesToInsert = array_map(function ($item) {
+            return [
+                'id_invoice' => $item['CIDDOCUMENTO'],
+                'razonsocial' => $item['CRAZONSOCIAL'],
+                'description' => $item['CREFERENCIA'],
+                'monto' => $item['CTOTAL'],
+                'moneda' => $item['CIDMONEDA'],
+                'tipocambio' => $item['CTIPOCAMBIO'],
+                'fecha' => $item['CFECHA']['date'],
+                'semana' => getWeekNumber($item['CFECHA']['date']),
+                'cancelado' => $item['CCANCELADO'],
+                'id_status' => 1,
+            ];
+        }, $newData);
+        Invoice::insert($invoicesToInsert);
+        return redirect()->route('invoices.index');
+    }
+
 }

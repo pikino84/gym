@@ -29,11 +29,13 @@ class UserController extends Controller
     public function store(UserCreateRequest $request)
     {
         
-        $razonsocial = trim( $request->input('idproveedor') );
+        $productor = explode(' - ', trim( $request->input('idproveedor') ));
+        $idClienteproveedor = trim($productor[0]);
+        $razonsocial = trim($productor[1]); 
         try{
             $user = User::create($request->only('name', 'username', 'email')
                 + [ 'password' => bcrypt($request->input('password')), ] 
-                + [ 'razonsocial' => $razonsocial ]);
+                + [ 'razonsocial' => $razonsocial, 'idclienteproveedor' => $idClienteproveedor  ]);
 
             $roles = $request->input('roles', []);
             $user->syncRoles($roles);
@@ -61,9 +63,12 @@ class UserController extends Controller
     public function update(UserEditRequest $request, User $user)
     {
         abort_if(Gate::denies('user_edit'), 403);
-        $razonsocial = $request->input('idproveedor');
+        $productor = explode(' - ', trim( $request->input('idproveedor') ));
+        $idClienteproveedor = trim($productor[0]);
+        $razonsocial = trim($productor[1]); 
         $data = $request->only('name', 'username', 'email');
-        $data['razonsocial'] = trim($razonsocial);
+        $data['razonsocial'] = $razonsocial;
+        $data['idclienteproveedor'] = $idClienteproveedor;
         $password=$request->input('password');
         if($password)
             $data['password'] = bcrypt($password);

@@ -39,6 +39,6 @@ class UserSeeder extends Seeder
             'password' => bcrypt('productor'),
         ]);
 
-        $user->assignRole('Proveedor');
+        $user->assignRole('productor');
     }
 }
