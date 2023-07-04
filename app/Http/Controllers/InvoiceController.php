@@ -40,7 +40,7 @@ class InvoiceController extends Controller
         }
         return view('invoices.index', compact('invoices'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -245,5 +245,32 @@ class InvoiceController extends Controller
         Invoice::insert($invoicesToInsert);
         return redirect()->route('invoices.index');
     }
+
+    public function filters(Request $request)
+    {
+        $productor = $request->input('productor');
+        $week = $request->input('week');
+        
+        if($productor != null && $week != null){
+            $invoices = Invoice::where('razonsocial', 'like', "%$productor%")
+                ->where('semana', $week)
+                ->get();
+        }elseif($productor == null && $week != null){
+            $user = Auth::user();
+            if( $user->razonsocial != null ){
+                $invoices = Invoice::where('semana', $week)->where('razonsocial', 'like', "%$user->razonsocial%")->get();
+            }else{
+                $invoices = Invoice::where('semana', $week)->get();
+            }
+        }elseif($productor != null && $week == null){
+            $invoices = Invoice::where('razonsocial', 'like', "%$productor%")->get();
+        }else{
+            $invoices = Invoice::all();
+        }
+        
+    return view('invoices.filters', compact('invoices'));
+}
+    
+
 
 }

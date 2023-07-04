@@ -19,7 +19,7 @@
                     </div>
                     @endif
                     <div class="row">
-                      <div class="col-md-12 col-sm-12 text-right">
+                      <div class="col-md-12 col-sm-12 text-right"> 
                         <form class="navbar-form filtros" method="post" action="{{ route('invoices.filters') }}">
                           @csrf
                           <div class="form-group row">
@@ -81,9 +81,15 @@
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
-                          @foreach ($invoices as $invoice)
+                            @php
+                                $count = 0; 
+                            @endphp
+                            @foreach ($invoices as $invoice)
+                            @php
+                                $count++;
+                            @endphp
                             <tr>
-                              <td>{{ $invoice->id }}</td>
+                              <td>{{ $count }}</td>
                               <td>{{ $invoice->id_invoice }}</td>
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
@@ -136,9 +142,7 @@
                       </table>
                     </div>
                   </div>
-                  <div class="card-footer mr-auto">
-                    {{ $invoices->links() }}
-                  </div>
+                  
                 </div>
               </div>
             </div>
