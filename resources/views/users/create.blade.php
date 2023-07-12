@@ -120,7 +120,7 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "http://localhost/laravel/sys/public/api/getUserFromDocuments.php",
+      url: "https://splendorsys.com/public/api/getUserFromDocuments.php",
         type: "GET",
         dataType: "json",
         success: function(response) {

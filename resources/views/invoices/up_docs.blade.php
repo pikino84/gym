@@ -51,7 +51,7 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "http://splendor.test/api/getUsers.php",
+      url: "https://splendorsys.com/api/getUsers.php",
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -67,7 +67,7 @@
             select: function(event, ui) {
               let razonSocial = ui.item.value;
               $.ajax({
-                url: "http://splendor.test/api/getDocumentsByRazonSocial.php",
+                url: "https://splendorsys.com/api/getDocumentsByRazonSocial.php",
                 type: "POST",
                 data: {
                   razonSocial: razonSocial

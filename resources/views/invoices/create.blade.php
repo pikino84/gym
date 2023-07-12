@@ -77,7 +77,7 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "http://splendor.test/api/getUsers.php",
+      url: "https://splendorsys.com/api/getUsers.php",
         type: "GET",
         dataType: "json",
         success: function(response) {
@@ -89,11 +89,11 @@
             users.push(usersInfo);
           });
           $("#idproveedor").autocomplete({
-            source: users,
+            source: users,1
             select: function(event, ui) {
               let razonSocial = ui.item.value;
               $.ajax({
-                url: "http://splendor.test/api/getDocumentsByRazonSocial.php",
+                url: "https://splendorsys.com/api/getDocumentsByRazonSocial.php",
                 type: "POST",
                 data: {
                   razonSocial: razonSocial
@@ -122,7 +122,7 @@
                         $("#monto").val(selectedValue.split(' | ')[2]);  
                         let iddocument = selectedValue.split(' | ')[0]
                         $.ajax({
-                          url: "http://splendor.test/api/getDocumentByIdDocument.php",
+                          url: "https://splendorsys.com/api/getDocumentByIdDocument.php",
                           type: "POST",
                           data: {
                             iddocument: iddocument
