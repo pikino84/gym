@@ -24,7 +24,7 @@
                           @csrf
                           <div class="form-group row">
                             @can('invoice_create')
-                            <div class="col-md-9 col-sm-12 ">
+                            <div class="col-md-6 col-sm-12 ">
                               <input type="text" style="height: 41px;" name="productor" value="{{ old('productor') }}" class="form-control" placeholder="Buscar por productor" autocomplete="off">
                             </div>
                             @endcan
@@ -36,14 +36,12 @@
                                 @endfor
                               </select>
                             </div>
-                            <div class="col-md-1 col-sm-4 ">
-                              <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                                <i class="material-icons">search</i>
-                                <div class="ripple-container"></div>
+                            <div class="col-md-4 col-sm-4 ">
+                              <button type="submit" class="btn   btn-facebook ">
+                                Filtrar
                               </button>
-                              <a class="btn btn-white btn-round btn-just-icon" href="{{ route('invoices.index') }}">
-                                <i class="material-icons">refresh</i>
-                                <div class="ripple-container"></div>
+                              <a class="btn btn-info " href="{{ route('invoices.index') }}">
+                                Borrar filtros
                               </a>
                             </div>
                           </div>
@@ -54,9 +52,11 @@
                       <div class="col-md-12 col-sm-12 text-right">
                         @can('invoice_create')
                         <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
-                          <i class="material-icons">refresh</i>
+                          Actualizar Facturas
                         </button>
+                        {{--
                         <a href="{{ route('invoices.create') }}" class="btn btn-sm btn-facebook">Añadir Factura</a>
+                        --}}
                         @endcan
                       </div>
                     </div>
@@ -64,7 +64,6 @@
                       <table class="table">
                         <thead class="text-primary">
                           <th>#</th>
-                          <th>ID factura</th>
                           <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto</th>
@@ -84,7 +83,6 @@
                           @foreach ($invoices as $invoice)
                             <tr>
                               <td>{{ $invoice->id }}</td>
-                              <td>{{ $invoice->id_invoice }}</td>
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>

@@ -15,8 +15,8 @@ class CreateEstadosDeCuenta extends Migration
     {
         Schema::create('estados_de_cuenta', function (Blueprint $table) {
             $table->id();
-            $table->string('id_fac_compac')->unique();
-            $table->string('idproveedor')->unique();
+            $table->string('id_fac_compac', 191)->unique();
+            $table->string('idproveedor', 191)->unique();
             $table->text('descripcion');
             $table->decimal('monto', 8, 2);
             $table->integer('status')->default(0);
