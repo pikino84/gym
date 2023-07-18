@@ -51,7 +51,7 @@
                     <div class="row">
                       <div class="col-md-12 col-sm-12 text-right">
                         @can('invoice_create')
-                        <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
+                        <button class="btn btn-refresh btn-facebook" onclick='sendRefresh("https://splendorsys.com/invoices/refresh_invoices", this)'>
                           Actualizar Facturas
                         </button>
                         {{--
