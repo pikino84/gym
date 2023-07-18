@@ -161,6 +161,7 @@
         'Content-Type': 'application/json',
         'X-CSRF-Token': token
       },
+      mode: 'same-origin',
     })
     .then(response => {
       if (response.ok) {
