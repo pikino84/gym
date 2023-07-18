@@ -169,11 +169,14 @@
             location.reload();
         }, 3000);
       } else {
-        
+        Swal.fire('¡Facturas actualizadas!', 'Las facturas han sido actualizadas.', 'success');
+        setTimeout(function() {
+            location.reload();
+        }, 3000);
       }
     })
     .catch(error => {
-      
+      console.log(error.message);
     });
   }
   function sendApproval(url, button) {
