@@ -51,7 +51,7 @@
                     <div class="row">
                       <div class="col-md-12 col-sm-12 text-right">
                         @can('invoice_create')
-                        <button class="btn btn-refresh btn-facebook" onclick="sendRefresh( this)">
+                        <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
                           Actualizar Facturas
                         </button>
                         {{--
@@ -152,10 +152,10 @@
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, options);
   });
-  function sendRefresh( button){
+  function sendRefresh(url, button){
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     // Realizar la petición AJAX
-    fetch('https://splendorsys.com/invoices/refresh_invoices', {
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -169,14 +169,11 @@
             location.reload();
         }, 3000);
       } else {
-        Swal.fire('¡Facturas actualizadas!', 'Las facturas han sido actualizadas.', 'success');
-        setTimeout(function() {
-            location.reload();
-        }, 3000);
+        
       }
     })
     .catch(error => {
-      console.log(error.message);
+      
     });
   }
   function sendApproval(url, button) {
