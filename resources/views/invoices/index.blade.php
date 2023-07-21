@@ -20,6 +20,9 @@
                     @endif
                     <div class="row">
                       <div class="col-md-12 col-sm-12 text-right">
+                        @php
+                        echo url()->current();
+                        @endphp
                         <form class="navbar-form filtros" method="post" action="{{ route('invoices.filters') }}">
                           @csrf
                           <div class="form-group row">
@@ -154,6 +157,7 @@
   });
   function sendRefresh(url, button){
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(url)
     // Realizar la petición AJAX
     fetch(url, {
       method: 'POST',

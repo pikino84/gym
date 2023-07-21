@@ -4,6 +4,7 @@ use App\Models\EstadosDeCuenta;
 use App\Models\ProveedoresCompac;
 use Illuminate\Http\Client\ResponseSequence;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+URL::forceScheme('https');
 Route::get('/', function () {
     return view('auth.login');
     //return response()->json(['stuff' => phpinfo()]);
