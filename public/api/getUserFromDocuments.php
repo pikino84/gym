@@ -4,11 +4,11 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
-$serverName = "sqlexterno.database.windows.net";
+$serverName = "splendor.fortiddns.com";
 $connectionOptions = array(
-    "Database" => "COMERCIALDB",
-    "Uid" => "israel",
-    "PWD" => "Learsi01@",
+    "Database" => "ad2019_SPLENDOR_PRODUC",
+    "Uid" => "sa",
+    "PWD" => "RSInfo1807",
     "CharacterSet" => "UTF-8"
 );
 
