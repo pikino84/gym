@@ -20,12 +20,6 @@
                     @endif
                     <div class="row">
                       <div class="col-md-12 col-sm-12 text-right">
-                        {{ env('APP_ENV') }}
-                        @php
-                        echo url()->current();
-                        echo env('APP_ENV');
-
-                        @endphp
                         <form class="navbar-form filtros" method="post" action="{{ route('invoices.filters') }}">
                           @csrf
                           <div class="form-group row">
