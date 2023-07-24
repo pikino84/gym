@@ -29,9 +29,18 @@ class UserController extends Controller
     public function store(UserCreateRequest $request)
     {
         
-        $productor = explode(' - ', trim( $request->input('idproveedor') ));
-        $idClienteproveedor = trim($productor[0]);
-        $razonsocial = trim($productor[1]); 
+        if(isset($request->idproveedor) && $request->idproveedor != '')
+        {
+            $productor = explode(' - ', trim( $request->input('idproveedor') ));
+            $idClienteproveedor = trim($productor[0]);
+            $razonsocial = trim($productor[1]); 
+        }
+        else
+        {
+            $idClienteproveedor = '';
+            $razonsocial = '';
+        }
+        
         try{
             $user = User::create($request->only('name', 'username', 'email')
                 + [ 'password' => bcrypt($request->input('password')), ] 

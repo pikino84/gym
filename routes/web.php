@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\URL;
 | contains the "web" middleware group. Now create something great!
 |
 */
-URL::forceScheme('https');
+if(env('APP_ENV') === 'production') {
+    URL::forceScheme('https');
+}
 Route::get('/', function () {
     return view('auth.login');
     //return response()->json(['stuff' => phpinfo()]);
