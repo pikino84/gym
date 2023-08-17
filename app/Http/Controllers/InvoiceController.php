@@ -218,7 +218,6 @@ class InvoiceController extends Controller
     {
         //Obtengo todos los documentos de la API
         $jsonDocs = file_get_contents('https://splendorsys.com/api/getAllDocuments.php');
-        //$jsonDocs = file_get_contents('https://splendorproveedores.online/getAllDocuments.php');
         $docs = json_decode($jsonDocs, true);
         //Obtengo todos los ID's de los usuariarios de la base de datos con razon social
         $jsonUsers = User::whereNotNull('razonsocial')

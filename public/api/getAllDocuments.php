@@ -6,9 +6,9 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 $serverName = "splendor.fortiddns.com";
 $connectionOptions = array(
-    "Database" => "ad2019_SPLENDOR_PRODUC",
-    "Uid" => "sa",
-    "PWD" => "RSInfo1807",
+    "Database" => 'ad2019_SPLENDOR_PRODUC',
+    "Uid" => 'sa',
+    "PWD" => 'RSInfo1807',
     "CharacterSet" => "UTF-8"
 );
 

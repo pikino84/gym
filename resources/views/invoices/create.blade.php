@@ -122,7 +122,7 @@
                         $("#monto").val(selectedValue.split(' | ')[2]);  
                         let iddocument = selectedValue.split(' | ')[0]
                         $.ajax({
-                          url: "https://splendorsys.com/api/getDocumentByIdDocument.php",
+                          url: "http://splendorsys.com/api/getDocumentByIdDocument.php",
                           type: "POST",
                           data: {
                             iddocument: iddocument

@@ -62,7 +62,7 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "https://splendorsys.com/api/getUsers.php",
+      url: "https://splendorsys.com/blic/api/getUsers.php",
         type: "GET",
         dataType: "json",
         success: function(response) {
