@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <label for="name" class="col-sm-2 col-form-label">Usuario</label>
+                <label for="name" class="col-sm-2 col-form-label">Nombre completo</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}" autofocus>
                   @if ($errors->has('name'))
@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="row">
-                <label for="username" class="col-sm-2 col-form-label">Nombre completo</label>
+                <label for="username" class="col-sm-2 col-form-label">Usuario</label>
                 <div class="col-sm-7">
                   <input type="text" class="form-control" name="username" value="{{ old('username', $user->username) }}">
                   @if ($errors->has('username'))

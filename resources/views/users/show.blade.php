@@ -61,7 +61,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <th>Usuario</th>
+                          <th>Nombre completo</th>
                           <td>{{ $user->name }}</td>
                         </tr>
                         <tr>
@@ -69,7 +69,7 @@
                           <td><span class="badge badge-primary">{{ $user->email }}</span></td>
                         </tr>
                         <tr>
-                          <th>Nombre completo</th>
+                          <th>Usuario</th>
                           <td>{!! $user->username !!}</td>
                         </tr>
                         <tr>

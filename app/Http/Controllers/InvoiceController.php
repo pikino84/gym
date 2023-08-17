@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
 use App\Models\User;
+use App\Models\Estatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,16 +30,17 @@ class InvoiceController extends Controller
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->where('invoices.razonsocial', $user->razonsocial)
-                ->orderBy('invoices.created_at', 'desc')
+                ->orderBy('invoices.fecha', 'desc')
                 ->paginate(10);
         }else{
             $invoices = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
-                ->orderBy('invoices.created_at', 'desc')
+                ->orderBy('invoices.fecha', 'desc')
                 ->paginate(10);
         }
-        return view('invoices.index', compact('invoices'));
+        $estatus = Estatus::all();
+        return view('invoices.index', compact('invoices', 'estatus'));
     }
     
     /**
@@ -215,8 +217,8 @@ class InvoiceController extends Controller
     public function refresh_invoices()
     {
         //Obtengo todos los documentos de la API
-        //$jsonDocs = file_get_contents('https://splendorsys.com/api/getAllDocuments.php');
-        $jsonDocs = file_get_contents('https://splendorproveedores.online/getAllDocuments.php');
+        $jsonDocs = file_get_contents('https://splendorsys.com/api/getAllDocuments.php');
+        //$jsonDocs = file_get_contents('https://splendorproveedores.online/getAllDocuments.php');
         $docs = json_decode($jsonDocs, true);
         //Obtengo todos los ID's de los usuariarios de la base de datos con razon social
         $jsonUsers = User::whereNotNull('razonsocial')
@@ -251,27 +253,28 @@ class InvoiceController extends Controller
     {
         $productor = $request->input('productor');
         $week = $request->input('week');
+        $estatus = $request->input('estatus');
         
-        if($productor != null && $week != null){
+        if($productor != null && $week != null && $estatus != null){
             $invoices = Invoice::where('razonsocial', 'like', "%$productor%")
                 ->where('semana', $week)
+                ->where('id_status', $estatus)
                 ->get();
-        }elseif($productor == null && $week != null){
+        }elseif($productor == null && $week != null && $estatus == null){
             $user = Auth::user();
             if( $user->razonsocial != null ){
                 $invoices = Invoice::where('semana', $week)->where('razonsocial', 'like', "%$user->razonsocial%")->get();
             }else{
                 $invoices = Invoice::where('semana', $week)->get();
             }
-        }elseif($productor != null && $week == null){
+        }elseif($productor != null && $week == null && $estatus == null ){
             $invoices = Invoice::where('razonsocial', 'like', "%$productor%")->get();
+        }elseif($productor == null && $week == null && $estatus != null ){
+            $invoices = Invoice::where('id_status', $estatus)->get();
         }else{
             $invoices = Invoice::all();
         }
         
-    return view('invoices.filters', compact('invoices'));
-}
-    
-
-
+        return view('invoices.filters', compact('invoices'));
+    }
 }

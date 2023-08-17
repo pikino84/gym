@@ -24,9 +24,17 @@
                           @csrf
                           <div class="form-group row">
                             @can('invoice_create')
-                            <div class="col-md-6 col-sm-12 ">
+                            <div class="col-md-4 col-sm-12 ">
                               <input type="text" style="height: 41px;" name="productor" value="{{ old('productor') }}" class="form-control" placeholder="Buscar por productor" autocomplete="off">
                             </div>
+                            <div class="col-md-2 col-sm-8 ">
+                              <select class="form-control" name="estatus">
+                              <option value="">Seleccionar estatus</option>
+                              @foreach ($estatus as $statu)
+                                <option value="{{ $statu->id }}">{{ $statu->nombre }}</option>
+                              @endforeach
+                            </select>
+                          </div>
                             @endcan
                             <div class="col-md-2 col-sm-8 ">
                                 <select class="form-control" name="week">

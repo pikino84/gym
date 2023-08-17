@@ -72,12 +72,19 @@ class UserController extends Controller
     public function update(UserEditRequest $request, User $user)
     {
         abort_if(Gate::denies('user_edit'), 403);
-        $productor = explode(' - ', trim( $request->input('idproveedor') ));
-        $idClienteproveedor = trim($productor[0]);
-        $razonsocial = trim($productor[1]); 
         $data = $request->only('name', 'username', 'email');
-        $data['razonsocial'] = $razonsocial;
-        $data['idclienteproveedor'] = $idClienteproveedor;
+        if($request->input('idproveedor') != null or $request->input('idproveedor') != ''){
+            $productor = explode(' - ', trim( $request->input('idproveedor') ));
+            if( count($productor ) > 1 ){
+                $idClienteproveedor = trim($productor[0]);
+                $razonsocial = trim($productor[1]);
+                $data['razonsocial'] = $razonsocial;
+                $data['idclienteproveedor'] = $idClienteproveedor;
+            }else{
+                $data['razonsocial'] = $user->razonsocial;
+                $data['idclienteproveedor'] = $user->idclienteproveedor;
+            }
+        }
         $password=$request->input('password');
         if($password)
             $data['password'] = bcrypt($password);
