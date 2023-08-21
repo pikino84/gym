@@ -75,6 +75,10 @@
                           <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto facturado</th>
+                          <th style="background: #ffab91; color: #000;">Financiamiento</th>
+                          <th style="background: #ffc400; color: #000;">Regalias</th>
+                          <th style="background: #03a9f4; color: #000;">Plantas</th>
+                          <th style="background: #4caf50; color: #000;">Materiales</th>
                           <th>Monto a pagar</th>
                           <th>Moneda</th>
                           <th>Tipo de cambio</th>
@@ -95,7 +99,11 @@
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>
-                              <td></td>
+                              <td>${{ number_format($invoice->financiamiento, 2, '.', ',') }} MXN</td>
+                              <td>${{ number_format($invoice->regalias, 2, '.', ',') }} MXN</td>
+                              <td>${{ number_format($invoice->plantas, 2, '.', ',') }} MXN</td>
+                              <td>${{ number_format($invoice->materiales, 2, '.', ',') }} MXN</td>
+                              <td>${{ number_format(  $totalapagar = $invoice->monto - $invoice->financiamiento - $invoice->regalias - $invoice->plantas - $invoice->materiales , 2, '.', ',') }} MXN </td>
                               <td>{{ ($invoice->moneda == 1)?'MXN':'USD' }}</td>
                               <td>{{ $invoice->tipocambio }}</td>
                               <td>{{ date('Y-m-d', strtotime($invoice->fecha)) }}</td>

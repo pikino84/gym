@@ -262,18 +262,27 @@ class InvoiceController extends Controller
             $invoices = Invoice::where('razonsocial', 'like', "%$productor%")
                 ->where('semana', $week)
                 ->where('id_status', $estatus)
+                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->get();
         }elseif($productor == null && $week != null && $estatus == null){
             $user = Auth::user();
             if( $user->razonsocial != null ){
-                $invoices = Invoice::where('semana', $week)->where('razonsocial', 'like', "%$user->razonsocial%")->get();
+                $invoices = Invoice::where('semana', $week)->where('razonsocial', 'like', "%$user->razonsocial%")
+                    ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                    ->get();
             }else{
-                $invoices = Invoice::where('semana', $week)->get();
+                $invoices = Invoice::where('semana', $week)
+                    ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                    ->get();
             }
         }elseif($productor != null && $week == null && $estatus == null ){
-            $invoices = Invoice::where('razonsocial', 'like', "%$productor%")->get();
+            $invoices = Invoice::where('razonsocial', 'like', "%$productor%")
+                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                ->get();
         }elseif($productor == null && $week == null && $estatus != null ){
-            $invoices = Invoice::where('id_status', $estatus)->get();
+            $invoices = Invoice::where('id_status', $estatus)
+                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                ->get();
         }else{
             $invoices = Invoice::all();
         }
