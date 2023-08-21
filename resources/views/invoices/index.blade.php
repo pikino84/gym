@@ -74,7 +74,8 @@
                           <th>#</th>
                           <th>Productor</th>
                           <th>Descripción</th>
-                          <th>Monto</th>
+                          <th>Monto facturado</th>
+                          <th>Monto a pagar</th>
                           <th>Moneda</th>
                           <th>Tipo de cambio</th>
                           <th>Fecha</th>
@@ -94,6 +95,7 @@
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>
+                              <td></td>
                               <td>{{ ($invoice->moneda == 1)?'MXN':'USD' }}</td>
                               <td>{{ $invoice->tipocambio }}</td>
                               <td>{{ date('Y-m-d', strtotime($invoice->fecha)) }}</td>

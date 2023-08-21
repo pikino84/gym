@@ -18,6 +18,10 @@ class CreateInvoices extends Migration
             $table->string('id_invoice', 191)->unique();
             $table->string('razonsocial');
             $table->text('description');
+            $table->decimal('financiamiento', 8, 2);
+            $table->decimal('regalias', 8, 2);
+            $table->decimal('plantas', 8, 2);
+            $table->decimal('materiales', 8, 2);
             $table->decimal('monto', 8, 2);
             $table->integer('moneda');
             $table->string('tipocambio', 8, 4);

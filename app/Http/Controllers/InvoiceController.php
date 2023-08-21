@@ -235,6 +235,10 @@ class InvoiceController extends Controller
                 'id_invoice' => $item['CIDDOCUMENTO'],
                 'razonsocial' => $item['CRAZONSOCIAL'],
                 'description' => $item['CREFERENCIA'],
+                'financiamiento' => $item['CIMPORTEEXTRA1'],
+                'regalias' => $item['CIMPORTEEXTRA2'],
+                'plantas' => $item['CIMPORTEEXTRA3'],
+                'materiales' => $item['CIMPORTEEXTRA4'],
                 'monto' => $item['CTOTAL'],
                 'moneda' => $item['CIDMONEDA'],
                 'tipocambio' => $item['CTIPOCAMBIO'],
@@ -274,6 +278,8 @@ class InvoiceController extends Controller
             $invoices = Invoice::all();
         }
         
-        return view('invoices.filters', compact('invoices'));
+        $estatus = Estatus::all();
+
+        return view('invoices.filters', compact('invoices', 'estatus'));
     }
 }

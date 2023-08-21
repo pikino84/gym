@@ -19,14 +19,22 @@
                     </div>
                     @endif
                     <div class="row">
-                      <div class="col-md-12 col-sm-12 text-right"> 
+                      <div class="col-md-12 col-sm-12 text-right">
                         <form class="navbar-form filtros" method="post" action="{{ route('invoices.filters') }}">
                           @csrf
                           <div class="form-group row">
                             @can('invoice_create')
-                            <div class="col-md-9 col-sm-12 ">
+                            <div class="col-md-4 col-sm-12 ">
                               <input type="text" style="height: 41px;" name="productor" value="{{ old('productor') }}" class="form-control" placeholder="Buscar por productor" autocomplete="off">
                             </div>
+                            <div class="col-md-2 col-sm-8 ">
+                              <select class="form-control" name="estatus">
+                              <option value="">Seleccionar estatus</option>
+                              @foreach ($estatus as $statu)
+                                <option value="{{ $statu->id }}">{{ $statu->nombre }}</option>
+                              @endforeach
+                            </select>
+                          </div>
                             @endcan
                             <div class="col-md-2 col-sm-8 ">
                                 <select class="form-control" name="week">
@@ -36,28 +44,16 @@
                                 @endfor
                               </select>
                             </div>
-                            <div class="col-md-1 col-sm-4 ">
-                              <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                                <i class="material-icons">search</i>
-                                <div class="ripple-container"></div>
+                            <div class="col-md-4 col-sm-4 ">
+                              <button type="submit" class="btn   btn-facebook ">
+                                Filtrar
                               </button>
-                              <a class="btn btn-white btn-round btn-just-icon" href="{{ route('invoices.index') }}">
-                                <i class="material-icons">refresh</i>
-                                <div class="ripple-container"></div>
+                              <a class="btn btn-info " href="{{ route('invoices.index') }}">
+                                Borrar filtros
                               </a>
                             </div>
                           </div>
                         </form>                        
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 col-sm-12 text-right">
-                        @can('invoice_create')
-                        <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
-                          <i class="material-icons">refresh</i>
-                        </button>
-                        <a href="{{ route('invoices.create') }}" class="btn btn-sm btn-facebook">Añadir Factura</a>
-                        @endcan
                       </div>
                     </div>
                     <div class="table-responsive">
