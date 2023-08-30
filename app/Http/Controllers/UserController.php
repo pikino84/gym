@@ -33,18 +33,20 @@ class UserController extends Controller
         {
             $productor = explode(' - ', trim( $request->input('idproveedor') ));
             $idClienteproveedor = trim($productor[0]);
-            $razonsocial = trim($productor[1]); 
+            $razonsocial = trim($productor[1]);
+            $rfc = trim($productor[2]); 
         }
         else
         {
             $idClienteproveedor = '';
             $razonsocial = '';
+            $rfc = '';
         }
         
         try{
             $user = User::create($request->only('name', 'username', 'email')
                 + [ 'password' => bcrypt($request->input('password')), ] 
-                + [ 'razonsocial' => $razonsocial, 'idclienteproveedor' => $idClienteproveedor  ]);
+                + [ 'razonsocial' => $razonsocial, 'idclienteproveedor' => $idClienteproveedor, 'rfc' => $rfc  ]);
 
             $roles = $request->input('roles', []);
             $user->syncRoles($roles);
@@ -78,11 +80,14 @@ class UserController extends Controller
             if( count($productor ) > 1 ){
                 $idClienteproveedor = trim($productor[0]);
                 $razonsocial = trim($productor[1]);
+                $rfc = trim($productor[2]);
                 $data['razonsocial'] = $razonsocial;
                 $data['idclienteproveedor'] = $idClienteproveedor;
+                $data['rfc'] = $rfc;
             }else{
                 $data['razonsocial'] = $user->razonsocial;
                 $data['idclienteproveedor'] = $user->idclienteproveedor;
+                $data['rfc'] = $user->rfc;
             }
         }
         $password=$request->input('password');

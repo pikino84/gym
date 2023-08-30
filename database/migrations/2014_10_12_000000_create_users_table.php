@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('razonsocial',191)->nullable()->unique();
             $table->string('idclienteproveedor',191)->nullable()->unique();
+            $table->string('rfc',191)->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });
