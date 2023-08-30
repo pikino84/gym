@@ -9,6 +9,7 @@ $username = "root";
 $password = "";
 $dbname = "splendor";
 
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 
