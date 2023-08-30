@@ -1,5 +1,6 @@
 /node_modules
 /public/hot
+/public/api/getUsers.php
 /public/storage
 /storage/*.key
 /vendor
