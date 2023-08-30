@@ -4,11 +4,10 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "splendor";
-
+$servername = "sqlexterno.database.windows.net";
+$username = "israel";
+$password = "Learsi01@";
+$dbname = "COMERCIALDB";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
