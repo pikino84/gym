@@ -121,7 +121,7 @@
           //console.log(proveedores);
           var razonesSociales = [];
           $.each(proveedores, function(index, element) {
-            let razonsocial = element.CIDCLIENTEPROVEEDOR + " - " + element.CRAZONSOCIAL;
+            let razonsocial = element.CIDCLIENTEPROVEEDOR + " - " + element.CRAZONSOCIAL + " - " + element.CRFC;
             console.log(razonsocial);
             razonesSociales.push(razonsocial);
           });
