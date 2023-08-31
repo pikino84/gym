@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    
 
 
     Route::get('/users/{user}', [App\Http\Controllers\UserController::class, 'show'])->name('users.show');
@@ -50,6 +51,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('invoices/{id}/approved', [App\Http\Controllers\InvoiceController::class, 'approved'])->name('invoices.approved');
     Route::post('invoices/refresh_invoices', [App\Http\Controllers\InvoiceController::class, 'refresh_invoices'])->name('invoices.refresh_invoices');
     Route::post('invoices/filters', [App\Http\Controllers\InvoiceController::class, 'filters'])->name('invoices.filters');
+    Route::get('frutas',[App\Http\Controllers\FrutaController::class, 'index'])->name('frutas.index');
     
 
     

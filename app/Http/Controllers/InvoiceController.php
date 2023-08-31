@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
+use App\Models\Fruta;
 use App\Models\User;
 use App\Models\Estatus;
 use Illuminate\Support\Facades\Auth;
@@ -250,6 +251,38 @@ class InvoiceController extends Controller
             ];
         }, $newData);
         Invoice::insert($invoicesToInsert);
+        //obtener los RFC de usando los id's de $users
+        $rfcs = User::whereIn('idclienteproveedor', $users)->pluck('rfc')->toArray();
+        foreach($rfcs as $rfc){
+            $jsonFruts = file_get_contents('https://splendorsys.com/api/getFrutsByRFC.php?rfc='.$rfc);
+            $fruts = json_decode($jsonFruts, true);
+            //obtener los cididdocumento de la tabla frutas
+            $existingFruts = Fruta::pluck('cididdocumento')->toArray();
+            //comparo $existingFruts con $fruts->CIDDOCUMENTO
+            $newFruts = array_filter($fruts, function ($item) use ($existingFruts) {
+                return !in_array($item['CIDDOCUMENTO'], $existingFruts);
+            });
+            
+            $frutsToInsert = array_map(function ($item) {
+                return [
+                    'cididdocumento' => $item['CIDDOCUMENTO'],
+                    'fecha' => $item['CFECHA']['date'],
+                    'serie' => $item['serie'],
+                    'folio' => $item['folio'],                    
+                    'semana' => getWeekNumber($item['CFECHA']['date']),
+                    'nombre' => $item['nombreFruta'],
+                    'talla' => $item['talla'],
+                    'total' => $item['totalUnidadesPorDocumento'],
+                ];
+            }, $newFruts);
+            Fruta::insert($frutsToInsert); 
+        }
+
+        
+        
+        
+        
+
         return redirect()->route('invoices.index');
     }
 
