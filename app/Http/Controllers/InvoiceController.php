@@ -234,6 +234,7 @@ class InvoiceController extends Controller
             return [
                 'id_invoice' => $item['CIDDOCUMENTO'],
                 'razonsocial' => $item['CRAZONSOCIAL'],
+                'rfc' => $item['CRFC'],
                 'description' => $item['CREFERENCIA'],
                 'financiamiento' => $item['CIMPORTEEXTRA1'],
                 'regalias' => $item['CIMPORTEEXTRA2'],
