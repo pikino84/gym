@@ -4,10 +4,10 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
-$servername = "sqlexterno.database.windows.net";
-$username = "israel";
-$password = "Learsi01@";
-$dbname = "COMERCIALDB";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "splendor";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -18,7 +18,7 @@ if ($conn->connect_error) {
     $conn->set_charset("utf8");
 }
 
-$sql = "SELECT id, razonsocial  FROM users WHERE razonsocial IS NOT NULL";
+$sql = "SELECT id, razonsocial, rfc  FROM users WHERE razonsocial IS NOT NULL";
 $result = $conn->query($sql);
 
 if ($result) {
