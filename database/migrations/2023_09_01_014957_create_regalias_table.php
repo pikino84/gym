@@ -18,6 +18,7 @@ class CreateRegaliasTable extends Migration
             $table->string('cididdocumento', 50);
             $table->dateTime('fecha');
             $table->string('semana');
+            $table->string('serie', 50);
             $table->string('folio', 50);
             $table->string('concepto', 100);
             $table->string('importe', 100);

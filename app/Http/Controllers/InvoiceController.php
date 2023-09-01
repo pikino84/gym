@@ -291,6 +291,7 @@ class InvoiceController extends Controller
                     'cididdocumento' => $item['CIDDOCUMENTO'],
                     'fecha' => $item['fecha']['date'],
                     'semana' => getWeekNumber($item['fecha']['date']),
+                    'serie' => $item['serie'],
                     'folio' => $item['folio'],
                     'concepto' => $item['concepto'],
                     'importe' => $item['importe'],
