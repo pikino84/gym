@@ -30,16 +30,18 @@ if ( isset($_REQUEST['rfc']) ) {
 
 $sql = "SELECT
     main.CIDDOCUMENTO,
+    main.CFECHA,
     main.serie,
     main.folio,
     main.CIDDOCUMENTOORIGEN,
     main.CIDPRODUCTO,
-    SUM(main.unidades) AS totalUnidadesPorDocumento, -- Suma total de unidades por documento
+    SUM(main.unidades) AS totalUnidadesPorDocumento,
     main.nombreFruta,
     main.talla
     FROM (
     SELECT
         d.CIDDOCUMENTO,
+        d.CFECHA,
         d.CSERIEDOCUMENTO AS serie,
         d.CFOLIO AS folio,
         CIDDOCUMENTOORIGEN,
@@ -51,11 +53,12 @@ $sql = "SELECT
     JOIN [ad2019_SPLENDOR_PRODUC].[dbo].[admMovimientos] m ON m.CIDDOCUMENTO = d.CIDDOCUMENTO
     JOIN [ad2019_SPLENDOR_PRODUC].[dbo].[admProductos] p ON p.CIDPRODUCTO = m.CIDPRODUCTO
     JOIN [ad2019_SPLENDOR_PRODUC].[dbo].[admClasificacionesValores] c ON c.CIDVALORCLASIFICACION =  p.CIDVALORCLASIFICACION3
-    WHERE CRFC = $rfc 
+    WHERE CRFC = '$rfc'
     AND CSERIEDOCUMENTO = 'FRT-REY'
     ) AS main
     GROUP BY
     main.CIDDOCUMENTO,
+    main.CFECHA,
     main.serie,
     main.folio,
     main.CIDDOCUMENTOORIGEN,
