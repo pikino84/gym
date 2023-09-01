@@ -257,6 +257,7 @@ class InvoiceController extends Controller
         //obtener los RFC de usando los id's de $users
         $rfcs = User::whereIn('idclienteproveedor', $users)->pluck('rfc')->toArray();
         foreach($rfcs as $rfc){
+            //FRUTAS
             $jsonFruts = file_get_contents('https://splendorsys.com/api/getFrutsByRFC.php?rfc='.$rfc);
             $fruts = json_decode($jsonFruts, true);
             //obtener los cididdocumento de la tabla frutas
@@ -279,7 +280,7 @@ class InvoiceController extends Controller
                 ];
             }, $newFruts);
             Fruta::insert($frutsToInsert);
-
+            //REGALIAS
             $jsonRegalias = file_get_contents('https://splendorsys.com/api/getRegaliasByRFC.php?rfc='.$rfc);
             $regalias = json_decode($jsonRegalias, true);
             //obtener los cididdocumento de la tabla regalias
@@ -302,12 +303,12 @@ class InvoiceController extends Controller
                 ];
             }, $newRegalias);
             Regalia::insert($regaliasToInsert);
-
+            //DEUDAS
             $jonDeudas  = file_get_contents('https://splendorsys.com/api/getDeudasByRFC.php?rfc='.$rfc);
             $deudas = json_decode($jonDeudas, true);
             //dd($deudas);
             //obtener los cididdocumento de la tabla deudas
-            $existingDeudas = Invoice::pluck('id_invoice')->toArray();
+            $existingDeudas = Deuda::pluck('cididdocumento')->toArray();
             //dd($existingDeudas);    
             //buscar el valor de CIDDOCUMENTO en la tabla deudas
             $newDeudas = array_filter($deudas, function ($item) use ($existingDeudas) {
@@ -329,9 +330,10 @@ class InvoiceController extends Controller
             }, $newDeudas);
             //dd($deudasToInsert);    
             Deuda::insert($deudasToInsert);
-
+            //FINANCIAMIENTOS
             $jsonFinanciamientos = file_get_contents('https://splendorsys.com/api/getFinanciamientoByRFC.php?rfc='.$rfc);
             $financiamientos = json_decode($jsonFinanciamientos, true);
+            //dd($financiamientos);
             //obtener los cididdocumento de la tabla financiamientos
             $existingFinanciamientos = Financiamiento::pluck('cididdocumento')->toArray();
             //comparo $existingFinanciamientos con $financiamientos->CIDDOCUMENTO
