@@ -28,11 +28,21 @@ if ( isset($_REQUEST['rfc']) ) {
     exit;
 }
 
-$sql = "SELECT CIDDOCUMENTO, CFECHA AS fecha, CSERIEDOCUMENTO AS serie, CFOLIO AS folio, CIDCONCEPTODOCUMENTO AS concepto, CNETO AS importe, CIMPUESTO1 AS iva, CTOTAL AS total, CRAZONSOCIAL, CRFC, CIMPORTEEXTRA1, CREFERENCIA
+$sql = "SELECT 
+        CIDDOCUMENTO,
+        CIDCONCEPTODOCUMENTO,
+        CRFC, 
+        CRAZONSOCIAL, 
+        CFECHA AS fecha,
+        CSERIEDOCUMENTO AS serie, 
+        CFOLIO AS folio, 
+        CNETO AS importe, 
+        CTOTALUNIDADES AS totalUnidades, 
+        CIDMONEDA AS moneda, 
+        CIMPORTEEXTRA3 AS descuentos,
+        (CTOTAL - CIMPORTEEXTRA3 ) AS saldo
         FROM ad2019_SPLENDOR_PRODUC.dbo.admDocumentos
-        WHERE CRFC = '$rfc' 
-        AND CIDDOCUMENTODE = 4
-        AND CRAZONSOCIAL LIKE '%Regalias%'";
+        WHERE CIMPORTEEXTRA3 = 1 OR CIMPORTEEXTRA3 > 1  AND CRFC = '$rfc'";
 
 $result = sqlsrv_query($conn, $sql);
 $data = array();
