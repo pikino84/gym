@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Deuda;
-use APP\Models\Invoice;
+use App\Models\Invoice;
 
 
 class DeudaController extends Controller
