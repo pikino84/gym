@@ -313,7 +313,7 @@ class InvoiceController extends Controller
             $newDeudas = array_filter($deudas, function ($item) use ($existingDeudas) {
                 return !in_array($item['CIDDOCUMENTO'], $existingDeudas);
             });
-            dd($newDeudas); 
+            //dd($newDeudas); 
             $deudasToInsert = array_map(function ($item) {
                 return [
                     'cididdocumento' => $item['CIDDOCUMENTO'],
