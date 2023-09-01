@@ -31,7 +31,7 @@ $sql = "SELECT CIDDOCUMENTO, CREFERENCIA, CTOTAL, CRAZONSOCIAL, CRFC, CIDCLIENTE
         FROM admDocumentos  
         WHERE CSERIEDOCUMENTO = 'FRT-REY'";
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }

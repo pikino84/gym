@@ -67,7 +67,7 @@ $sql = "SELECT
     main.talla";
 
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }

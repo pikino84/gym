@@ -29,7 +29,7 @@ if ( isset($_REQUEST['razonSocial']) ) {
 
 $sql = "SELECT CIDDOCUMENTO, CREFERENCIA, CTOTAL, CRAZONSOCIAL, CIDCLIENTEPROVEEDOR FROM admDocumentos  WHERE CSERIEDOCUMENTO = 'FRT-REY' AND CRAZONSOCIAL = '$razon_social' ORDER BY CIDDOCUMENTO ASC";
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }

@@ -23,7 +23,7 @@ if ($conn === false) {
 
 $sql = "SELECT CRAZONSOCIAL, CIDCLIENTEPROVEEDOR, CRFC FROM admDocumentos  WHERE CSERIEDOCUMENTO = 'FRT-REY' GROUP BY CRAZONSOCIAL, CIDCLIENTEPROVEEDOR, CRFC";
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }

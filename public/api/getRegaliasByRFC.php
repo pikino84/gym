@@ -35,7 +35,7 @@ $sql = "SELECT CFECHA AS fecha, CSERIEDOCUMENTO AS serie, CFOLIO AS folio, CIDCO
         AND CRAZONSOCIAL LIKE '%Regalias%';";
 
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }

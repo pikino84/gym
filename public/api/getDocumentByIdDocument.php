@@ -29,7 +29,7 @@ if ( isset($_REQUEST['iddocument']) ) {
 
 $sql = "SELECT CIDMONEDA, CTIPOCAMBIO, CFECHA, CCANCELADO FROM admDocumentos  WHERE CIDDOCUMENTO = '$iddocument'";
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }

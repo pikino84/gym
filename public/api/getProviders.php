@@ -23,7 +23,7 @@ if ($conn === false) {
 
 $sql = "SELECT CCODIGOCLIENTE, CRAZONSOCIAL, CRFC, CCURP, CESTATUS FROM admClientes WHERE CESTATUS = 1 AND CTIPOCLIENTE = 3";
 $result = sqlsrv_query($conn, $sql);
-
+$data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     $data[] = $row;
 }
