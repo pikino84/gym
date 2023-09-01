@@ -6,6 +6,8 @@ use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
 use App\Models\Fruta;
 use App\Models\Regalia;
+use App\Models\Deuda;
+use App\Models\Financiamiento;
 use App\Models\User;
 use App\Models\Estatus;
 use Illuminate\Support\Facades\Auth;
@@ -300,6 +302,54 @@ class InvoiceController extends Controller
                 ];
             }, $newRegalias);
             Regalia::insert($regaliasToInsert);
+
+            $jonDeudas  = file_get_contents('https://splendorsys.com/api/getDeudasByRFC.php?rfc='.$rfc);
+            $deudas = json_decode($jonDeudas, true);
+            //dd($deudas);
+            //obtener los cididdocumento de la tabla deudas
+            $existingDeudas = Invoice::pluck('id_invoice')->toArray();
+            //dd($existingDeudas);    
+            //buscar el valor de CIDDOCUMENTO en la tabla deudas
+            $newDeudas = array_filter($deudas, function ($item) use ($existingDeudas) {
+                return !in_array($item['CIDDOCUMENTO'], $existingDeudas);
+            });
+            dd($newDeudas); 
+            $deudasToInsert = array_map(function ($item) {
+                return [
+                    'cididdocumento' => $item['CIDDOCUMENTO'],
+                    'fecha' => $item['fecha']['date'],
+                    'serie' => $item['serie'],
+                    'folio' => $item['folio'],
+                    'importe' => $item['importe'],
+                    'total_unidades' => $item['totalUnidades'],
+                    'moneda' => $item['moneda'],
+                    'descuentos' => $item['descuentos'],
+                    'saldo' => $item['saldo'],
+                ];
+            }, $newDeudas);
+            //dd($deudasToInsert);    
+            Deuda::insert($deudasToInsert);
+
+            $jsonFinanciamientos = file_get_contents('https://splendorsys.com/api/getFinanciamientoByRFC.php?rfc='.$rfc);
+            $financiamientos = json_decode($jsonFinanciamientos, true);
+            //obtener los cididdocumento de la tabla financiamientos
+            $existingFinanciamientos = Financiamiento::pluck('cididdocumento')->toArray();
+            //comparo $existingFinanciamientos con $financiamientos->CIDDOCUMENTO
+            $newFinanciamientos = array_filter($financiamientos, function ($item) use ($existingFinanciamientos) {
+                return !in_array($item['CIDDOCUMENTO'], $existingFinanciamientos);
+            });
+            $financiamientosToInsert = array_map(function ($item) {
+                return [
+                    'cididdocumento' => $item['CIDDOCUMENTO'],
+                    'fecha' => $item['fecha']['date'],
+                    'serie' => $item['serie'],
+                    'folio' => $item['folio'],
+                    'prestamos' => $item['prestamos'],
+                    'descuentos' => $item['descuentos'],
+                    'deuda_total' => $item['deudaTotal'],
+                ];
+            }, $newFinanciamientos);
+            Financiamiento::insert($financiamientosToInsert);
         }
         return redirect()->route('invoices.index');
     }

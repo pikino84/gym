@@ -53,6 +53,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('invoices/filters', [App\Http\Controllers\InvoiceController::class, 'filters'])->name('invoices.filters');
     Route::get('frutas',[App\Http\Controllers\FrutaController::class, 'index'])->name('frutas.index');
     Route::get('regalias',[App\Http\Controllers\RegaliasController::class, 'index'])->name('regalias.index');
+    Route::get('deudas',[App\Http\Controllers\DeudaController::class, 'index'])->name('deudas.index');
+    Route::get('financiamientos',[App\Http\Controllers\FinanciamientoController::class, 'index'])->name('financiamientos.index');
     
 
     
