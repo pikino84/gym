@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
 use App\Models\Fruta;
+use App\Models\Regalia;
 use App\Models\User;
 use App\Models\Estatus;
 use Illuminate\Support\Facades\Auth;
@@ -275,14 +276,30 @@ class InvoiceController extends Controller
                     'total' => $item['totalUnidadesPorDocumento'],
                 ];
             }, $newFruts);
-            Fruta::insert($frutsToInsert); 
+            Fruta::insert($frutsToInsert);
+
+            $jsonRegalias = file_get_contents('https://splendorsys.com/api/getRegaliasByRFC.php?rfc='.$rfc);
+            $regalias = json_decode($jsonRegalias, true);
+            //obtener los cididdocumento de la tabla regalias
+            $existingRegalias = Regalia::pluck('cididdocumento')->toArray();
+            //comparo $existingRegalias con $regalias->CIDDOCUMENTO
+            $newRegalias = array_filter($regalias, function ($item) use ($existingRegalias) {
+                return !in_array($item['CIDDOCUMENTO'], $existingRegalias);
+            });
+            $regaliasToInsert = array_map(function ($item) {
+                return [
+                    'cididdocumento' => $item['CIDDOCUMENTO'],
+                    'fecha' => $item['fecha']['date'],
+                    'semana' => getWeekNumber($item['fecha']['date']),
+                    'folio' => $item['folio'],
+                    'concepto' => $item['concepto'],
+                    'importe' => $item['importe'],
+                    'iva' => $item['iva'],
+                    'total' => $item['total'],
+                ];
+            }, $newRegalias);
+            Regalia::insert($regaliasToInsert);
         }
-
-        
-        
-        
-        
-
         return redirect()->route('invoices.index');
     }
 
