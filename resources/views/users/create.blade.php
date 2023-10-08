@@ -120,7 +120,8 @@
 <script>  
   $(document).ready(function() {
     $.ajax({
-      url: "https://splendorsys.com/api/getUserFromDocuments.php",
+      //url: "https://splendorsys.com/api/getUserFromDocuments.php",
+      url: "http://splendor.test/api/getUserFromDocuments.php",
         type: "GET",
         dataType: "json",
         success: function(response) {
