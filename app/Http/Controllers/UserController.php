@@ -28,7 +28,6 @@ class UserController extends Controller
 
     public function store(UserCreateRequest $request)
     {
-        
         if(isset($request->idproveedor) && $request->idproveedor != '')
         {
             $productor = explode(' - ', trim( $request->input('idproveedor') ));
@@ -52,7 +51,8 @@ class UserController extends Controller
             $user->syncRoles($roles);
             return redirect()->route('users.show', $user->id)->with('success', 'Usuario creado correctamente');
         }catch(\Exception $e){
-            return redirect()->back()->withErrors(['idproveedor' => 'El Proveedor no existe']);
+            return $e;
+            //return redirect()->back()->withErrors(['idproveedor' => 'El Proveedor no existe']);
         }
     }
 
