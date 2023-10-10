@@ -33,7 +33,10 @@ class UserController extends Controller
             $productor = explode(' - ', trim( $request->input('idproveedor') ));
             $idClienteproveedor = trim($productor[0]);
             $razonsocial = trim($productor[1]);
-            $rfc = trim($productor[2]); 
+            $rfc = trim($productor[2]);
+            /*AQUI DEBO HACER UNA CONSULTA USANDO EL RFC PARA TRAER TODOS LOS 
+            CIDCLIENTEPROVEEDOR, CCODIGOCLIENTE, CRAZONSOCIAL QUE COINCIDAN CON EL RFC
+            Y ALMACENAR LOS EN UNA TABLA DE CODIGOS DE CLIENTE RELACIONADOS CON ID USER*/
         }
         else
         {
@@ -46,6 +49,12 @@ class UserController extends Controller
             $user = User::create($request->only('name', 'username', 'email')
                 + [ 'password' => bcrypt($request->input('password')), ] 
                 + [ 'razonsocial' => $razonsocial, 'idclienteproveedor' => $idClienteproveedor, 'rfc' => $rfc  ]);
+            if($rfc != '')
+            {
+                //$get_rfcs = "SELECT * FROM [ad2019_SPLENDOR_PRODUC].[dbo].[admClientes] WHERE CRFC = 'MEPG741215BS3'";
+                $users = DB::connection('sqlsrv')->table('admClientes')->get();
+
+            }
 
             $roles = $request->input('roles', []);
             $user->syncRoles($roles);

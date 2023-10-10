@@ -20,12 +20,11 @@ if ($conn === false) {
 } else {
     //echo "Conexión exitosa a SQL Server.";
 }
-
-$sql = "SELECT CRAZONSOCIAL, CIDCLIENTEPROVEEDOR, CRFC 
-        FROM admDocumentos  
+$sql = "SELECT CIDCLIENTEPROVEEDOR, CCODIGOCLIENTE,  CRAZONSOCIAL, CRFC 
+        FROM admClientes
         WHERE CRAZONSOCIAL <> '' 
         AND CRFC <> ''
-        GROUP BY CRAZONSOCIAL, CIDCLIENTEPROVEEDOR, CRFC";
+        GROUP BY CRFC, CIDCLIENTEPROVEEDOR, CCODIGOCLIENTE, CRAZONSOCIAL";
 $result = sqlsrv_query($conn, $sql);
 $data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
