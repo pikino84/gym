@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
+use App\Models\SplendorUser;
+use App\Models\RazonesSocialesByUser;
 
 class UserController extends Controller
 {
@@ -34,9 +36,6 @@ class UserController extends Controller
             $idClienteproveedor = trim($productor[0]);
             $razonsocial = trim($productor[1]);
             $rfc = trim($productor[2]);
-            /*AQUI DEBO HACER UNA CONSULTA USANDO EL RFC PARA TRAER TODOS LOS 
-            CIDCLIENTEPROVEEDOR, CCODIGOCLIENTE, CRAZONSOCIAL QUE COINCIDAN CON EL RFC
-            Y ALMACENAR LOS EN UNA TABLA DE CODIGOS DE CLIENTE RELACIONADOS CON ID USER*/
         }
         else
         {
@@ -51,8 +50,23 @@ class UserController extends Controller
                 + [ 'razonsocial' => $razonsocial, 'idclienteproveedor' => $idClienteproveedor, 'rfc' => $rfc  ]);
             if($rfc != '')
             {
-                //$get_rfcs = "SELECT * FROM [ad2019_SPLENDOR_PRODUC].[dbo].[admClientes] WHERE CRFC = 'MEPG741215BS3'";
-                $users = DB::connection('sqlsrv')->table('admClientes')->get();
+                $razones = SplendorUser::select('CIDCLIENTEPROVEEDOR', 'CCODIGOCLIENTE', 'CRAZONSOCIAL', 'CRFC')
+                ->where('CIDCLIENTEPROVEEDOR', '!=' , 0)
+                ->where('CCODIGOCLIENTE', '!=' , '')
+                ->where('CRAZONSOCIAL', '!=' , '')
+                ->where('CRFC', '!=' , '')
+                ->where('CRFC', '=' , $rfc)
+                ->get();
+                //almacenr en la tabla user_rfcs la informacion de $razones por usuario
+                foreach($razones as $razon)
+                {
+                    $razon_social = new RazonesSocialesByUser();
+                    $razon_social->user_id = $user->id;
+                    $razon_social->cidclienteproveedor = $razon->CIDCLIENTEPROVEEDOR;
+                    $razon_social->ccodigocliente = $razon->CCODIGOCLIENTE;
+                    $razon_social->crazonsocial = $razon->CRAZONSOCIAL;
+                    $razon_social->save(); 
+                }
 
             }
 
@@ -93,6 +107,29 @@ class UserController extends Controller
                 $data['razonsocial'] = $razonsocial;
                 $data['idclienteproveedor'] = $idClienteproveedor;
                 $data['rfc'] = $rfc;
+                //borrar los registros de la tabla user_rfcs por usuario
+                $razones = RazonesSocialesByUser::where('user_id', $user->id)->get();
+                foreach($razones as $razon)
+                {
+                    $razon->delete();
+                }
+                //almacenr en la tabla user_rfcs la informacion de $razones por usuario
+                $razones = SplendorUser::select('CIDCLIENTEPROVEEDOR', 'CCODIGOCLIENTE', 'CRAZONSOCIAL', 'CRFC')
+                ->where('CIDCLIENTEPROVEEDOR', '!=' , 0)
+                ->where('CCODIGOCLIENTE', '!=' , '')
+                ->where('CRAZONSOCIAL', '!=' , '')
+                ->where('CRFC', '!=' , '')
+                ->where('CRFC', '=' , $rfc)
+                ->get();
+                foreach($razones as $razon)
+                {
+                    $razon_social = new RazonesSocialesByUser();
+                    $razon_social->user_id = $user->id;
+                    $razon_social->cidclienteproveedor = $razon->CIDCLIENTEPROVEEDOR;
+                    $razon_social->ccodigocliente = $razon->CCODIGOCLIENTE;
+                    $razon_social->crazonsocial = $razon->CRAZONSOCIAL;
+                    $razon_social->save(); 
+                }
             }else{
                 $data['razonsocial'] = $user->razonsocial;
                 $data['idclienteproveedor'] = $user->idclienteproveedor;

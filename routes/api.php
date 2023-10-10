@@ -17,12 +17,13 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
 
-Route::namespace('Api')->group(function () {
+/*Route::namespace('Api')->group(function () {
     
     Route::resource('splendor-users', 'SplendorUsersController', ['only' => ['index']]);    
     
-});
+});*/
 
+Route::get('/splendor-users', 'App\Http\Controllers\Api\SplendorUsersController@index');
 
 
 

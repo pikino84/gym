@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class SplendorUser extends Model
 {
+    use HasFactory;
+    protected $connection = 'sqlsrv';
     protected $table = 'admClientes';
 
-    protected $filable = [
-        'CIDCLIENTEPROVEEDOR',
-        'CCODIGOCLIENTE',
-        'RAZONSOCIAL'
-    ];
+    
 }
