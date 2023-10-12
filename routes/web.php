@@ -52,7 +52,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('invoices/refresh_invoices', [App\Http\Controllers\InvoiceController::class, 'refresh_invoices'])->name('invoices.refresh_invoices');
     Route::post('invoices/filters', [App\Http\Controllers\InvoiceController::class, 'filters'])->name('invoices.filters');
     Route::get('frutas',[App\Http\Controllers\FrutaController::class, 'index'])->name('frutas.index');
+    
+    Route::get('plantas',[App\Http\Controllers\PlantaController::class, 'index'])->name('plantas.index');
+    Route::get('prestamos',[App\Http\Controllers\PrestamoController::class, 'index'])->name('prestamos.index');
     Route::get('regalias',[App\Http\Controllers\RegaliasController::class, 'index'])->name('regalias.index');
+    Route::get('materiales',[App\Http\Controllers\MaterialController::class, 'index'])->name('materiales.index');
+    //estas Rutas ya no se usaran revisar si se pueden reciclar los controladores
     Route::get('deudas',[App\Http\Controllers\DeudaController::class, 'index'])->name('deudas.index');
     Route::get('financiamientos',[App\Http\Controllers\FinanciamientoController::class, 'index'])->name('financiamientos.index');
     

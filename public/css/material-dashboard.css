@@ -14606,8 +14606,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .sidebar .nav li.active>a,
-.sidebar .nav li.active>a i {
+.sidebar .nav li.active>a i,
+.sidebar .nav li.active>a path {
   color: #fff;
+  fill: #fff;
 }
 
 .sidebar .nav li.separator {
