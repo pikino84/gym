@@ -12,20 +12,22 @@ class CreateFrutasTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('frutas', function (Blueprint $table) {
-            $table->id();
-            $table->string('cididdocumento', 10);
-            $table->dateTime('fecha');
-            $table->string('serie', 50);
-            $table->string('folio', 50);
-            $table->string('semana');
-            $table->string('nombre', 100);
-            $table->string('talla', 100);
-            $table->integer('total');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('frutas', function (Blueprint $table) {
+        $table->id(); // Esta línea crea una clave primaria autoincrementable 'id'
+        $table->string('cididdocumento', 10);
+        $table->dateTime('fecha');
+        $table->string('serie', 50);
+        $table->integer('folio'); // Elimina 'auto_increment' de aquí
+        $table->string('semana', 255); // Añade la longitud, si es necesario
+        $table->string('nombre', 100);
+        $table->string('talla', 100);
+        $table->integer('total'); // Elimina 'auto_increment' de aquí
+        $table->integer('pendientes'); // Elimina 'auto_increment' de aquí
+        $table->timestamps();
+    });
+
+}
 
     /**
      * Reverse the migrations.

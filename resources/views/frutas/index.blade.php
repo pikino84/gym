@@ -24,6 +24,7 @@
                         <th>Fruta</th>
                         <th>Talla</th>
                         <th>Total</th>
+                        <th>Pendientes</th>
                       </thead>
                       <tbody>
                         @forelse ($frutas as $fruta)
@@ -36,6 +37,7 @@
                           <td>{{ $fruta->nombre }}</td>
                           <td>{{ $fruta->talla }}</td>
                           <td>{{ $fruta->total }}</td>
+                          <td>{{ $fruta->pendientes }}</td>
                         </tr>
                         @empty
                         <tr>

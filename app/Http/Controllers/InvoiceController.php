@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Gate;
 use SimpleXMLElement;
 use ZipArchive;
 
+use App\Models\SysSplendorUserRfcs;
+use App\Models\SplendorTablaDocumentos;
+use App\Models\SplendorTablaMovimientos;
+use App\Models\SplendorTablaProductos;
+
 
 class InvoiceController extends Controller
 {
@@ -254,32 +259,43 @@ class InvoiceController extends Controller
             ];
         }, $newData);
         Invoice::insert($invoicesToInsert);
+        /*******FRUTAS ********* */
+        //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
+        $users_rfcs = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
+        foreach($users_rfcs as $user_rfc){
+            //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 18 (FRUTAS)
+            $documentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
+            ->where('CIDDOCUMENTODE', '=' , 18)
+            ->where('CIDCLIENTEPROVEEDOR', '=' , $user_rfc)
+            ->get();
+            //SE VERIFICA QUE TENGA DOCUMENTOS DE FRUTAS
+            if(  count($documentos) > 0 ){
+                foreach($documentos as $key => $ticket_fruta){
+                    $cidproducto = $ticket_fruta->CIDDOCUMENTO;
+                    $detalle_frunta = SplendorTablaMovimientos::join('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
+                                    ->join('admClasificacionesValores', 'admClasificacionesValores.CIDVALORCLASIFICACION', '=', 'admProductos.CIDVALORCLASIFICACION3')
+                                    ->where('admMovimientos.CIDDOCUMENTO', '=', $cidproducto)
+                                    ->select('admProductos.CNOMBREPRODUCTO', 'admClasificacionesValores.CVALORCLASIFICACION AS talla')
+                                    ->first();
+                    $frutsToInsert = [
+                            'cididdocumento' => $documentos[$key]['CIDDOCUMENTO'],
+                            'fecha' => $documentos[$key]['CFECHA'],
+                            'serie' => $documentos[$key]['CSERIEDOCUMENTO'],
+                            'folio' => $documentos[$key]['CFOLIO'],                    
+                            'semana' => getWeekNumber($documentos[$key]['CFECHA']),
+                            'nombre' => $detalle_frunta['CNOMBREPRODUCTO'],
+                            'talla' => $detalle_frunta['talla'],
+                            'total' => $documentos[$key]['CTOTALUNIDADES'],
+                            'pendientes' => $documentos[$key]['CUNIDADESPENDIENTES'],                            
+                        ];
+                    
+                    Fruta::insert($frutsToInsert);
+                }
+            }
+        }
         //obtener los RFC de usando los id's de $users
         $rfcs = User::whereIn('idclienteproveedor', $users)->pluck('rfc')->toArray();
         foreach($rfcs as $rfc){
-            //FRUTAS
-            $jsonFruts = file_get_contents('https://splendorsys.com/api/getFrutsByRFC.php?rfc='.$rfc);
-            $fruts = json_decode($jsonFruts, true);
-            //obtener los cididdocumento de la tabla frutas
-            $existingFruts = Fruta::pluck('cididdocumento')->toArray();
-            //comparo $existingFruts con $fruts->CIDDOCUMENTO
-            $newFruts = array_filter($fruts, function ($item) use ($existingFruts) {
-                return !in_array($item['CIDDOCUMENTO'], $existingFruts);
-            });
-            
-            $frutsToInsert = array_map(function ($item) {
-                return [
-                    'cididdocumento' => $item['CIDDOCUMENTO'],
-                    'fecha' => $item['CFECHA']['date'],
-                    'serie' => $item['serie'],
-                    'folio' => $item['folio'],                    
-                    'semana' => getWeekNumber($item['CFECHA']['date']),
-                    'nombre' => $item['nombreFruta'],
-                    'talla' => $item['talla'],
-                    'total' => $item['totalUnidadesPorDocumento'],
-                ];
-            }, $newFruts);
-            Fruta::insert($frutsToInsert);
             //REGALIAS
             $jsonRegalias = file_get_contents('https://splendorsys.com/api/getRegaliasByRFC.php?rfc='.$rfc);
             $regalias = json_decode($jsonRegalias, true);

@@ -13,7 +13,7 @@
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
-  <link href="{{ asset('css/material-dashboard.css?v=2.1.1') }}" rel="stylesheet" />
+  <link href="{{ asset('css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
   <link rel="stylesheet" href="{{ asset('css/styele.css') }}" rel="stylesheet" />

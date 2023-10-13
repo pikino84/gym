@@ -28,8 +28,7 @@ if ( isset($_REQUEST['iddocument']) ) {
 }
 
 $sql = "SELECT CIDDOCUMENTO, CREFERENCIA, CTOTAL, CRAZONSOCIAL, CRFC, CIDCLIENTEPROVEEDOR, CIDMONEDA, CTIPOCAMBIO, CFECHA, CCANCELADO, CIMPORTEEXTRA1 ,CIMPORTEEXTRA2 ,CIMPORTEEXTRA3 ,CIMPORTEEXTRA4
-        FROM admDocumentos  
-        WHERE CSERIEDOCUMENTO = 'FRT-REY'";
+        FROM admDocumentos";
 $result = sqlsrv_query($conn, $sql);
 $data = array();
 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
