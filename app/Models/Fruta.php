@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Fruta extends Model
 {
     use HasFactory;
+    protected $table = 'frutas';
     protected $fillable = ['id', 'cididdocumento', 'fecha', 'serie', 'folio', 'semana', 'nombre', 'talla', 'total'];
-
     public function validar()
     {
         return [
