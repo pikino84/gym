@@ -12,12 +12,12 @@ class FrutaController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if( $user->razonsocial != null ){
-            $frutas = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
+        if( $user->rfc != null ){
+            $frutas = Invoice::join('users', 'invoices.rfc', '=', 'users.rfc')
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->join('frutas', 'invoices.id', '=', 'frutas.id')
                 ->select('frutas.*')
-                ->where('invoices.razonsocial', $user->razonsocial)
+                ->where('invoices.rfc', $user->rfc)
                 ->orderBy('frutas.fecha', 'desc')
                 ->paginate(10);
         }else{
