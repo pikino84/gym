@@ -171,6 +171,8 @@
     var instances = M.FormSelect.init(elems, options);
   });
   function sendRefresh(url, button){
+    let loading = document.getElementById('loading');
+    loading.style.display = 'flex';
     let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     console.log(url)
     // Realizar la petición AJAX
@@ -183,12 +185,13 @@
     })
     .then(response => {
       if (response.ok) {
+        loading.style.display = 'none';
         Swal.fire('¡Facturas actualizadas!', 'Las facturas han sido actualizadas.', 'success');
         setTimeout(function() {
             location.reload();
         }, 3000);
       } else {
-        
+        Swal.fire('¡No se actulizaron las Facturas !', 'Lo siento.', 'error');
       }
     })
     .catch(error => {
