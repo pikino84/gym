@@ -16,7 +16,7 @@
   <link href="{{ asset('css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
-  <link rel="stylesheet" href="{{ asset('css/styele.css?v=1') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('css/styele.css?v=1.1') }}" rel="stylesheet" />
 </head>
 <body class="{{ $class ?? '' }}">
   @auth()

@@ -262,34 +262,40 @@ class InvoiceController extends Controller
         /*******FRUTAS ********* */
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
         $users_rfcs = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
+        //dd($users_rfcs);
         foreach($users_rfcs as $user_rfc){
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 18 (FRUTAS)
             $documentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
             ->where('CIDDOCUMENTODE', '=' , 18)
             ->where('CIDCLIENTEPROVEEDOR', '=' , $user_rfc)
             ->get();
+            
             //SE VERIFICA QUE TENGA DOCUMENTOS DE FRUTAS
             if(  count($documentos) > 0 ){
                 foreach($documentos as $key => $ticket_fruta){
-                    $cidproducto = $ticket_fruta->CIDDOCUMENTO;
-                    $detalle_frunta = SplendorTablaMovimientos::join('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
-                                    ->join('admClasificacionesValores', 'admClasificacionesValores.CIDVALORCLASIFICACION', '=', 'admProductos.CIDVALORCLASIFICACION3')
-                                    ->where('admMovimientos.CIDDOCUMENTO', '=', $cidproducto)
-                                    ->select('admProductos.CNOMBREPRODUCTO', 'admClasificacionesValores.CVALORCLASIFICACION AS talla')
-                                    ->first();
-                    $frutsToInsert = [
-                            'cididdocumento' => $documentos[$key]['CIDDOCUMENTO'],
-                            'fecha' => $documentos[$key]['CFECHA'],
-                            'serie' => $documentos[$key]['CSERIEDOCUMENTO'],
-                            'folio' => $documentos[$key]['CFOLIO'],                    
-                            'semana' => getWeekNumber($documentos[$key]['CFECHA']),
-                            'nombre' => $detalle_frunta['CNOMBREPRODUCTO'],
-                            'talla' => $detalle_frunta['talla'],
-                            'total' => $documentos[$key]['CTOTALUNIDADES'],
-                            'pendientes' => $documentos[$key]['CUNIDADESPENDIENTES'],                            
-                        ];
-                    
-                    Fruta::insert($frutsToInsert);
+                    //verificar que cididdocumento no exista en la tabla frutas
+                    $cididdocumento = Fruta::where('cididdocumento', '=', $ticket_fruta->CIDDOCUMENTO)->first();
+                    //si no existe se inserta
+                    if( !$cididdocumento ){
+                        $cidproducto = $ticket_fruta->CIDDOCUMENTO;
+                        $detalle_frunta = SplendorTablaMovimientos::join('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
+                                        ->join('admClasificacionesValores', 'admClasificacionesValores.CIDVALORCLASIFICACION', '=', 'admProductos.CIDVALORCLASIFICACION3')
+                                        ->where('admMovimientos.CIDDOCUMENTO', '=', $cidproducto)
+                                        ->select('admProductos.CNOMBREPRODUCTO', 'admClasificacionesValores.CVALORCLASIFICACION AS talla')
+                                        ->first();
+                        $frutsToInsert = [
+                                'cididdocumento' => $documentos[$key]['CIDDOCUMENTO'],
+                                'fecha' => $documentos[$key]['CFECHA'],
+                                'serie' => $documentos[$key]['CSERIEDOCUMENTO'],
+                                'folio' => $documentos[$key]['CFOLIO'],                    
+                                'semana' => getWeekNumber($documentos[$key]['CFECHA']),
+                                'nombre' => $detalle_frunta['CNOMBREPRODUCTO'],
+                                'talla' => $detalle_frunta['talla'],
+                                'total' => $documentos[$key]['CTOTALUNIDADES'],
+                                'pendientes' => $documentos[$key]['CUNIDADESPENDIENTES'],                            
+                            ];
+                        Fruta::insert($frutsToInsert);
+                    }
                 }
             }
         }
@@ -343,8 +349,7 @@ class InvoiceController extends Controller
                     'descuentos' => $item['descuentos'],
                     'saldo' => $item['saldo'],
                 ];
-            }, $newDeudas);
-            //dd($deudasToInsert);    
+            }, $newDeudas);   
             Deuda::insert($deudasToInsert);
             //FINANCIAMIENTOS
             $jsonFinanciamientos = file_get_contents('https://splendorsys.com/api/getFinanciamientoByRFC.php?rfc='.$rfc);
