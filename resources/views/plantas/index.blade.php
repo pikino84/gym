@@ -17,6 +17,7 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
+                        <td>CIDDOCUMENTO</td>
                         <th>Fecha</th>
                         <th>Semana</th>
                         <th>Serie</th>
@@ -25,15 +26,41 @@
                         <th>Importe</th>
                         <th>IVA</th>
                         <th>Total</th>
+                        <th>Pendiente</th>
                       </thead>
                       <tbody>
-                        
+                        @php
+                          $cont = 0;
+                        @endphp
+                        @forelse ($plantas as $planta) 
+                        @php
+                          $cont++;
+                        @endphp
+                          <td>{{ $cont }}</td>
+                          <td>{{ $planta->cididdocumento }}</td>
+                          <td>{{ date('Y-m-d', strtotime($planta->fecha)) }}</td>
+                          <td>{{ $planta->semana }}</td>
+                          <td>{{ $planta->serie }}</td>
+                          <td>{{ $planta->folio }}</td>
+                          <td>{{ $planta->concepto }}</td>
+                          <td>{{ $planta->importe }}</td>
+                          <td>{{ $planta->iva }}</td>
+                          <td>{{ $planta->total }}</td>
+                          <td>{{ $planta->pendiente }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                          <td colspan="2">Sin registros.</td>
+                        </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
                 </div>
                 <div class="card-footer mr-auto">
-                  
+                  <div class="card-footer mr-auto">
+                    {{ $plantas->links() }}
+                  </div>
                 </div>
               </div>
             </div>

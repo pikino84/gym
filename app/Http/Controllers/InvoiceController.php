@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InvoiceCreateRequest;
 use App\Models\Invoice;
 use App\Models\Fruta;
+use App\Models\Planta;
 use App\Models\Regalia;
 use App\Models\Deuda;
 use App\Models\Financiamiento;
@@ -225,44 +226,51 @@ class InvoiceController extends Controller
 
     public function refresh_invoices()
     {
-        //Obtengo todos los documentos de la API
-        $jsonDocs = file_get_contents('https://splendorsys.com/api/getAllDocuments.php');
-        $docs = json_decode($jsonDocs, true);
-        //Obtengo todos los ID's de los usuariarios de la base de datos con razon social
-        $jsonUsers = User::whereNotNull('razonsocial')
-                    ->where('razonsocial', '<>', '')
-                    ->pluck('idclienteproveedor');
-        $users = json_decode($jsonUsers, true);
-        //Obtengo los id de las facturas que ya existen en la base de datos
-        $existingIds = Invoice::pluck('id_invoice')->toArray();
-        // Filtrar los documentos que no están registrados en la base de datos destino y que coinciden con los usuarios seleccionados
-        $newData = array_filter($docs, function ($item) use ($existingIds, $users) {
-            return !in_array($item['CIDDOCUMENTO'], $existingIds) && in_array($item['CIDCLIENTEPROVEEDOR'], $users);
-        });
-        $invoicesToInsert = array_map(function ($item) {
-            return [
-                'id_invoice' => $item['CIDDOCUMENTO'],
-                'razonsocial' => $item['CRAZONSOCIAL'],
-                'rfc' => $item['CRFC'],
-                'description' => $item['CREFERENCIA'],
-                'financiamiento' => $item['CIMPORTEEXTRA1'],
-                'regalias' => $item['CIMPORTEEXTRA2'],
-                'plantas' => $item['CIMPORTEEXTRA3'],
-                'materiales' => $item['CIMPORTEEXTRA4'],
-                'monto' => $item['CTOTAL'],
-                'moneda' => $item['CIDMONEDA'],
-                'tipocambio' => $item['CTIPOCAMBIO'],
-                'fecha' => $item['CFECHA']['date'],
-                'semana' => getWeekNumber($item['CFECHA']['date']),
-                'cancelado' => $item['CCANCELADO'],
-                'id_status' => 1,
-            ];
-        }, $newData);
-        Invoice::insert($invoicesToInsert);
+        /******* FACTURAS ********* */
+        $ids_cliente_proveedor = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
+        foreach($ids_cliente_proveedor as $id_cliente_proveedor){
+            //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 19 (Facturas)
+            $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
+            ->where('CIDDOCUMENTODE', '=' , 19)
+            ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
+            ->get();
+            if(  count($docs) > 0 ){
+                $cids_docs = [];
+                foreach($docs as $doc){
+                    $cids_docs[] = $doc->CIDDOCUMENTO;
+                }
+                //Obtengo los id de las facturas que ya existen en la base de datos
+                $existingIds = Invoice::pluck('id_invoice')->toArray();        
+                // Compara el array $cids_docs con $existingIds y devuelve los que no existen en la base de datos
+                $new_cids_docs = array_filter($cids_docs, function ($item) use ($existingIds) {
+                    return !in_array($item, $existingIds);
+                });
+                $docs_invoices = SplendorTablaDocumentos::whereIn('CIDDOCUMENTO', $new_cids_docs)->get();
+                foreach($docs_invoices as $doc_invoice){
+                    $invoicesToInsert = [
+                        'id_invoice' => $doc_invoice->CIDDOCUMENTO,
+                        'razonsocial' => $doc_invoice->CRAZONSOCIAL,
+                        'rfc' => $doc_invoice->CRFC,
+                        'description' => $doc_invoice->CREFERENCIA,
+                        'financiamiento' => $doc_invoice->CIMPORTEEXTRA1,
+                        'regalias' => $doc_invoice->CIMPORTEEXTRA2,
+                        'plantas' => $doc_invoice->CIMPORTEEXTRA3,
+                        'materiales' => $doc_invoice->CIMPORTEEXTRA4,
+                        'monto' => $doc_invoice->CTOTAL,
+                        'moneda' => $doc_invoice->CIDMONEDA,
+                        'tipocambio' => $doc_invoice->CTIPOCAMBIO,
+                        'fecha' => $doc_invoice->CFECHA,
+                        'semana' => getWeekNumber($doc_invoice->CFECHA),
+                        'cancelado' => $doc_invoice->CCANCELADO,
+                        'id_status' => 1,
+                    ];
+                    Invoice::insert($invoicesToInsert);    
+                }
+            }
+        }
         /*******FRUTAS ********* */
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
         $users_rfcs = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
-        //dd($users_rfcs);
         foreach($users_rfcs as $user_rfc){
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 18 (FRUTAS)
             $documentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
@@ -299,6 +307,57 @@ class InvoiceController extends Controller
                 }
             }
         }
+        /******* PLANTAS ********* */
+        //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
+        $ids_cliente_proveedor = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
+        foreach($ids_cliente_proveedor as $id_cliente_proveedor){
+            //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 4 (PLANTAS)
+            $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
+            ->where('CIDDOCUMENTODE', '=' , 4)
+            ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
+            ->get();
+            //SE VERIFICA QUE TENGA DOCUMENTOS DE PLANTAS
+            if(  count($docs) > 0 ){
+                $cids_docs = [];
+                foreach($docs as $doc){
+                    $cids_docs[] = $doc->CIDDOCUMENTO;
+                }
+                //Obtengo los id de las plantas que ya existen en la base de datos
+                $existingIds = Planta::pluck('cididdocumento')->toArray();
+                // Compara el array $cids_docs con $existingIds y devuelve los que no existen en la base de datos
+                $new_cids_docs = array_filter($cids_docs, function ($item) use ($existingIds) {
+                    return !in_array($item, $existingIds);
+                });
+                $docs_plantas = SplendorTablaDocumentos::whereIn('CIDDOCUMENTO', $new_cids_docs)->get();
+                foreach($docs_plantas as $doc_planta){
+                    $plantasToInsert = [
+                        'cididdocumento' => $doc_planta->CIDDOCUMENTO,
+                        'fecha' => $doc_planta->CFECHA,
+                        'semana' => getWeekNumber($doc_planta->CFECHA),
+                        'serie' => $doc_planta->CSERIEDOCUMENTO,
+                        'folio' => $doc_planta->CFOLIO,
+                        'concepto' => $doc_planta->CREFERENCIA,
+                        'importe' => $doc_planta->CTOTAL,
+                        'iva' => $doc_planta->CIMPUESTO1,
+                        'total' => $doc_planta->CTOTAL,
+                        'pendiente' => $doc_planta->CUNIDADESPENDIENTES,
+                    ];
+                    Planta::insert($plantasToInsert);    
+                }
+            }
+        }
+
+
+
+        /**BLOQUE TEMPORAL */
+        //Obtengo todos los documentos de la API
+        $jsonDocs = file_get_contents('https://splendorsys.com/api/getAllDocuments.php');
+        $docs = json_decode($jsonDocs, true);
+        $jsonUsers = User::whereNotNull('razonsocial')
+                    ->where('razonsocial', '<>', '')
+                    ->pluck('idclienteproveedor');
+        $users = json_decode($jsonUsers, true);
+        /**TERMINA BLOQUE TEMPORAL */
         //obtener los RFC de usando los id's de $users
         $rfcs = User::whereIn('idclienteproveedor', $users)->pluck('rfc')->toArray();
         foreach($rfcs as $rfc){

@@ -72,6 +72,7 @@
                       <table class="table">
                         <thead class="text-primary">
                           <th>#</th>
+                          <th>CIDDOCUMENTO</th>
                           <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto facturado</th>
@@ -93,9 +94,16 @@
                           <th class="text-right">Acciones</th>
                         </thead>
                         <tbody>
+                          @php
+                            $cont = 0;
+                          @endphp
                           @foreach ($invoices as $invoice)
+                            @php
+                              $cont++;
+                            @endphp
                             <tr>
-                              <td>{{ $invoice->id }}</td>
+                              <td>{{ $cont }}</td>
+                              <td>{{ $invoice->id_invoice }}</td>
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>

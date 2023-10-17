@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Planta;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PlantaController extends Controller
@@ -14,7 +15,20 @@ class PlantaController extends Controller
      */
     public function index()
     {
-        return view('plantas.index');
+        $user = Auth::user();
+        if( $user->rfc != null ){
+            $plantas = Invoice::join('users', 'invoices.rfc', '=', 'users.rfc')
+                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
+                ->join('plantas', 'invoices.id_invoice', '=', 'plantas.cididdocumento')
+                ->select('plantas.*')
+                ->where('invoices.rfc', "$user->rfc")
+                ->orderBy('plantas.fecha', 'desc')
+                ->paginate(10);
+        }else{
+            $plantas = Planta::orderBy('fecha', 'desc')
+            ->paginate(10);
+        }
+        return view('plantas.index', compact('plantas'));
     }
 
     /**

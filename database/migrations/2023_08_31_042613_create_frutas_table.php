@@ -14,16 +14,16 @@ class CreateFrutasTable extends Migration
     public function up()
 {
     Schema::create('frutas', function (Blueprint $table) {
-        $table->id(); // Esta línea crea una clave primaria autoincrementable 'id'
+        $table->id(); 
         $table->string('cididdocumento', 10);
         $table->dateTime('fecha');
         $table->string('serie', 50);
-        $table->integer('folio'); // Elimina 'auto_increment' de aquí
-        $table->string('semana', 255); // Añade la longitud, si es necesario
+        $table->integer('folio'); 
+        $table->string('semana', 255);
         $table->string('nombre', 100);
         $table->string('talla', 100);
-        $table->integer('total'); // Elimina 'auto_increment' de aquí
-        $table->integer('pendientes'); // Elimina 'auto_increment' de aquí
+        $table->integer('total'); 
+        $table->integer('pendientes');
         $table->timestamps();
     });
 
