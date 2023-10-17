@@ -195,9 +195,9 @@
       if (response.ok) {
         loading.style.display = 'none';
         Swal.fire('¡Facturas actualizadas!', 'Las facturas han sido actualizadas.', 'success');
-        /*setTimeout(function() {
+        setTimeout(function() {
             location.reload();
-        }, 3000);*/
+        }, 3000);
       } else {
         loading.style.display = 'none';
         Swal.fire('¡No se actulizaron las Facturas !', 'Lo siento.', 'error');
