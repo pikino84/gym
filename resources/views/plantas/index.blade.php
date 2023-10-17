@@ -17,7 +17,7 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
-                        <td>CIDDOCUMENTO</td>
+                        <th>CIDDOCUMENTO</th>
                         <th>Fecha</th>
                         <th>Semana</th>
                         <th>Serie</th>
