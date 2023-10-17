@@ -16,6 +16,7 @@ class CreateInvoices extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('id_invoice', 191)->unique();
+            $table->string('user_id');
             $table->string('razonsocial');
             $table->string('rfc');
             $table->text('description');

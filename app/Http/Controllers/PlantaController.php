@@ -17,13 +17,7 @@ class PlantaController extends Controller
     {
         $user = Auth::user();
         if( $user->rfc != null ){
-            $plantas = Invoice::join('users', 'invoices.rfc', '=', 'users.rfc')
-                ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
-                ->join('plantas', 'invoices.id_invoice', '=', 'plantas.cididdocumento')
-                ->select('plantas.*')
-                ->where('invoices.rfc', "$user->rfc")
-                ->orderBy('plantas.fecha', 'desc')
-                ->paginate(10);
+            $plantas = Planta::where('user_id', $user->id)->orderBy('fecha', 'desc')->paginate(10);
         }else{
             $plantas = Planta::orderBy('fecha', 'desc')
             ->paginate(10);

@@ -16,6 +16,7 @@ class CreatePlantasTable extends Migration
         Schema::create('plantas', function (Blueprint $table) {
             $table->id();
             $table->string('cididdocumento', 10);
+            $table->string('user_id');
             $table->dateTime('fecha');
             $table->string('semana', 255);
             $table->string('serie', 50);

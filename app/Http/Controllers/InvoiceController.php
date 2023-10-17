@@ -21,6 +21,8 @@ use App\Models\SysSplendorUserRfcs;
 use App\Models\SplendorTablaDocumentos;
 use App\Models\SplendorTablaMovimientos;
 use App\Models\SplendorTablaProductos;
+use App\Models\SplendorUser;
+use App\Models\RazonesSocialesByUser;
 
 
 class InvoiceController extends Controller
@@ -226,9 +228,34 @@ class InvoiceController extends Controller
 
     public function refresh_invoices()
     {
+        /*Obtener los RFC's de los Productores de la taba de usuarios MySQL*/
+        $main_rfc_by_user = User::whereNotNull('razonsocial')
+                    ->where('razonsocial', '<>', '')
+                    ->get();
+        /*Obtener los otros RFC's relacionados al RFC principal de SQL*/
+        foreach($main_rfc_by_user as $main_rfc){
+            $user_id = $main_rfc->id;
+            $other_rfcs = SplendorUser::where('CRFC', '=', $main_rfc->rfc)->get();
+            foreach($other_rfcs as $other_rfc){
+                $cidclienteproveedor = $other_rfc->CIDCLIENTEPROVEEDOR;
+                //reviso que el $cidclienteproveedor no exista en la tabla user_rfcs
+                $cidclienteproveedor_exist = SysSplendorUserRfcs::where('cidclienteproveedor', '=', $cidclienteproveedor)->first();
+                if( !$cidclienteproveedor_exist ){
+                    $razon_social = new RazonesSocialesByUser();
+                    $razon_social->user_id = $user_id;
+                    $razon_social->cidclienteproveedor = $other_rfc->CIDCLIENTEPROVEEDOR;
+                    $razon_social->ccodigocliente = $other_rfc->CCODIGOCLIENTE;
+                    $razon_social->crazonsocial = $other_rfc->CRAZONSOCIAL;
+                    $razon_social->save(); 
+                }
+            }
+        }
+        
         /******* FACTURAS ********* */
-        $ids_cliente_proveedor = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
-        foreach($ids_cliente_proveedor as $id_cliente_proveedor){
+        $userRfcs = SysSplendorUserRfcs::get();
+        foreach($userRfcs as $user_rfc){
+            $user_id = $user_rfc->user_id;
+            $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 19 (Facturas)
             $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
             ->where('CIDDOCUMENTODE', '=' , 19)
@@ -250,6 +277,7 @@ class InvoiceController extends Controller
                     $invoicesToInsert = [
                         'id_invoice' => $doc_invoice->CIDDOCUMENTO,
                         'razonsocial' => $doc_invoice->CRAZONSOCIAL,
+                        'user_id' => $user_id,
                         'rfc' => $doc_invoice->CRFC,
                         'description' => $doc_invoice->CREFERENCIA,
                         'financiamiento' => $doc_invoice->CIMPORTEEXTRA1,
@@ -270,12 +298,14 @@ class InvoiceController extends Controller
         }
         /*******FRUTAS ********* */
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
-        $users_rfcs = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
-        foreach($users_rfcs as $user_rfc){
+        $userRfcs = SysSplendorUserRfcs::get();
+        foreach($userRfcs as $user_rfc){
+            $user_id = $user_rfc->user_id;
+            $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 18 (FRUTAS)
             $documentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
             ->where('CIDDOCUMENTODE', '=' , 18)
-            ->where('CIDCLIENTEPROVEEDOR', '=' , $user_rfc)
+            ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
             
             //SE VERIFICA QUE TENGA DOCUMENTOS DE FRUTAS
@@ -293,6 +323,7 @@ class InvoiceController extends Controller
                                         ->first();
                         $frutsToInsert = [
                                 'cididdocumento' => $documentos[$key]['CIDDOCUMENTO'],
+                                'user_id' => $user_id,
                                 'fecha' => $documentos[$key]['CFECHA'],
                                 'serie' => $documentos[$key]['CSERIEDOCUMENTO'],
                                 'folio' => $documentos[$key]['CFOLIO'],                    
@@ -309,8 +340,10 @@ class InvoiceController extends Controller
         }
         /******* PLANTAS ********* */
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
-        $ids_cliente_proveedor = SysSplendorUserRfcs::pluck('cidclienteproveedor')->toArray();
-        foreach($ids_cliente_proveedor as $id_cliente_proveedor){
+        $userRfcs = SysSplendorUserRfcs::get();
+        foreach($userRfcs as $user_rfc){
+            $user_id = $user_rfc->user_id;
+            $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 4 (PLANTAS)
             $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
             ->where('CIDDOCUMENTODE', '=' , 4)
@@ -332,6 +365,7 @@ class InvoiceController extends Controller
                 foreach($docs_plantas as $doc_planta){
                     $plantasToInsert = [
                         'cididdocumento' => $doc_planta->CIDDOCUMENTO,
+                        'user_id' => $user_id,
                         'fecha' => $doc_planta->CFECHA,
                         'semana' => getWeekNumber($doc_planta->CFECHA),
                         'serie' => $doc_planta->CSERIEDOCUMENTO,
