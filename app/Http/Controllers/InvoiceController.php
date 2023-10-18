@@ -287,7 +287,7 @@ class InvoiceController extends Controller
                         'materiales' => $doc_invoice->CIMPORTEEXTRA4,
                         'monto' => $doc_invoice->CTOTAL,
                         'moneda' => $doc_invoice->CIDMONEDA,
-                        'tipocambio' => $doc_invoice->CTIPOCAMBIO,
+                        'tipocambio' => round($doc_invoice->CTIPOCAMBIO, 2),
                         'fecha' => $doc_invoice->CFECHA,
                         'semana' => getWeekNumber($doc_invoice->CFECHA),
                         'cancelado' => $doc_invoice->CCANCELADO,
