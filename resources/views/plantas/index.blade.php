@@ -45,8 +45,8 @@
                           <td>{{ $planta->concepto }}</td>
                           <td>{{ $planta->importe }}</td>
                           <td>{{ $planta->iva }}</td>
-                          <td>{{ $planta->total }}</td>
-                          <td>{{ $planta->pendiente }}</td>
+                          <td>${{ number_format($planta->total, 2, '.', ',') }} MXN</td>
+                          <td>${{ number_format($planta->pendiente, 2, '.', ',') }} MXN</td>
                         </tr>
                         @empty
                         <tr>

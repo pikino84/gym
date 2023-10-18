@@ -23,6 +23,7 @@ use App\Models\SplendorTablaMovimientos;
 use App\Models\SplendorTablaProductos;
 use App\Models\SplendorUser;
 use App\Models\RazonesSocialesByUser;
+use App\Models\Prestamo;
 
 
 class InvoiceController extends Controller
@@ -377,6 +378,73 @@ class InvoiceController extends Controller
                         'pendiente' => $doc_planta->CUNIDADESPENDIENTES,
                     ];
                     Planta::insert($plantasToInsert);    
+                }
+            }
+        }
+        /******* PRESTAMOS ********* */
+        //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
+        $userRfcs = SysSplendorUserRfcs::get();
+        foreach($userRfcs as $user_rfc){
+            $user_id = $user_rfc->user_id;
+            $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
+            //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 15 y 14 (PRESTAMOS Y DESCUENTOS)
+            $docs_prestamos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA')
+            ->where('CIDDOCUMENTODE', '=' , 15)
+            ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
+            ->get();
+            if( count($docs_prestamos) > 0){
+                $cids_docs = [];
+                foreach($docs_prestamos as $doc_prestamo){
+                    $cids_docs[] = $doc_prestamo->CIDDOCUMENTO;
+                }
+                //Obtengo los id de las plantas que ya existen en la base de datos
+                $existingIds = Prestamo::pluck('cididdocumento')->toArray();
+                // Compara el array $cids_docs con $existingIds y devuelve los que no existen en la base de datos
+                $new_cids_docs = array_filter($cids_docs, function ($item) use ($existingIds) {
+                    return !in_array($item, $existingIds);
+                });
+                $docs_prestamos = SplendorTablaDocumentos::whereIn('CIDDOCUMENTO', $new_cids_docs)->get();
+                foreach($docs_prestamos as $doc_prestamo){
+                    $prestamosToInsert = [
+                        'cididdocumento' => $doc_prestamo->CIDDOCUMENTO,
+                        'user_id' => $user_id,
+                        'fecha' => $doc_prestamo->CFECHA,
+                        'serie' => $doc_prestamo->CSERIEDOCUMENTO,
+                        'folio' => $doc_prestamo->CFOLIO,
+                        'total' => $doc_prestamo->CTOTAL,
+                        'naturaleza' => $doc_prestamo->CNATURALEZA,
+                    ];
+                    Prestamo::insert($prestamosToInsert);    
+                }
+                
+            }
+            $docs_descuentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA')
+            ->where('CIDDOCUMENTODE', '=' , 14)
+            ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
+            ->get();
+            if( count($docs_descuentos) > 0){
+                $cids_docs = [];
+                foreach($docs_descuentos as $doc_descuento){
+                    $cids_docs[] = $doc_descuento->CIDDOCUMENTO;
+                }
+                //Obtengo los id de las plantas que ya existen en la base de datos
+                $existingIds = Prestamo::pluck('cididdocumento')->toArray();
+                // Compara el array $cids_docs con $existingIds y devuelve los que no existen en la base de datos
+                $new_cids_docs = array_filter($cids_docs, function ($item) use ($existingIds) {
+                    return !in_array($item, $existingIds);
+                });
+                $docs_descuentos = SplendorTablaDocumentos::whereIn('CIDDOCUMENTO', $new_cids_docs)->get();
+                foreach($docs_descuentos as $doc_descuento){
+                    $prestamosToInsert = [
+                        'cididdocumento' => $doc_descuento->CIDDOCUMENTO,
+                        'user_id' => $user_id,
+                        'fecha' => $doc_descuento->CFECHA,
+                        'serie' => $doc_descuento->CSERIEDOCUMENTO,
+                        'folio' => $doc_descuento->CFOLIO,
+                        'total' => $doc_descuento->CTOTAL,
+                        'naturaleza' => $doc_descuento->CNATURALEZA,
+                    ];
+                    Prestamo::insert($prestamosToInsert);    
                 }
             }
         }

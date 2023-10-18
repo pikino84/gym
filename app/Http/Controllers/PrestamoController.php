@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prestamo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PrestamoController extends Controller
@@ -14,7 +15,14 @@ class PrestamoController extends Controller
      */
     public function index()
     {
-        return view('prestamos.index');
+        $user = Auth::user();
+        if( $user->rfc != null ){
+            $prestamos = Prestamo::where('user_id', $user->id)->orderBy('fecha', 'asc')->paginate(10);
+        }else{
+            $prestamos = Prestamo::orderBy('fecha', 'asc')
+            ->paginate(10);
+        }
+        return view('prestamos.index', compact('prestamos'));
     }
 
     /**
