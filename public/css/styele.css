@@ -33,8 +33,7 @@
 }
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
   padding: 2px 0px;
-  vertical-align: middle;
-  border-color: #ddd;
+  font-size: 13px;
 }
 @media only screen and (max-width: 991px){
   .close__sidebar_movil{

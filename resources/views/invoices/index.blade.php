@@ -72,7 +72,6 @@
                       <table class="table">
                         <thead class="text-primary">
                           <th>#</th>
-                          <th>CIDDOCUMENTO</th>
                           <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto facturado</th>
@@ -103,7 +102,6 @@
                             @endphp
                             <tr>
                               <td>{{ $cont }}</td>
-                              <td>{{ $invoice->id_invoice }}</td>
                               <td>{{ $invoice->razonsocial }}</td>
                               <td>{{ $invoice->description }}</td>
                               <td>${{ number_format($invoice->monto, 2, '.', ',') }} MXN + IVA 0%</td>
