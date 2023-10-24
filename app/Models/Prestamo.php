@@ -17,5 +17,6 @@ class Prestamo extends Model
         'serie',
         'total',
         'naturaleza',
+        'pendiente'
     ];
 }

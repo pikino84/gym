@@ -35,11 +35,10 @@
                           $cont++;
                         @endphp
                           <td>{{ $cont }}</td>
-                          <td>{{ $prestamo->cididdocumento }}</td>
                           <td>{{ date('Y-m-d', strtotime($prestamo->fecha)) }}</td>
                           <td>{{ $prestamo->serie }}</td>
                           <td>{{ $prestamo->folio }}</td>
-                          @if ($prestamo->naturaleza == 1)
+                          @if ($prestamo->naturaleza == 0)
                             @php
                               $totalPrestamos += $prestamo->total;
                             @endphp
@@ -52,6 +51,7 @@
                             @endphp
                             <td>${{ number_format($prestamo->total, 2, '.', ',') }} MXN</td>
                           @endif
+                          <td>${{ number_format($prestamo->pendiente, 2, '.', ',') }} MXN</td>
                         </tr>
                         @empty
                         <tr>
@@ -66,10 +66,10 @@
                           <td><b>Total de descuentos:</b> ${{ number_format($totalDescuentos, 2, '.', ',') }} MXN</td>
                         </tr>
                         <tr>
-                          <td><b>Total de deudas:</b> ${{ number_format($totalPrestamos, 2, '.', ',') }} MXN</td>
+                          <td><b>Total de prestamo:</b> ${{ number_format($totalPrestamos, 2, '.', ',') }} MXN</td>
                         </tr>
                         <tr>
-                          <td><b>Deuda total</b> ${{ number_format($totalDescuentos - $totalPrestamos , 2, '.', ',') }} MXN</td>
+                          <td><b>Deuda total</b> ${{ number_format($totalPrestamos -$totalDescuentos , 2, '.', ',') }} MXN</td>
                         </tr>
                       </table>
                     </div>

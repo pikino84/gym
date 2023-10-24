@@ -388,7 +388,7 @@ class InvoiceController extends Controller
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 15 y 14 (PRESTAMOS Y DESCUENTOS)
-            $docs_prestamos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA')
+            $docs_prestamos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA', 'CPENDIENTE')
             ->where('CIDDOCUMENTODE', '=' , 15)
             ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
@@ -413,12 +413,13 @@ class InvoiceController extends Controller
                         'folio' => $doc_prestamo->CFOLIO,
                         'total' => $doc_prestamo->CTOTAL,
                         'naturaleza' => $doc_prestamo->CNATURALEZA,
+                        'pendiente' => $doc_prestamo->CPENDIENTE,
                     ];
                     Prestamo::insert($prestamosToInsert);    
                 }
                 
             }
-            $docs_descuentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA')
+            $docs_descuentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA', 'CPENDIENTE')
             ->where('CIDDOCUMENTODE', '=' , 14)
             ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
@@ -443,6 +444,7 @@ class InvoiceController extends Controller
                         'folio' => $doc_descuento->CFOLIO,
                         'total' => $doc_descuento->CTOTAL,
                         'naturaleza' => $doc_descuento->CNATURALEZA,
+                        'pendiente' => $doc_descuento->CPENDIENTE,
                     ];
                     Prestamo::insert($prestamosToInsert);    
                 }
