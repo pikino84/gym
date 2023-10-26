@@ -16,6 +16,7 @@ class CreateRegaliasTable extends Migration
         Schema::create('regalias', function (Blueprint $table) {
             $table->id();
             $table->string('cididdocumento', 50);
+            $table->string('user_id');
             $table->dateTime('fecha');
             $table->string('semana');
             $table->string('serie', 50);
@@ -24,6 +25,7 @@ class CreateRegaliasTable extends Migration
             $table->string('importe', 100);
             $table->string('iva', 100);
             $table->string('total', 100);
+            $table->string('pendiente', 100);   
             $table->timestamps();
         });
     }

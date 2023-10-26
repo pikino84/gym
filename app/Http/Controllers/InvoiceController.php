@@ -3,6 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InvoiceCreateRequest;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use SimpleXMLElement;
+use ZipArchive;
+
+
+use App\Models\SplendorTablaClientes;
+use App\Models\SplendorTablaDocumentos;
+use App\Models\SplendorTablaMovimientos;
+use App\Models\SplendorTablaProductos;
+
+use App\Models\SysSplendorUserRfcs;
+use App\Models\SplendorUser;
+use App\Models\RazonesSocialesByUser;
+use App\Models\Prestamo;
 use App\Models\Invoice;
 use App\Models\Fruta;
 use App\Models\Planta;
@@ -11,19 +28,6 @@ use App\Models\Deuda;
 use App\Models\Financiamiento;
 use App\Models\User;
 use App\Models\Estatus;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use SimpleXMLElement;
-use ZipArchive;
-
-use App\Models\SysSplendorUserRfcs;
-use App\Models\SplendorTablaDocumentos;
-use App\Models\SplendorTablaMovimientos;
-use App\Models\SplendorTablaProductos;
-use App\Models\SplendorUser;
-use App\Models\RazonesSocialesByUser;
-use App\Models\Prestamo;
 
 
 class InvoiceController extends Controller
@@ -251,8 +255,9 @@ class InvoiceController extends Controller
                 }
             }
         }
-        
+        /****************************/
         /******* FACTURAS ********* */
+        /****************************/
         $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
             $user_id = $user_rfc->user_id;
@@ -297,7 +302,9 @@ class InvoiceController extends Controller
                 }
             }
         }
-        /*******FRUTAS ********* */
+        /*************************/
+        /*******FRUTAS **********/
+        /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
         $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
@@ -339,7 +346,9 @@ class InvoiceController extends Controller
                 }
             }
         }
-        /******* PLANTAS ********* */
+        /*************************/
+        /******* PLANTAS *********/
+        /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
         $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
@@ -381,7 +390,9 @@ class InvoiceController extends Controller
                 }
             }
         }
-        /******* PRESTAMOS ********* */
+        /*************************/
+        /******* PRESTAMOS *******/
+        /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
         $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
@@ -397,7 +408,7 @@ class InvoiceController extends Controller
                 foreach($docs_prestamos as $doc_prestamo){
                     $cids_docs[] = $doc_prestamo->CIDDOCUMENTO;
                 }
-                //Obtengo los id de las plantas que ya existen en la base de datos
+                //Obtengo los id de los prestamos que ya existen en la base de datos
                 $existingIds = Prestamo::pluck('cididdocumento')->toArray();
                 // Compara el array $cids_docs con $existingIds y devuelve los que no existen en la base de datos
                 $new_cids_docs = array_filter($cids_docs, function ($item) use ($existingIds) {
@@ -447,6 +458,64 @@ class InvoiceController extends Controller
                         'pendiente' => $doc_descuento->CPENDIENTE,
                     ];
                     Prestamo::insert($prestamosToInsert);    
+                }
+            }
+        }
+        /*************************/
+        /******* REGALIAS ********/
+        /*************************/
+        //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
+        $userRfcs = SysSplendorUserRfcs::get();
+        foreach($userRfcs as $user_rfc){
+            $user_id = $user_rfc->user_id;
+            $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
+            //SE OBTINE CLIENTES CON REGALIAS
+            $regalias_clientes = SplendorTablaClientes::select('CIDCLIENTEPROVEEDOR')
+                                 ->where('CIDCLIENTEPROVEEDOR', '=', $id_cliente_proveedor)
+                                 ->where('CIDVALORCLASIFCLIENTE1', '=', 30)
+                                 ->get();
+            if( count($regalias_clientes) > 0){
+                
+                foreach($regalias_clientes as $regalias_cliente){
+                    $regalias_documents = SplendorTablaDocumentos::select('admDocumentos.CIDDOCUMENTO',  'admDocumentos.CIDDOCUMENTODE', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CFECHA', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CFOLIO', 'admDocumentos.CIMPUESTO1', 'admDocumentos.CTOTAL', 'admDocumentos.CPENDIENTE', 'CNOMBREPRODUCTO')
+                                           ->leftJoin('admMovimientos', 'admMovimientos.CIDDOCUMENTO', '=', 'admDocumentos.CIDDOCUMENTO')
+                                           ->leftJoin('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
+                                           ->where('CIDCLIENTEPROVEEDOR', '=', $regalias_cliente->CIDCLIENTEPROVEEDOR)
+                                           ->where('admDocumentos.CIDDOCUMENTODE', '=', 4)
+                                           ->get();
+                    if( count($regalias_documents) > 0){
+                        $cids_docs = [];
+                        foreach($regalias_documents as $regalias_document){
+                            $cids_docs[] = $regalias_document->CIDDOCUMENTO;
+                        }
+                        //Obtengo los id de las regalias que ya existen en la base de datos
+                        $existingIds = Regalia::pluck('cididdocumento')->toArray();
+                        // Compara el array $cids_docs con $existingIds y devuelve los que no existen en la base de datos
+                        $new_cids_docs = array_filter($cids_docs, function ($item) use ($existingIds) {
+                            return !in_array($item, $existingIds);
+                        });
+                        $regalias_documents = SplendorTablaDocumentos::select('admDocumentos.CIDDOCUMENTO',  'admDocumentos.CIDDOCUMENTODE', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CFECHA', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CFOLIO', 'admDocumentos.CIMPUESTO1', 'admDocumentos.CTOTAL', 'admDocumentos.CPENDIENTE', 'CNOMBREPRODUCTO')
+                                            ->leftJoin('admMovimientos', 'admMovimientos.CIDDOCUMENTO', '=', 'admDocumentos.CIDDOCUMENTO')
+                                            ->leftJoin('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
+                                            ->where('admDocumentos.CIDDOCUMENTO', $new_cids_docs)
+                                            ->get();
+                        foreach($regalias_documents as $regalias_document){
+                            $regaliasToInsert = [
+                                'cididdocumento' => $regalias_document->CIDDOCUMENTO,
+                                'user_id' => $user_id,
+                                'fecha' => $regalias_document->CFECHA,
+                                'semana' => getWeekNumber($regalias_document->CFECHA),
+                                'serie' => $regalias_document->CSERIEDOCUMENTO,
+                                'folio' => $regalias_document->CFOLIO,
+                                'concepto' => $regalias_document->CNOMBREPRODUCTO,
+                                'importe' => $regalias_document->CTOTAL,
+                                'iva' => $regalias_document->CIMPUESTO1,
+                                'total' => $regalias_document->CTOTAL,
+                                'pendiente' => $regalias_document->CPENDIENTE,
+                            ];
+                            Regalia::insert($regaliasToInsert);    
+                        }
+                    }
                 }
             }
         }

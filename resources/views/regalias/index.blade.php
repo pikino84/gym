@@ -25,6 +25,7 @@
                         <th>Importe</th>
                         <th>IVA</th>
                         <th>Total</th>
+                        <th>Deuda</th>
                       </thead>
                       <tbody>
                         @forelse ($regalias as $regalia)
@@ -36,8 +37,9 @@
                           <td>{{ $regalia->folio }}</td>
                           <td>{{ $regalia->concepto }}</td>
                           <td>{{ $regalia->importe }}</td>
-                            <td>{{ $regalia->iva }}</td>
+                          <td>{{ $regalia->iva }}</td>
                           <td>{{ $regalia->total }}</td>
+                          <td>{{ $regalia->pendiente }}</td>
                         </tr>
                         @empty
                         <tr>

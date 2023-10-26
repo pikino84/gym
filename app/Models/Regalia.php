@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Regalia extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'fecha', 'semana', 'serie', 'folio', 'concepto', 'importe', 'iva', 'total'];
+    protected $fillable = ['cididdocumento', 'user_id', 'fecha', 'semana', 'serie', 'folio', 'concepto', 'importe', 'iva', 'total', 'pendiente'];
 
     public function validar()
     {
         return [
-            'id' => 'required',
+            'cididdocumento' => 'required',
+            'user_id' => 'required',
             'fecha' => 'required',
             'semana' => 'required',
             'serie' => 'required',
@@ -21,7 +22,8 @@ class Regalia extends Model
             'concepto' => 'required',
             'importe' => 'required',
             'iva' => 'required',
-            'total' => 'required'
+            'total' => 'required',
+            'pendiente' => 'required'
         ];
     }
 }
