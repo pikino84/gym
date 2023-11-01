@@ -36,10 +36,10 @@
                           <td>{{ $regalia->serie }}</td>
                           <td>{{ $regalia->folio }}</td>
                           <td>{{ $regalia->concepto }}</td>
-                          <td>{{ $regalia->importe }}</td>
-                          <td>{{ $regalia->iva }}</td>
-                          <td>{{ $regalia->total }}</td>
-                          <td>{{ $regalia->pendiente }}</td>
+                          <td>${{ number_format($regalia->importe, 2, '.', ',') }} MXN</td>
+                          <td>${{ number_format($regalia->iva, 2, '.', ',') }} MXN</td>
+                          <td>${{ number_format($regalia->total, 2, '.', ',') }} MXN</td>
+                          <td>${{ number_format($regalia->pendiente, 2, '.', ',') }} MXN</td>
                         </tr>
                         @empty
                         <tr>
