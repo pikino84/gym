@@ -17,10 +17,10 @@ class RegaliasController extends Controller
                 ->select('regalias.*')
                 ->where('invoices.razonsocial', $user->razonsocial)
                 ->orderBy('regalias.fecha', 'desc')
-                ->paginate(10);
+                ->paginate(20);
         }else{
             $regalias = Regalia::orderBy('fecha', 'desc')
-            ->paginate(10);
+            ->paginate(20);
         }
         return view('regalias.index', compact('regalias')); 
     }

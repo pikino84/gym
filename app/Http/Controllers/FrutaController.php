@@ -13,10 +13,10 @@ class FrutaController extends Controller
     {
         $user = Auth::user();
         if( $user->rfc != null ){
-            $frutas = Fruta::where('user_id', $user->id)->orderBy('fecha', 'desc')->paginate(10);
+            $frutas = Fruta::where('user_id', $user->id)->orderBy('fecha', 'desc')->paginate(20);
         }else{
             $frutas = Fruta::orderBy('fecha', 'desc')
-            ->paginate(10);
+            ->paginate(20);
         }
         return view('frutas.index', compact('frutas'));
     }

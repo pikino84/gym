@@ -17,10 +17,10 @@ class PlantaController extends Controller
     {
         $user = Auth::user();
         if( $user->rfc != null ){
-            $plantas = Planta::where('user_id', $user->id)->orderBy('fecha', 'desc')->paginate(10);
+            $plantas = Planta::where('user_id', $user->id)->orderBy('fecha', 'desc')->paginate(20);
         }else{
             $plantas = Planta::orderBy('fecha', 'desc')
-            ->paginate(10);
+            ->paginate(20);
         }
         return view('plantas.index', compact('plantas'));
     }

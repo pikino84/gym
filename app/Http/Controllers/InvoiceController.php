@@ -306,7 +306,6 @@ class InvoiceController extends Controller
         /*******FRUTAS **********/
         /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
-        $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
@@ -350,7 +349,6 @@ class InvoiceController extends Controller
         /******* PLANTAS *********/
         /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
-        $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
@@ -394,7 +392,6 @@ class InvoiceController extends Controller
         /******* PRESTAMOS *******/
         /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
-        $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
@@ -465,7 +462,6 @@ class InvoiceController extends Controller
         /******* REGALIAS ********/
         /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
-        $userRfcs = SysSplendorUserRfcs::get();
         foreach($userRfcs as $user_rfc){
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
@@ -497,7 +493,7 @@ class InvoiceController extends Controller
                         $regalias_documents = SplendorTablaDocumentos::select('admDocumentos.CIDDOCUMENTO',  'admDocumentos.CIDDOCUMENTODE', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CFECHA', 'admDocumentos.CSERIEDOCUMENTO', 'admDocumentos.CFOLIO', 'admDocumentos.CIMPUESTO1', 'admDocumentos.CTOTAL', 'admDocumentos.CPENDIENTE', 'CNOMBREPRODUCTO')
                                             ->leftJoin('admMovimientos', 'admMovimientos.CIDDOCUMENTO', '=', 'admDocumentos.CIDDOCUMENTO')
                                             ->leftJoin('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
-                                            ->where('admDocumentos.CIDDOCUMENTO', $new_cids_docs)
+                                            ->whereIn('admDocumentos.CIDDOCUMENTO', $new_cids_docs)
                                             ->get();
                         foreach($regalias_documents as $regalias_document){
                             $regaliasToInsert = [
