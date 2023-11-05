@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\User;
+use App\Models\SysSplendorUserRfcs;
+use App\Models\Fruta;
+use App\Models\Planta;
+use App\Models\Prestamo;
+use App\Models\Regalia;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
@@ -149,14 +155,20 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user, SysSplendorUserRfcs $sysSplendorUserRfcs, Fruta $fruta, Planta $planta, Prestamo $prestamo, Regalia $regalia, Invoice $invoice)
     {
         abort_if(Gate::denies('user_destroy'), 403);
 
         if (auth()->user()->id == $user->id) {
             return redirect()->route('users.index');
         }
-
+        
+        SysSplendorUserRfcs::where('user_id', $user->id)->delete();
+        Fruta::where('user_id', $user->id)->delete();
+        Planta::where('user_id', $user->id)->delete();
+        Prestamo::where('user_id', $user->id)->delete();
+        Regalia::where('user_id', $user->id)->delete();
+        Invoice::where('user_id', $user->id)->delete();
         $user->delete();
         return back()->with('succes', 'Usuario eliminado correctamente');
     }

@@ -17,6 +17,7 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
+                        <th>Productor</th>
                         <th>Fecha</th>
                         <th>Semana</th>
                         <th>Serie</th>
@@ -31,6 +32,7 @@
                         @forelse ($regalias as $regalia)
                         <tr>
                           <td>{{ $regalia->id }}</td>
+                          <td>{{ $regalia->razonsocial }}</td>
                           <td>{{ date('Y-m-d', strtotime($regalia->fecha)) }}</td>
                           <td>{{ $regalia->semana }}</td>
                           <td>{{ $regalia->serie }}</td>

@@ -14611,6 +14611,11 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   color: #fff;
   fill: #fff;
 }
+.sidebar .nav li.active>a.stroke,
+.sidebar .nav li.active>a.stroke i,
+.sidebar .nav li.active>a.stroke path {
+  stroke: #fff;
+}
 
 .sidebar .nav li.separator {
   margin: 15px 0;
@@ -18743,9 +18748,7 @@ Copyright (c) 2015 Daniel Eden
   .dropdown-menu {
     display: none;
   }
-  .navbar-fixed-top {
-    -webkit-backface-visibility: hidden;
-  }
+ 
   #bodyClick {
     height: 100%;
     width: 100%;
@@ -18855,6 +18858,4 @@ Copyright (c) 2015 Daniel Eden
     margin-bottom: 0;
     list-style: none;
 }
-
-
-/*# sourceMappingURL=dashboard-free.css.map */
+}

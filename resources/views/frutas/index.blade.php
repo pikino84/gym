@@ -17,6 +17,7 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
+                        <th>Productor</th>
                         <th>Fecha</th>
                         <th>Serie</th>
                         <th>Folio</th>
@@ -30,6 +31,7 @@
                         @forelse ($frutas as $fruta)
                         <tr>
                           <td>{{ $fruta->id }}</td>
+                          <td>{{ $fruta->razonsocial }}</td>
                           <td>{{ date('Y-m-d', strtotime($fruta->fecha)) }}</td>
                           <td>{{ $fruta->serie }}</td>
                           <td>{{ $fruta->folio }}</td>

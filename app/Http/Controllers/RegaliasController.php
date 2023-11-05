@@ -15,11 +15,13 @@ class RegaliasController extends Controller
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->join('regalias', 'invoices.id', '=', 'regalias.id')
                 ->select('regalias.*')
+                ->selectRaw('users.razonsocial')
                 ->where('invoices.razonsocial', $user->razonsocial)
                 ->orderBy('regalias.fecha', 'desc')
                 ->paginate(20);
         }else{
-            $regalias = Regalia::orderBy('fecha', 'desc')
+            $regalias = Regalia::leftJoin('users', 'regalias.user_id', '=', 'users.id')
+            ->orderBy('fecha', 'desc')
             ->paginate(20);
         }
         return view('regalias.index', compact('regalias')); 

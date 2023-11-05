@@ -17,6 +17,7 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
+                        <th>Productor</th>
                         <th>Fecha</th>
                         <th>Serie</th>
                         <th>Folio</th>
@@ -35,6 +36,7 @@
                           $cont++;
                         @endphp
                           <td>{{ $cont }}</td>
+                          <td>{{ $prestamo->razonsocial }}</td>
                           <td>{{ date('Y-m-d', strtotime($prestamo->fecha)) }}</td>
                           <td>{{ $prestamo->serie }}</td>
                           <td>{{ $prestamo->folio }}</td>

@@ -15,6 +15,7 @@ php artisan make:controller -mcr
 
 https://materializecss.com/icons.html
 https://pictogrammers.com/library/mdi/icon/sprout/
+https://www.svgrepo.com/
 
 //Permisos
 _index

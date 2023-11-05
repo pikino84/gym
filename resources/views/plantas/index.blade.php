@@ -17,6 +17,7 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
+                        <th>Productor</th>
                         <th>CIDDOCUMENTO</th>
                         <th>Fecha</th>
                         <th>Semana</th>
@@ -37,6 +38,7 @@
                           $cont++;
                         @endphp
                           <td>{{ $cont }}</td>
+                          <td>{{ $planta->razonsocial }}</td>
                           <td>{{ $planta->cididdocumento }}</td>
                           <td>{{ date('Y-m-d', strtotime($planta->fecha)) }}</td>
                           <td>{{ $planta->semana }}</td>

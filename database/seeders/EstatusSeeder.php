@@ -16,9 +16,9 @@ class EstatusSeeder extends Seeder
     {
         $estatus = [
             ['nombre' => 'Pendiente'],
-            ['nombre' => 'Valido'],
+            ['nombre' => 'Válido'],
             ['nombre' => 'En proceso de pago'],
-            ['nombre' => 'Cancelado'],
+            ['nombre' => 'Pagado'],
         ];
 
         DB::table('estatus')->insert($estatus);

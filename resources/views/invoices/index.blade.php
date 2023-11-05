@@ -75,10 +75,10 @@
                           <th>Productor</th>
                           <th>Descripción</th>
                           <th>Monto facturado</th>
-                          <th style="background: #ffab91; color: #000;">Financiamiento</th>
-                          <th style="background: #ffc400; color: #000;">Regalias</th>
-                          <th style="background: #03a9f4; color: #000;">Plantas</th>
-                          <th style="background: #4caf50; color: #000;">Materiales</th>
+                          <th style="background: #f7683d; color: #fff; text-align:center;">Financiamiento</th>
+                          <th style="background: #eeb700; color: #fff; text-align:center;">Regalias</th>
+                          <th style="background: #01a1eb; color: #fff; text-align:center;">Plantas</th>
+                          <th style="background: #02b408; color: #fff; text-align:center;">Materiales</th>
                           <th>Monto a pagar</th>
                           <th>Moneda</th>
                           <th>Tipo de cambio</th>
@@ -119,34 +119,34 @@
                               @can('invoice_create')
                               <td  class="td-actions text-center">
                                 @if( $invoice->xml != null && $invoice->id_status == 2)
-                                <button class="btn btn-facebook" onclick="sendApproval('{{ route('invoices.approved', $invoice->id) }}', this)">
-                                  <i class="material-icons">thumb_up</i>
+                                <button class="btn btn-facebook" title="Factura pendiente de aprobar" onclick="sendApproval('{{ route('invoices.approved', $invoice->id) }}', this)">
+                                  <i class="material-icons" >thumb_up</i>
                                 </button>
                                 @elseif($invoice->id_status == 3)
-                                  <a href="javascript:void(0)" class="btn blue-grey lighten-3"><i class="material-icons">thumb_up</i></a>
+                                  <a href="javascript:void(0)" class="btn blue-grey lighten-3" title="Factura ya aprobada"><i class="material-icons">thumb_up</i></a>
                                 @endif
                               </td>
                               @endcan
                               @can('invoice_create')
                               <td  class="td-actions text-center">
                                 @if( $invoice->xml != null )
-                                  <a href="{{ route('invoices.download',$invoice->id) }}" class="btn btn-info"><i class="material-icons">cloud_download</i></a>
+                                  <a href="{{ route('invoices.download',$invoice->id) }}" class="btn btn-info" title="Descargar factura PDF y XML"><i class="material-icons">cloud_download</i></a>
                                 @endif
                               </td>
                               @endcan
                               <td class="td-actions text-right">
-                                  <a href="{{ route('invoices.up_docs', $invoice->id) }}" class="btn btn-warning"><i class="material-icons">backup</i></a>
+                                  <a href="{{ route('invoices.up_docs', $invoice->id) }}" class="btn btn-warning" title="Subir factura PDF y XML"><i class="material-icons">backup</i></a>
                                   @can('user_show')
-                                  <a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-info"><i class="material-icons">person</i></a>
+                                  <!--a href="{{ route('invoices.show', $invoice->id) }}" class="btn btn-info"><i class="material-icons">person</i></a-->
                                   @endcan
                                   @can('user_edit')  
-                                  <a href="{{ route('invoices.edit', $invoice->id) }}" class="btn btn-warning"><i class="material-icons">edit</i></a>
+                                  <a href="{{ route('invoices.edit', $invoice->id) }}" class="btn btn-rose" title="Editar"><i class="material-icons">edit</i></a>
                                   @endcan
                                   @can('user_destroy')
                                   <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro?')">
                                   @csrf
                                   @method('DELETE')
-                                      <button class="btn btn-danger" type="submit" rel="tooltip">
+                                      <button class="btn btn-danger" type="submit" title="Eliminar">
                                       <i class="material-icons">close</i>
                                       </button>
                                   </form>

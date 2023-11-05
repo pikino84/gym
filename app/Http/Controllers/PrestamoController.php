@@ -17,9 +17,11 @@ class PrestamoController extends Controller
     {
         $user = Auth::user();
         if( $user->rfc != null ){
-            $prestamos = Prestamo::where('user_id', $user->id)->orderBy('fecha', 'asc')->paginate(20);
+            $prestamos = Prestamo::leftJoin('users', 'prestamos.user_id', '=', 'users.id')
+            ->where('user_id', $user->id)->orderBy('fecha', 'asc')->paginate(20);
         }else{
-            $prestamos = Prestamo::orderBy('fecha', 'asc')
+            $prestamos = Prestamo::leftJoin('users', 'prestamos.user_id', '=', 'users.id')
+            ->orderBy('fecha', 'asc')
             ->paginate(20);
         }
         return view('prestamos.index', compact('prestamos'));

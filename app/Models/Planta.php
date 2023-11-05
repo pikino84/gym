@@ -11,6 +11,7 @@ class Planta extends Model
     protected $table = 'plantas';
     protected $fillable = [
         'cididdocumento',
+        'user_id',
         'fecha',
         'semana',
         'serie',
