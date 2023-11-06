@@ -48,13 +48,13 @@ class InvoiceController extends Controller
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->where('invoices.razonsocial', $user->razonsocial)
                 ->orderBy('invoices.fecha', 'desc')
-                ->paginate(10);
+                ->paginate(20);
         }else{
             $invoices = Invoice::join('users', 'invoices.razonsocial', '=', 'users.razonsocial')
                 ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                 ->select('invoices.*', 'users.razonsocial', 'estatus.nombre as status')
                 ->orderBy('invoices.fecha', 'desc')
-                ->paginate(10);
+                ->paginate(20);
         }
         $estatus = Estatus::all();
         return view('invoices.index', compact('invoices', 'estatus'));
@@ -263,7 +263,7 @@ class InvoiceController extends Controller
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 19 (Facturas)
-            $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
+            $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES', 'CCANCELADO')
             ->where('CIDDOCUMENTODE', '=' , 19)
             ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
@@ -396,7 +396,7 @@ class InvoiceController extends Controller
             $user_id = $user_rfc->user_id;
             $id_cliente_proveedor = $user_rfc->cidclienteproveedor;
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 15 y 14 (PRESTAMOS Y DESCUENTOS)
-            $docs_prestamos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA', 'CPENDIENTE')
+            $docs_prestamos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA', 'CPENDIENTE', 'CIDMONEDA', 'CTIPOCAMBIO')
             ->where('CIDDOCUMENTODE', '=' , 15)
             ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
@@ -419,6 +419,8 @@ class InvoiceController extends Controller
                         'fecha' => $doc_prestamo->CFECHA,
                         'serie' => $doc_prestamo->CSERIEDOCUMENTO,
                         'folio' => $doc_prestamo->CFOLIO,
+                        'moneda' => $doc_prestamo->CIDMONEDA,
+                        'tipodecambio' => $doc_prestamo->CTIPOCAMBIO,
                         'total' => $doc_prestamo->CTOTAL,
                         'naturaleza' => $doc_prestamo->CNATURALEZA,
                         'pendiente' => $doc_prestamo->CPENDIENTE,
@@ -427,7 +429,7 @@ class InvoiceController extends Controller
                 }
                 
             }
-            $docs_descuentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA', 'CPENDIENTE')
+            $docs_descuentos = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTAL', 'CNATURALEZA', 'CPENDIENTE', 'CIDMONEDA', 'CTIPOCAMBIO')
             ->where('CIDDOCUMENTODE', '=' , 14)
             ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
@@ -450,6 +452,8 @@ class InvoiceController extends Controller
                         'fecha' => $doc_descuento->CFECHA,
                         'serie' => $doc_descuento->CSERIEDOCUMENTO,
                         'folio' => $doc_descuento->CFOLIO,
+                        'moneda' => $doc_prestamo->CIDMONEDA,
+                        'tipodecambio' => $doc_prestamo->CTIPOCAMBIO,
                         'total' => $doc_descuento->CTOTAL,
                         'naturaleza' => $doc_descuento->CNATURALEZA,
                         'pendiente' => $doc_descuento->CPENDIENTE,
@@ -552,9 +556,8 @@ class InvoiceController extends Controller
         }else{
             $invoices = Invoice::all();
         }
-        
+        $filtros = [$productor,$estatus,$week];
         $estatus = Estatus::all();
-
-        return view('invoices.filters', compact('invoices', 'estatus'));
+        return view('invoices.filters', compact('invoices', 'estatus', 'filtros' ));
     }
 }

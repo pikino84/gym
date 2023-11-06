@@ -23,8 +23,9 @@ class PrestamoController extends Controller
             $prestamos = Prestamo::leftJoin('users', 'prestamos.user_id', '=', 'users.id')
             ->orderBy('fecha', 'asc')
             ->paginate(20);
+            $montos = Prestamo::select(['total', 'naturaleza', 'pendiente','moneda'])->get();
         }
-        return view('prestamos.index', compact('prestamos'));
+        return view('prestamos.index', compact(['prestamos', 'montos']));
     }
 
     /**

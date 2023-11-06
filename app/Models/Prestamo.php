@@ -15,6 +15,8 @@ class Prestamo extends Model
         'fecha',
         'folio',
         'serie',
+        'moneda',
+        'tipodecambio',
         'total',
         'naturaleza',
         'pendiente'

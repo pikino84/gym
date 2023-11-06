@@ -28,8 +28,6 @@
                       <tbody>
                         @php
                           $cont = 0;
-                          $totalPrestamos = 0;
-                          $totalDescuentos = 0;
                         @endphp
                         @forelse ($prestamos as $prestamo) 
                         @php
@@ -41,19 +39,13 @@
                           <td>{{ $prestamo->serie }}</td>
                           <td>{{ $prestamo->folio }}</td>
                           @if ($prestamo->naturaleza == 0)
-                            @php
-                              $totalPrestamos += $prestamo->total;
-                            @endphp
-                            <td>${{ number_format($prestamo->total, 2, '.', ',') }} MXN</td>
+                            <td>${{ number_format($prestamo->total, 2, '.', ',') }} {{ ($prestamo->moneda == 1?' MXN':' USD') }}</td>
                             <td></td>
                           @else
                             <td></td>
-                            @php
-                              $totalDescuentos += $prestamo->total;
-                            @endphp
-                            <td>${{ number_format($prestamo->total, 2, '.', ',') }} MXN</td>
+                            <td>${{ number_format($prestamo->total, 2, '.', ',') }} {{ ($prestamo->moneda == 1?' MXN':' USD') }}</td>
                           @endif
-                          <td>${{ number_format($prestamo->pendiente, 2, '.', ',') }} MXN</td>
+                          <td>${{ number_format($prestamo->pendiente, 2, '.', ',') }} {{ ($prestamo->moneda == 1?' MXN':' USD') }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -62,19 +54,75 @@
                         @endforelse
                       </tbody>
                     </table>
-                    <div class="table-responsive">
-                      <table>
+                  </div>
+                  @php
+                    $descuentosMXN = 0;
+                    $prestamosMXN = 0;
+                    $descuentosUSD = 0;
+                    $prestamosUSD = 0;
+                  @endphp
+                  @forelse ($montos as $monto)
+                    @if ($monto->naturaleza == 0)
+                      @if ($monto->moneda == 1)
+                        @php
+                          $prestamosMXN += $monto->total;
+                        @endphp                        
+                      @elseif ($monto->moneda == 2)
+                        @php
+                          $prestamosUSD += $monto->total;
+                        @endphp
+                      @endif
+                    @elseif ($monto->naturaleza == 1)
+                      @if ($monto->moneda == 1)
+                        @php
+                          $descuentosMXN += $monto->total;
+                        @endphp                        
+                      @elseif ($monto->moneda == 2)
+                        @php
+                          $descuentosUSD += $monto->total;
+                        @endphp
+                      @endif
+                    @endif
+                  @empty
+                    
+                  @endforelse
+                  <div class="table-responsive">
+                    <table>
+                      <tbody>
                         <tr>
-                          <td><b>Total de descuentos:</b> ${{ number_format($totalDescuentos, 2, '.', ',') }} MXN</td>
+                          <td>
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td><b>Total de prestamos:</b> ${{ number_format($prestamosMXN, 2, '.', ',') }} MXN</td>
+                                </tr>
+                                <tr>
+                                  <td><b>Total de descuentos:</b> ${{ number_format($descuentosMXN , 2, '.', ',') }} MXN</td>
+                                </tr>
+                                <tr>
+                                  <td><b>Deuda Total: </b>${{ number_format($prestamosMXN - $descuentosMXN , 2, '.', ',') }} MXN</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                          <td>
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td><b>Total de prestamos:</b> ${{ number_format($prestamosUSD, 2, '.', ',') }} USD</td>
+                                </tr>
+                                <tr>
+                                  <td><b>Total de descuentos:</b> ${{ number_format($descuentosUSD , 2, '.', ',') }} USD</td>
+                                </tr>
+                                <tr>
+                                  <td><b>Deuda Total: </b>${{ number_format($prestamosUSD - $descuentosUSD , 2, '.', ',') }} USD</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
                         </tr>
-                        <tr>
-                          <td><b>Total de prestamo:</b> ${{ number_format($totalPrestamos, 2, '.', ',') }} MXN</td>
-                        </tr>
-                        <tr>
-                          <td><b>Deuda total</b> ${{ number_format($totalPrestamos -$totalDescuentos , 2, '.', ',') }} MXN</td>
-                        </tr>
-                      </table>
-                    </div>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
                 <div class="card-footer mr-auto">

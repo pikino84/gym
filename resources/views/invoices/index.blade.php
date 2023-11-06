@@ -109,7 +109,7 @@
                               <td>${{ number_format($invoice->regalias, 2, '.', ',') }} MXN</td>
                               <td>${{ number_format($invoice->plantas, 2, '.', ',') }} MXN</td>
                               <td>${{ number_format($invoice->materiales, 2, '.', ',') }} MXN</td>
-                              <td>${{ number_format(  $totalapagar = $invoice->monto - $invoice->financiamiento - $invoice->regalias - $invoice->plantas - $invoice->materiales , 2, '.', ',') }} MXN </td>
+                              <td>${{ number_format(  $totalapagar = $invoice->monto - $invoice->financiamiento - $invoice->regalias - $invoice->plantas - $invoice->materiales , 2, '.', ',') }} {{ ($invoice->moneda == 1)?' MXN':' USD' }} </td>
                               <td>{{ ($invoice->moneda == 1)?'MXN':'USD' }}</td>
                               <td>{{ $invoice->tipocambio }}</td>
                               <td>{{ date('Y-m-d', strtotime($invoice->fecha)) }}</td>

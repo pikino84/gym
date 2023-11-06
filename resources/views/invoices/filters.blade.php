@@ -25,13 +25,17 @@
                           <div class="form-group row">
                             @can('invoice_create')
                             <div class="col-md-4 col-sm-12 ">
-                              <input type="text" style="height: 41px;" name="productor" value="{{ old('productor') }}" class="form-control" placeholder="Buscar por productor" autocomplete="off">
+                              <input type="text" style="height: 41px;" name="productor" value="{{ old('productor', $filtros[0]) }}" class="form-control" placeholder="Busca por productor" autocomplete="off">
                             </div>
                             <div class="col-md-2 col-sm-8 ">
                               <select class="form-control" name="estatus">
                               <option value="">Seleccionar estatus</option>
                               @foreach ($estatus as $statu)
-                                <option value="{{ $statu->id }}">{{ $statu->nombre }}</option>
+                                <option  
+                                @if ($filtros[1] == $statu->id)
+                                    selected
+                                @endif
+                                value="{{ $statu->id }}">{{ $statu->nombre }}</option>
                               @endforeach
                             </select>
                           </div>
@@ -40,7 +44,11 @@
                                 <select class="form-control" name="week">
                                 <option value="">Seleccionar semana</option>
                                 @for ($i = 1; $i <= 52; $i++)
-                                  <option value="{{ $i }}">{{ $i }}</option>
+                                  <option 
+                                  @if ($filtros[2] == $i)
+                                      selected
+                                  @endif
+                                  value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                               </select>
                             </div>
@@ -99,7 +107,7 @@
                               <td>${{ number_format($invoice->regalias, 2, '.', ',') }} MXN</td>
                               <td>${{ number_format($invoice->plantas, 2, '.', ',') }} MXN</td>
                               <td>${{ number_format($invoice->materiales, 2, '.', ',') }} MXN</td>
-                              <td>${{ number_format(  $totalapagar = $invoice->monto - $invoice->financiamiento - $invoice->regalias - $invoice->plantas - $invoice->materiales , 2, '.', ',') }} MXN </td>
+                              <td>${{ number_format(  $totalapagar = $invoice->monto - $invoice->financiamiento - $invoice->regalias - $invoice->plantas - $invoice->materiales , 2, '.', ',') }} {{ ($invoice->moneda == 1)?' MXN':' USD' }} </td>
                               <td>{{ ($invoice->moneda == 1)?'MXN':'USD' }}</td>
                               <td>{{ $invoice->tipocambio }}</td>
                               <td>{{ date('Y-m-d', strtotime($invoice->fecha)) }}</td>
