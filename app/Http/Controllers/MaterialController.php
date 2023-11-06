@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -14,7 +15,16 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        return view('materiales.index');
+        $user = Auth::user();
+        if( $user->rfc != null ){
+            $materiales = Material::leftJoin('users', 'materiales.user_id', '=', 'users.id')
+            ->where('user_id', $user->id)->paginate(20);
+        }else{
+            $materiales = Material::leftJoin('users', 'materiales.user_id', '=', 'users.id')
+            ->paginate(20);
+            
+        }
+        return view('materiales.index', compact('materiales'));
     }
 
     /**

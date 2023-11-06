@@ -17,23 +17,33 @@
                     <table class="table">
                       <thead class="text-primary">
                         <th>#</th>
-                        <th>Fecha</th>
-                        <th>Semana</th>
-                        <th>Serie</th>
-                        <th>Folio</th>
-                        <th>Concepto</th>
-                        <th>Importe</th>
-                        <th>IVA</th>
-                        <th>Total</th>
+                        <th>Productor</th>
+                        <th>ID Producto</th>
+                        <th>Nombre</th>
+                        <th>Unidades Agregadas</th>
+                        <th>Unidades Restadas</th>
                       </thead>
                       <tbody>
-                        
+                        @forelse ($materiales as $material)
+                        <tr>
+                          <td>{{ $material->id }}</td>
+                          <td>{{ $material->razonsocial }}</td>
+                          <td>{{ $material->cidproducto }}</td>
+                          <td>{{ $material->nombre }}</td>
+                          <td>{{ $material->u_agregadas }}</td>
+                          <td>{{ $material->u_restadas }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                          <td colspan="2">Sin registros.</td>
+                        </tr>
+                        @endforelse
                       </tbody>
                     </table>
                   </div>
                 </div>
                 <div class="card-footer mr-auto">
-                  
+                  {{ $materiales->links() }}
                 </div>
               </div>
             </div>

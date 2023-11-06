@@ -11,6 +11,7 @@ use App\Models\Planta;
 use App\Models\Prestamo;
 use App\Models\Regalia;
 use App\Models\Invoice;
+use App\Models\Material;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
@@ -169,6 +170,7 @@ class UserController extends Controller
         Prestamo::where('user_id', $user->id)->delete();
         Regalia::where('user_id', $user->id)->delete();
         Invoice::where('user_id', $user->id)->delete();
+        Material::where('user_id', $user->id)->delete();
         $user->delete();
         return back()->with('succes', 'Usuario eliminado correctamente');
     }

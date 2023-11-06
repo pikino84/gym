@@ -15,6 +15,7 @@ use App\Models\SplendorTablaClientes;
 use App\Models\SplendorTablaDocumentos;
 use App\Models\SplendorTablaMovimientos;
 use App\Models\SplendorTablaProductos;
+use App\Models\SplendorTablaAlmacenes;
 
 use App\Models\SysSplendorUserRfcs;
 use App\Models\SplendorUser;
@@ -26,6 +27,7 @@ use App\Models\Planta;
 use App\Models\Regalia;
 use App\Models\Deuda;
 use App\Models\Financiamiento;
+use App\Models\Material;
 use App\Models\User;
 use App\Models\Estatus;
 
@@ -516,6 +518,49 @@ class InvoiceController extends Controller
                             Regalia::insert($regaliasToInsert);    
                         }
                     }
+                }
+            }
+        }
+        /*************************/
+        /******* MATERIALES ********/
+        /*************************/
+        //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
+        foreach($userRfcs as $user_rfc){
+            $user_id = $user_rfc->user_id;
+            $ccodigocliente = $user_rfc->ccodigocliente;
+            $crazonsocial = $user_rfc->crazonsocial;
+            //SE OBTIENEN LOS ALMANCES
+            $almacenes = SplendorTablaAlmacenes::select('CIDALMACEN', 'CCODIGOALMACEN' )
+                         ->where('CCODIGOALMACEN', '=', $ccodigocliente)
+                         ->where('CIDVALORCLASIFICACION1', '=', 91)
+                         ->get();
+            if( count($almacenes) > 0){                    
+                foreach($almacenes as $almacen){
+                    $movimiento_almacen = SplendorTablaMovimientos::select('admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO')
+                        ->join('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
+                        ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO > 0 THEN CUNIDADES ELSE 0 END) AS unidades_agregadas')
+                        ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO = 0 THEN CUNIDADES ELSE 0 END) AS unidades_restadas')
+                        ->where('CIDALMACEN', '=', $almacen->CIDALMACEN)
+                        ->groupBy('admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO' )
+                        ->get();
+                    if( count($movimiento_almacen) > 0){
+                        foreach($movimiento_almacen as $movimiento){
+                            $materialesToInsert = [
+                                'cidproducto' => $movimiento->CIDPRODUCTO,
+                                'user_id' => $user_id,
+                                'nombre' => $movimiento->CNOMBREPRODUCTO,
+                                'u_agregadas' => $movimiento->unidades_agregadas,
+                                'u_restadas' => $movimiento->unidades_restadas,
+                            ];
+                            $cidproducto_exist = Material::where('cidproducto', '=', $movimiento->CIDPRODUCTO)->first();
+                            if( !$cidproducto_exist ){
+                                Material::insert($materialesToInsert);    
+                            }else{
+                                $cidproducto_exist->update($materialesToInsert);
+                            }
+                        }
+                    }
+
                 }
             }
         }
