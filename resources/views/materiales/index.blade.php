@@ -30,8 +30,8 @@
                           <td>{{ $material->razonsocial }}</td>
                           <td>{{ $material->cidproducto }}</td>
                           <td>{{ $material->nombre }}</td>
-                          <td>{{ $material->u_agregadas }}</td>
                           <td>{{ $material->u_restadas }}</td>
+                          <td>{{ $material->u_agregadas }}</td>
                         </tr>
                         @empty
                         <tr>
