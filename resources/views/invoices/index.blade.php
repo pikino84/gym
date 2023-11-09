@@ -76,9 +76,9 @@
                           <th>Descripción</th>
                           <th>Monto facturado</th>
                           <th style="background: #f7683d; color: #fff; text-align:center;">Financiamiento</th>
-                          <th style="background: #eeb700; color: #fff; text-align:center;">Regalias</th>
                           <th style="background: #01a1eb; color: #fff; text-align:center;">Plantas</th>
-                          <th style="background: #02b408; color: #fff; text-align:center;">Materiales</th>
+                          <th style="background: #eeb700; color: #fff; text-align:center;">Regalias</th>
+                          <th style="background: #02b408; color: #fff; text-align:center;">Otros</th>
                           <th>Monto a pagar</th>
                           <th>Moneda</th>
                           <th>Tipo de cambio</th>
