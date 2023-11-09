@@ -19,6 +19,7 @@ class PrestamoController extends Controller
         if( $user->rfc != null ){
             $prestamos = Prestamo::leftJoin('users', 'prestamos.user_id', '=', 'users.id')
             ->where('user_id', $user->id)->orderBy('fecha', 'asc')->paginate(20);
+            $montos = Prestamo::select(['total', 'naturaleza', 'pendiente','moneda'])->where('user_id', $user->id)->get();
         }else{
             $prestamos = Prestamo::leftJoin('users', 'prestamos.user_id', '=', 'users.id')
             ->orderBy('fecha', 'asc')
