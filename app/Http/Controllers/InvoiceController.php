@@ -582,7 +582,8 @@ class InvoiceController extends Controller
         }elseif($productor == null && $week != null && $estatus == null){
             $user = Auth::user();
             if( $user->razonsocial != null ){
-                $invoices = Invoice::where('semana', $week)->where('razonsocial', 'like', "%$user->razonsocial%")
+                $invoices = Invoice::where('semana', $week)
+                    ->where('razonsocial', 'like', "%$user->razonsocial%")
                     ->join('estatus', 'invoices.id_status', '=', 'estatus.id')
                     ->get();
             }else{

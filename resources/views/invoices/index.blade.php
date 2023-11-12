@@ -23,10 +23,12 @@
                         <form class="navbar-form filtros" method="post" action="{{ route('invoices.filters') }}">
                           @csrf
                           <div class="form-group row">
-                            @can('invoice_create')
+                            @can('invoice_filter_by_producer')
                             <div class="col-md-4 col-sm-12 ">
                               <input type="text" style="height: 41px;" name="productor" value="{{ old('productor') }}" class="form-control" placeholder="Buscar por productor" autocomplete="off">
                             </div>
+                            @endcan
+                            @can('invoice_filter_by_status')
                             <div class="col-md-2 col-sm-8 ">
                               <select class="form-control" name="estatus">
                               <option value="">Seleccionar estatus</option>
@@ -34,8 +36,9 @@
                                 <option value="{{ $statu->id }}">{{ $statu->nombre }}</option>
                               @endforeach
                             </select>
-                          </div>
+                            </div>
                             @endcan
+                            @can('invoice_filter_by_week')
                             <div class="col-md-2 col-sm-8 ">
                                 <select class="form-control" name="week">
                                 <option value="">Seleccionar semana</option>
@@ -44,6 +47,7 @@
                                 @endfor
                               </select>
                             </div>
+                            @endcan
                             <div class="col-md-4 col-sm-4 ">
                               <button type="submit" class="btn   btn-facebook ">
                                 Filtrar
@@ -53,12 +57,12 @@
                               </a>
                             </div>
                           </div>
-                        </form>                        
+                        </form>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12 col-sm-12 text-right">
-                        @can('invoice_create')
+                        @can('invoice_update')
                         <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
                           Actualizar Facturas
                         </button>
@@ -86,7 +90,7 @@
                           <th>Semana</th>
                           <th>Cancelado</th>
                           <th>Estatus</th>
-                          @can('invoice_create')
+                          @can('invoice_approve')
                           <th>Aprobar</th>
                           <th>Decargar</th>
                           @endcan
@@ -116,7 +120,7 @@
                               <td>{{ $invoice->semana }}</td>
                               <td>{{ $invoice->cancelado }}</td>
                               <td>{{ $invoice->status }}</td>
-                              @can('invoice_create')
+                              @can('invoice_approve')
                               <td  class="td-actions text-center">
                                 @if( $invoice->xml != null && $invoice->id_status == 2)
                                 <button class="btn btn-facebook" title="Factura pendiente de aprobar" onclick="sendApproval('{{ route('invoices.approved', $invoice->id) }}', this)">
@@ -127,7 +131,7 @@
                                 @endif
                               </td>
                               @endcan
-                              @can('invoice_create')
+                              @can('invoice_approve')
                               <td  class="td-actions text-center">
                                 @if( $invoice->xml != null )
                                   <a href="{{ route('invoices.download',$invoice->id) }}" class="btn btn-info" title="Descargar factura PDF y XML"><i class="material-icons">cloud_download</i></a>

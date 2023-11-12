@@ -23,23 +23,26 @@
                         <form class="navbar-form filtros" method="post" action="{{ route('invoices.filters') }}">
                           @csrf
                           <div class="form-group row">
-                            @can('invoice_create')
+                            @can('invoice_filter_by_producer')
                             <div class="col-md-4 col-sm-12 ">
                               <input type="text" style="height: 41px;" name="productor" value="{{ old('productor', $filtros[0]) }}" class="form-control" placeholder="Busca por productor" autocomplete="off">
                             </div>
+                            @endcan
+                            @can('invoice_filter_by_status')
                             <div class="col-md-2 col-sm-8 ">
                               <select class="form-control" name="estatus">
-                              <option value="">Seleccionar estatus</option>
-                              @foreach ($estatus as $statu)
-                                <option  
-                                @if ($filtros[1] == $statu->id)
-                                    selected
-                                @endif
-                                value="{{ $statu->id }}">{{ $statu->nombre }}</option>
-                              @endforeach
-                            </select>
-                          </div>
+                                <option value="">Seleccionar estatus</option>
+                                @foreach ($estatus as $statu)
+                                  <option  
+                                  @if ($filtros[1] == $statu->id)
+                                      selected
+                                  @endif
+                                  value="{{ $statu->id }}">{{ $statu->nombre }}</option>
+                                @endforeach
+                              </select>
+                            </div>
                             @endcan
+                            @can('invoice_filter_by_week')
                             <div class="col-md-2 col-sm-8 ">
                                 <select class="form-control" name="week">
                                 <option value="">Seleccionar semana</option>
@@ -52,6 +55,7 @@
                                 @endfor
                               </select>
                             </div>
+                            @endcan
                             <div class="col-md-4 col-sm-4 ">
                               <button type="submit" class="btn   btn-facebook ">
                                 Filtrar
