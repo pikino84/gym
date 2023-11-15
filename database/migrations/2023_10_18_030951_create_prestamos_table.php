@@ -22,7 +22,7 @@ class CreatePrestamosTable extends Migration
             $table->integer('folio');
             $table->integer('total'); 
             $table->integer('moneda');
-            $table->decimal('tipodecambio', 10, 2);
+            $table->decimal('tipodecambio', 10, 4);
             $table->integer('naturaleza');
             $table->integer('pendiente'); 
             $table->timestamps();
