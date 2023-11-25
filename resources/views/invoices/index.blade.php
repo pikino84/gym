@@ -199,7 +199,7 @@
         }, 3000);
       } else {
         loading.style.display = 'none';
-        Swal.fire('¡No se actulizaron las Facturas !', 'Lo siento.', 'error');
+        Swal.fire('¡No se actulizaron las Facturas !', 'Favor de intentar lo más tarde.', 'error');
       }
     })
     .catch(error => {

@@ -92,7 +92,7 @@
         }, 3000);
       } else {
         loading.style.display = 'none';
-        Swal.fire('¡No se actulizaron los Materiales !', 'Lo siento.', 'error');
+        Swal.fire('¡No se actulizaron los Materiales !', 'Favor de intentar lo más tarde.', 'error');
       }
     })
     .catch(error => {
