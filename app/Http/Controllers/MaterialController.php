@@ -18,9 +18,12 @@ class MaterialController extends Controller
         $user = Auth::user();
         if( $user->rfc != null ){
             $materiales = Material::leftJoin('users', 'materiales.user_id', '=', 'users.id')
-            ->where('user_id', $user->id)->paginate(20);
+            ->where('user_id', $user->id)
+            ->orderBy('razonsocial', 'desc')
+            ->paginate(20);
         }else{
             $materiales = Material::leftJoin('users', 'materiales.user_id', '=', 'users.id')
+            ->orderBy('razonsocial', 'desc')
             ->paginate(20);
             
         }

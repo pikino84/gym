@@ -13,6 +13,15 @@
                   <p class="card-category">Reporte de materiales</p>
                 </div>
                 <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 text-right">
+                      @can('material_update')
+                      <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
+                        Actualizar Facturas
+                      </button>
+                      @endcan
+                    </div>
+                  </div>
                   <div class="table-responsive">
                     <table class="table">
                       <thead class="text-primary">
@@ -20,18 +29,22 @@
                         <th>Productor</th>
                         <th>ID Producto</th>
                         <th>Nombre</th>
-                        <th>Unidades Agregadas</th>
-                        <th>Unidades Restadas</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Existencia</th>
                       </thead>
                       <tbody>
+                        <?php $i = 0; ?>
                         @forelse ($materiales as $material)
+                        <?php $i++; ?>
                         <tr>
-                          <td>{{ $material->id }}</td>
+                          <td>{{ $i }}</td>
                           <td>{{ $material->razonsocial }}</td>
                           <td>{{ $material->cidproducto }}</td>
                           <td>{{ $material->nombre }}</td>
-                          <td>{{ $material->u_restadas }}</td>
-                          <td>{{ $material->u_agregadas }}</td>
+                          <td>{{ number_format($material->entradas, 2, '.', ',') }}</td>
+                          <td>{{ number_format($material->salidas, 2, '.', ',') }}</td>
+                          <td>{{ number_format($material->existencias, 2, '.', ',') }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -52,4 +65,39 @@
       </div>
     </div>
   </div>
+@endsection
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  
+  function sendRefresh(url, button){
+    let loading = document.getElementById('loading');
+    loading.style.display = 'flex';
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(url)
+    // Realizar la petición AJAX
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': token
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        loading.style.display = 'none';
+        Swal.fire('¡Materiales Actualizados!', 'Los Materiales han sido actualizados.', 'success');
+        setTimeout(function() {
+            location.reload();
+        }, 3000);
+      } else {
+        loading.style.display = 'none';
+        Swal.fire('¡No se actulizaron los Materiales !', 'Lo siento.', 'error');
+      }
+    })
+    .catch(error => {
+      
+    });
+  }
+</script>
 @endsection

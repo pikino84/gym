@@ -18,8 +18,9 @@ class CreateMaterialesTable extends Migration
             $table->string('cidproducto');
             $table->string('user_id');
             $table->string('nombre');
-            $table->string('u_agregadas');
-            $table->string('u_restadas');
+            $table->string('entradas');
+            $table->string('salidas');
+            $table->string('existencias');
             $table->timestamps();
         });
     }

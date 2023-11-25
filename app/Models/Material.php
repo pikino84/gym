@@ -13,7 +13,15 @@ class Material extends Model
         'cidproducto',
         'user_id',
         'nombre',
-        'u_agregadas',
-        'u_restadas'
+        'entradas',
+        'salidas',
+        'existencias',
     ];
+
+    
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+    
 }

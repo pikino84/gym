@@ -66,9 +66,6 @@
                         <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
                           Actualizar Facturas
                         </button>
-                        {{--
-                        <a href="{{ route('invoices.create') }}" class="btn btn-sm btn-facebook">Añadir Factura</a>
-                        --}}
                         @endcan
                       </div>
                     </div>

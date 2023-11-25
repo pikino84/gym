@@ -357,6 +357,7 @@ class InvoiceController extends Controller
             //SE OBTINE EL ROL QUE TIENE DOCUMENTOS RELACIONADOS CON EL ID 4 (PLANTAS)
             $docs = SplendorTablaDocumentos::select('CIDDOCUMENTO',  'CIDDOCUMENTODE', 'CIDCONCEPTODOCUMENTO', 'CSERIEDOCUMENTO', 'CFOLIO', 'CFECHA', 'CTOTALUNIDADES', 'CUNIDADESPENDIENTES')
             ->where('CIDDOCUMENTODE', '=' , 4)
+            ->where('CSERIEDOCUMENTO', '=' , 'FA')
             ->where('CIDCLIENTEPROVEEDOR', '=' , $id_cliente_proveedor)
             ->get();
             //SE VERIFICA QUE TENGA DOCUMENTOS DE PLANTAS
@@ -538,8 +539,8 @@ class InvoiceController extends Controller
                 foreach($almacenes as $almacen){
                     $movimiento_almacen = SplendorTablaMovimientos::select('admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO')
                         ->join('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
-                        ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO > 0 THEN CUNIDADES ELSE 0 END) AS unidades_agregadas')
-                        ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO = 0 THEN CUNIDADES ELSE 0 END) AS unidades_restadas')
+                        ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO > 0 THEN CUNIDADES ELSE 0 END) AS salidas')
+                        ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO = 0 THEN CUNIDADES ELSE 0 END) AS entradas')
                         ->where('CIDALMACEN', '=', $almacen->CIDALMACEN)
                         ->groupBy('admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO' )
                         ->get();
@@ -549,8 +550,10 @@ class InvoiceController extends Controller
                                 'cidproducto' => $movimiento->CIDPRODUCTO,
                                 'user_id' => $user_id,
                                 'nombre' => $movimiento->CNOMBREPRODUCTO,
-                                'u_agregadas' => $movimiento->unidades_agregadas,
-                                'u_restadas' => $movimiento->unidades_restadas,
+                                'entradas' => $movimiento->entradas,
+                                'salidas' => $movimiento->salidas,
+                                'existencias' => $movimiento->entradas - $movimiento->salidas,
+
                             ];
                             $cidproducto_exist = Material::where('cidproducto', '=', $movimiento->CIDPRODUCTO)->first();
                             if( !$cidproducto_exist ){

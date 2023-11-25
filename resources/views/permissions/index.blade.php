@@ -37,10 +37,6 @@
                           <td>{{ $permission->guard_name }}</td>
                           <td>{{ $permission->created_at }}</td>
                           <td class="td-actions text-right">
-                            @can('permission_show')
-                            <a href="{{ route('permissions.show', $permission->id) }}" class="btn btn-info"><i
-                                class="material-icons">person</i></a>
-                            @endcan
                             @can('permission_edit')
                             <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-warning"><i
                                 class="material-icons">edit</i></a>

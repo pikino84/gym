@@ -24,8 +24,8 @@
                         <th>Semana</th>
                         <th>Fruta</th>
                         <th>Talla</th>
-                        <th>Total</th>
-                        <th>Pendientes</th>
+                        <th>Entregadas</th>
+                        <th>Por facturar</th>
                       </thead>
                       <tbody>
                         @forelse ($frutas as $fruta)
