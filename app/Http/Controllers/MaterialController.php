@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -17,15 +18,36 @@ class MaterialController extends Controller
     {
         $user = Auth::user();
         if( $user->rfc != null ){
-            $materiales = Material::leftJoin('users', 'materiales.user_id', '=', 'users.id')
+            $materiales = Material::select(
+                'users.id as userId',
+                'users.name as userName',
+                'users.razonsocial',
+                'materiales.cidproducto',
+                'materiales.nombre',
+                DB::raw('SUM(materiales.entradas) as totalEntradas'),
+                DB::raw('SUM(materiales.salidas) as totalSalidas'),
+                DB::raw('(SUM(materiales.entradas) - SUM(materiales.salidas)) as existencias')
+            )
+            ->leftJoin('users', 'materiales.user_id', '=', 'users.id')
             ->where('user_id', $user->id)
-            ->orderBy('razonsocial', 'desc')
+            ->groupBy('users.id', 'materiales.cidproducto', 'materiales.nombre')
+            ->orderBy('users.razonsocial', 'desc')
             ->paginate(20);
         }else{
-            $materiales = Material::leftJoin('users', 'materiales.user_id', '=', 'users.id')
-            ->orderBy('razonsocial', 'desc')
+            $materiales = Material::select(
+                'users.id as userId',
+                'users.name as userName',
+                'users.razonsocial',
+                'materiales.cidproducto',
+                'materiales.nombre',
+                DB::raw('SUM(materiales.entradas) as totalEntradas'),
+                DB::raw('SUM(materiales.salidas) as totalSalidas'),
+                DB::raw('(SUM(materiales.entradas) - SUM(materiales.salidas)) as existencias')
+            )
+            ->leftJoin('users', 'materiales.user_id', '=', 'users.id')
+            ->groupBy('users.id', 'materiales.cidproducto', 'materiales.nombre')
+            ->orderBy('users.razonsocial', 'desc')
             ->paginate(20);
-            
         }
         return view('materiales.index', compact('materiales'));
     }

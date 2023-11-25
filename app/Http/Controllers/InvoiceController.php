@@ -526,6 +526,7 @@ class InvoiceController extends Controller
         /******* MATERIALES ********/
         /*************************/
         //SE ONTIENEN TODOS LOS ROLES DE CADA PRODUCTOR
+        Material::truncate();
         foreach($userRfcs as $user_rfc){
             $user_id = $user_rfc->user_id;
             $ccodigocliente = $user_rfc->ccodigocliente;
@@ -537,13 +538,14 @@ class InvoiceController extends Controller
                          ->get();
             if( count($almacenes) > 0){                    
                 foreach($almacenes as $almacen){
-                    $movimiento_almacen = SplendorTablaMovimientos::select('admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO')
+                    $movimiento_almacen = SplendorTablaMovimientos::select('admMovimientos.CIDDOCUMENTO', 'admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO')
                         ->join('admProductos', 'admProductos.CIDPRODUCTO', '=', 'admMovimientos.CIDPRODUCTO')
                         ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO > 0 THEN CUNIDADES ELSE 0 END) AS salidas')
                         ->selectRaw('SUM(CASE WHEN CIDDOCUMENTO = 0 THEN CUNIDADES ELSE 0 END) AS entradas')
                         ->where('CIDALMACEN', '=', $almacen->CIDALMACEN)
-                        ->groupBy('admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO' )
+                        ->groupBy('admMovimientos.CIDDOCUMENTO', 'admMovimientos.CIDPRODUCTO', 'CNOMBREPRODUCTO' )
                         ->get();
+                        
                     if( count($movimiento_almacen) > 0){
                         foreach($movimiento_almacen as $movimiento){
                             $materialesToInsert = [
@@ -553,14 +555,8 @@ class InvoiceController extends Controller
                                 'entradas' => $movimiento->entradas,
                                 'salidas' => $movimiento->salidas,
                                 'existencias' => $movimiento->entradas - $movimiento->salidas,
-
                             ];
-                            $cidproducto_exist = Material::where('cidproducto', '=', $movimiento->CIDPRODUCTO)->first();
-                            if( !$cidproducto_exist ){
-                                Material::insert($materialesToInsert);    
-                            }else{
-                                $cidproducto_exist->update($materialesToInsert);
-                            }
+                            Material::insert($materialesToInsert);    
                         }
                     }
 

@@ -42,8 +42,8 @@
                           <td>{{ $material->razonsocial }}</td>
                           <td>{{ $material->cidproducto }}</td>
                           <td>{{ $material->nombre }}</td>
-                          <td>{{ number_format($material->entradas, 2, '.', ',') }}</td>
-                          <td>{{ number_format($material->salidas, 2, '.', ',') }}</td>
+                          <td>{{ number_format($material->totalEntradas, 2, '.', ',') }}</td>
+                          <td>{{ number_format($material->totalSalidas, 2, '.', ',') }}</td>
                           <td>{{ number_format($material->existencias, 2, '.', ',') }}</td>
                         </tr>
                         @empty
