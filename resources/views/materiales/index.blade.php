@@ -17,7 +17,7 @@
                     <div class="col-md-12 col-sm-12 text-right">
                       @can('material_update')
                       <button class="btn btn-refresh btn-facebook" onclick="sendRefresh('{{ route('invoices.refresh_invoices') }}', this)">
-                        Actualizar Facturas
+                        Actualizar Materiales
                       </button>
                       @endcan
                     </div>
