@@ -44,10 +44,6 @@
                     </td>
                     <td class="td-actions text-right">
                       @if ($role->id != 1 OR auth()->user()->id == 1  )
-                      @can('role_show')
-                        <a href="{{ route('roles.show', $role->id) }}" class="btn btn-info"> <i
-                            class="material-icons">person</i> </a>
-                      @endcan
                       @can('role_edit')
                         <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-success"> <i
                             class="material-icons">edit</i> </a>
