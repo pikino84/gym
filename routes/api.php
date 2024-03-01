@@ -23,7 +23,6 @@ header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Author
     
 });*/
 
-Route::get('/splendor-users', 'App\Http\Controllers\Api\SplendorUsersController@index');
 
 
 

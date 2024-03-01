@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>{{ __('Splendor system') }}</title>
+  <title>{{ __('Lion System') }}</title>
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -16,7 +16,7 @@
   <link href="{{ asset('css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
-  <link rel="stylesheet" href="{{ asset('css/styele.css?v=1.1') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('css/style.css?v=1.1') }}" rel="stylesheet" />
 </head>
 <body class="{{ $class ?? '' }}">
   @auth()

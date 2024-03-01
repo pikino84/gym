@@ -43,31 +43,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('posts', App\Http\Controllers\PostController::class);
 
     Route::resource('permissions', App\Http\Controllers\PermissionController::class);
-    Route::resource('roles', App\Http\Controllers\RoleController::class);
-
-    Route::resource('invoices', App\Http\Controllers\InvoiceController::class);
-    Route::get('invoices/{id}/up_docs', [App\Http\Controllers\InvoiceController::class, 'upDocs'])->name('invoices.up_docs');
-    Route::get('invoices/{id}/download', [App\Http\Controllers\InvoiceController::class, 'download'])->name('invoices.download');
-    Route::post('invoices/{id}/approved', [App\Http\Controllers\InvoiceController::class, 'approved'])->name('invoices.approved');
-    Route::post('invoices/refresh_invoices', [App\Http\Controllers\InvoiceController::class, 'refresh_invoices'])->name('invoices.refresh_invoices');
-    Route::post('invoices/filters', [App\Http\Controllers\InvoiceController::class, 'filters'])->name('invoices.filters');
-    Route::get('frutas',[App\Http\Controllers\FrutaController::class, 'index'])->name('frutas.index');
-    
-    Route::get('plantas',[App\Http\Controllers\PlantaController::class, 'index'])->name('plantas.index');
-    Route::get('prestamos',[App\Http\Controllers\PrestamoController::class, 'index'])->name('prestamos.index');
-    Route::get('regalias',[App\Http\Controllers\RegaliasController::class, 'index'])->name('regalias.index');
-    Route::get('materiales',[App\Http\Controllers\MaterialController::class, 'index'])->name('materiales.index');
-    //estas Rutas ya no se usaran revisar si se pueden reciclar los controladores
-    Route::get('deudas',[App\Http\Controllers\DeudaController::class, 'index'])->name('deudas.index');
-    Route::get('financiamientos',[App\Http\Controllers\FinanciamientoController::class, 'index'])->name('financiamientos.index');
-    
-
-    
-    
-    
-
-    
-
-    
+    Route::resource('roles', App\Http\Controllers\RoleController::class);    
                                       
 });
