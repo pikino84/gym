@@ -31,8 +31,6 @@
                           <th>Nombre completo</th>
                           <th>Usuario</th>
                           <th>Correo</th>
-                          <th>ID Proveedor</th>
-                          <th>Razón Social</th>
                           <th>Roles</th>
                           <th class="text-right">Acciones</th>
                         </thead>
@@ -43,8 +41,6 @@
                               <td>{{ $user->name }}</td>
                               <td>{{ $user->username }}</td>
                               <td>{{ $user->email }}</td>
-                              <td>{{ $user->idclienteproveedor }}</td>
-                              <td>{{ $user->razonsocial }}</td>
                               <td>
                                   @forelse ($user->roles as $role)
                                     <span class="badge badge-info">{{ $role->name }}</span>
@@ -61,7 +57,7 @@
                                   <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning"><i class="material-icons">edit</i></a>
                                   @endcan
                                   @can('user_destroy')
-                                  <form action="{{ route('users.delete', $user->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro?')">
+                                  <form action="{{ route('users.delete', $user->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Seguro que deseas eliminar a: {{ $user->name }}?')">
                                   @csrf
                                   @method('DELETE')
                                       <button class="btn btn-danger" type="submit" rel="tooltip">

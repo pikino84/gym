@@ -50,15 +50,6 @@
                 </div>
               </div>
               <div class="row">
-                <label for="idproveedor" class="col-sm-2 col-form-label">Razón Social (<b>Solo para proveedores</b>)</label>
-                <div class="col-sm-7">
-                  <input type="idproveedor" id="idproveedor" class="form-control" name="idproveedor" placeholder="Ingresa el ID del proveedor" autocomplete="off" value="{{ old('razonsocial', $user->razonsocial) }}">
-                  @if ($errors->has('idproveedor'))
-                    <span class="error text-danger" for="input-idproveedor">{{ $errors->first('proveedor') }}</span>
-                  @endif
-                </div>
-              </div>
-              <div class="row">
                 <label for="name" class="col-sm-2 col-form-label">Roles</label>
                 <div class="col-sm-7">
                     <div class="form-group">
@@ -108,32 +99,4 @@
     </div>
   </div>
 </div>
-@endsection
-@section('script')
-<script>  
-  $(document).ready(function() {
-    $.ajax({
-      url: "https://splendorsys.com/api/getUserFromDocuments.php",
-        type: "GET",
-        dataType: "json",
-        success: function(response) {
-          var proveedores = response;
-          //console.log(proveedores);
-          var razonesSociales = [];
-          $.each(proveedores, function(index, element) {
-            let razonsocial = element.CIDCLIENTEPROVEEDOR + " - " + element.CRAZONSOCIAL + " - " + element.CRFC;
-            console.log(razonsocial);
-            razonesSociales.push(razonsocial);
-          });
-          $("#idproveedor").autocomplete({
-            source: razonesSociales
-          });
-        },
-        error: function(xhr, status, error) {
-          // Maneja los errores de la solicitud
-          console.log('Error en la solicitud: ' + error);
-        }
-    });
-  });
-</script>
 @endsection

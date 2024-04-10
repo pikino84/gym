@@ -23,9 +23,6 @@ class User extends Authenticatable
         'username',
         'password',
         'idproveedor',
-        'razonsocial',
-        'idclienteproveedor',
-        'rfc',
     ];
 
     /**
